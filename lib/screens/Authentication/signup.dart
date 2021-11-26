@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUp> {
   void register() async{
    
 
-    await firebaseAuth
+  UserCredential userCredential = await firebaseAuth
         .createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
         .then((result) async{
@@ -138,6 +138,10 @@ class _SignUpState extends State<SignUp> {
         Fluttertoast.showToast(msg: 'success', toastLength: Toast.LENGTH_SHORT);
       });
     }).catchError((err) {
+
+      print("------------------Firebase Error --------------");
+      print(err.toString());
+
       setState(() {
         isLoading = false;
       });

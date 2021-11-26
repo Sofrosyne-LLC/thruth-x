@@ -121,7 +121,8 @@ class _ModelDetailsState extends State<ModelDetails> {
                                       color: Color(0xFF7C7671)),
                                   SizedBox(width: 5),
                                   Text(
-                                    widget.modelDetail["city"],
+                                    //"widget.modelDetail[city]",
+                                    widget.modelDetail["zipCode"],
                                     style: TextStyle(
                                       color: Color(0xFF7C7671),
                                     ),

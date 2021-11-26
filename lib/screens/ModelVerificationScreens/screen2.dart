@@ -130,8 +130,8 @@ class _Screen2State extends State<Screen2> {
               ),
               Text(
                 date.isEmpty
-                    ? "mm/yyyy"
-                    : DateFormat('dd-MM-yyyy').format(_selectedDate),
+                    ? "dd/mm"
+                    : DateFormat('dd-MM').format(_selectedDate),
                 textScaleFactor: 1.2,
               ),
               SizedBox(height: 20),
@@ -185,7 +185,7 @@ class _Screen2State extends State<Screen2> {
               ),
               SizedBox(height: 10),
               Text(
-                "Your \"Day Rate\" is the fixed amount that a client will pay you for 6-8 hours of work in a single day. Based on your hourlyrate, we will recommend an appropriate day rate.",
+                "Your \"Day Rate\" is the fixed amount that a client will pay you for 6-8 hours of work in a single day. Based on your hourly rate, we will recommend an appropriate day rate.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,

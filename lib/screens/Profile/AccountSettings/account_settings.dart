@@ -8,6 +8,7 @@ import 'package:truthinx/screens/Profile/AccountSettings/edit_instagram.dart';
 import 'package:truthinx/Models/AppUser.dart';
 import 'package:truthinx/screens/Profile/AccountSettings/edit_profile.dart';
 import 'package:truthinx/screens/Startup_screens/welcome.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountSettings extends StatefulWidget {
   final AppUser userData;
@@ -19,6 +20,11 @@ class AccountSettings extends StatefulWidget {
 class _AccountSettingsState extends State<AccountSettings> {
   bool notificationStatus = false;
   bool extendedFloat = false;
+  String _privacyUrl = "http://truthinxmodels/privacy";
+  String _support = "http://truthinxmodels.com/Support";
+  String _termsAndConditions = "http://truthinxmodels/privacy";
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,6 +204,57 @@ class _AccountSettingsState extends State<AccountSettings> {
               ),
               trailing: Text("1.0.1"),
             ),
+
+
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 8),
+              enabled: true,
+              onTap: (){
+                _launchURL(_support);
+              },
+              leading: Text(
+                "Support",
+                style: TextStyle(fontSize: 16,
+                    color: Colors.grey,
+
+                ),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios_rounded,
+              ),
+            ),
+
+
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 8),
+              onTap: (){
+                _launchURL(_termsAndConditions);
+              },
+              enabled: true,
+              leading: Text(
+                "Terms & Conditions",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios_rounded,
+              ),
+            ),
+
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 8),
+              enabled: true,
+              onTap: (){
+                _launchURL(_privacyUrl);
+              },
+              leading: Text(
+                "Privacy",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios_rounded,
+              ),
+            ),
+
           ],
         ),
       ),
@@ -233,4 +290,10 @@ class _AccountSettingsState extends State<AccountSettings> {
       "allowed": value,
     });
   }
+
+  void _launchURL(String url) async {
+    if (!await launch(url)) throw 'Could not launch $url';
+  }
+
+
 }
