@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "703440972989",
-    "project_id": "truthin-x",
-    "storage_bucket": "truthin-x.appspot.com"
+    "project_number": "678921020036",
+    "project_id": "thruthx-model",
+    "storage_bucket": "thruthx-model.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:703440972989:android:c124cfd1397adc47ed1bd4",
+        "mobilesdk_app_id": "1:678921020036:android:a860a295e423cc487098d1",
         "android_client_info": {
-          "package_name": "com.example.truthinx"
+          "package_name": "com.phillip.truthinx"
         }
       },
       "oauth_client": [
         {
-          "client_id": "703440972989-g4o32jef31m1emv2vabg28804li0vots.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.truthinx",
-            "certificate_hash": "7ddac809df41d79b7f76b068fdc683dd33c68172"
-          }
-        },
-        {
-          "client_id": "703440972989-r42jbtntrmo0ms7h39bg9kncm438hs86.apps.googleusercontent.com",
+          "client_id": "678921020036-ledh25lf8aro2cb08buh4qg19odnfu86.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCPYBYSHqXXHcH6Kbv90hUF3uZMCYetDbg"
+          "current_key": "AIzaSyBGPTBdVeA7dU2uX4-nZnQef41qnlWppH8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "703440972989-r42jbtntrmo0ms7h39bg9kncm438hs86.apps.googleusercontent.com",
+              "client_id": "678921020036-ledh25lf8aro2cb08buh4qg19odnfu86.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

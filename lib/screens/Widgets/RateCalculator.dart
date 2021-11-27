@@ -8,7 +8,7 @@ class RateCalculation extends StatefulWidget {
 }
 
 class _RateCalculationState extends State<RateCalculation> {
-  int _value = 1;
+  int _value = 25;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +21,7 @@ class _RateCalculationState extends State<RateCalculation> {
               Column(
                 children: [
                   Text(
-                    "\$" + _value.toString(),
+                    "\$" + (_value).toString(),
                     textScaleFactor: 1.4,
                   ),
                   Text(
@@ -46,9 +46,9 @@ class _RateCalculationState extends State<RateCalculation> {
           ),
           Slider(
             value: _value.toDouble(),
-            min: 1.0,
-            max: 750.0,
-            divisions: 10,
+            min: 0.0,
+            max: 500.0,
+            divisions: 20,
             activeColor: Colors.orange,
             inactiveColor: Colors.grey,
             onChanged: (double newValue) {
