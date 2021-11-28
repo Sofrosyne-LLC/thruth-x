@@ -529,7 +529,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
               right: 20,
             ),
             child: Text(
-              "Job Type",
+              "Estimated Duration",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ),

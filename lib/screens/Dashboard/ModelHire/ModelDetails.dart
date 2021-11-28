@@ -136,7 +136,7 @@ class _ModelDetailsState extends State<ModelDetails> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Visibility(
-                                    visible: widget.isClient,
+                                    visible: true,
                                                                       child: Card(
                                       color: Color(0xFFF08740),
                                       shape: RoundedRectangleBorder(

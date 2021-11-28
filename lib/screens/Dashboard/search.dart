@@ -1,10 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:truthinx/screens/Dashboard/filter_page.dart';
 import 'package:truthinx/screens/Widgets/Model_Grid_Item.dart';
-
-
 
 class Search extends StatefulWidget {
   final bool isClient;
@@ -67,48 +65,40 @@ class _SearchState extends State<Search> {
   String searchQuery = "";
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-       backgroundColor: Colors.black,
+      backgroundColor: Colors.black,
       body: ListView(
         children: [
           SizedBox(
             height: 12,
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                  
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                             
-                               SizedBox(
-                              width: MediaQuery.of(context).size.width * .04),
-                               CircleAvatar(
-                                 backgroundColor: Colors.white,
-                                                                child: IconButton(
-                              icon: Icon(
-                                  Icons.close,
-                                  color: Colors.black,
-                              ),
-                              onPressed: () {
-                                  Navigator.pop(context);
-                              }),
-                               ),
-                           
-                      
-                        
-                     
-                        ],
-                      ),
-                          Row(
-                        children: [Container()],
-                      ),
-                    ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: MediaQuery.of(context).size.width * .04),
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
                   ),
+                ],
+              ),
+              Row(
+                children: [Container()],
+              ),
+            ],
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal:18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Container(
               height: 60,
               padding: EdgeInsets.only(
@@ -118,7 +108,7 @@ class _SearchState extends State<Search> {
               child: TextField(
                 textCapitalization: TextCapitalization.sentences,
                 controller: _serachText,
-                onChanged: (val){
+                onChanged: (val) {
                   setState(() {
                     searchQuery = val;
                   });
@@ -136,14 +126,14 @@ class _SearchState extends State<Search> {
                   suffixIcon: IconButton(
                     iconSize: 20,
                     icon: Icon(
-                      Icons.search,
+                      Icons.filter_list_outlined,
                       color: Colors.white,
                     ),
-                    
                     onPressed: () {
-                      setState(() {
-                        searchQuery = _serachText.text.trim();
-                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FilterPage()),
+                      );
                     },
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -159,51 +149,48 @@ class _SearchState extends State<Search> {
             ),
           ),
           StreamBuilder<QuerySnapshot>(
-            stream: 
-            FirebaseFirestore.instance.collection("user").orderBy("first_name")
+            stream: FirebaseFirestore.instance
+                .collection("user")
+                .orderBy("first_name")
                 // .where("verification", isEqualTo: 'submitted')
-                .where("role", isEqualTo: 'Model').startAt([searchQuery])
-      .endAt([searchQuery + '\uf8ff'])
-                .snapshots(),
+                .where("role", isEqualTo: 'Model')
+                .startAt([searchQuery]).endAt(
+                    [searchQuery + '\uf8ff']).snapshots(),
             builder: (context, snapshot) {
-             if(snapshot.hasData && snapshot.data !=null){
-                return 
-                   GridView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      physics: ScrollPhysics(),
-                      gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio:
-                            MediaQuery.of(context).size.width /
-                                (MediaQuery.of(context).size.height / 1.4),
-                      ),
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot data = snapshot.data.docs[index];
-                        return GridProduct(
-                          // img: data['profile_pic'],
-                          details: data,
-                          isVerified: data['verification'] == "VERIFIED",
-                          name: data['first_name'],
-                          rating: 5.0,
-                          raters: 23,
-                          gender: data["gender"],
-                          img: data['dp'],
-                          isClient:widget.isClient
-                        );
-                      },
-                    );
-             }
-             else{
-               if(snapshot.connectionState == ConnectionState.waiting){
-                 return Center(child: CircularProgressIndicator(),);
-               }
-               else{
-                 return Center(child: Text('No relevant Data found!'));
-               }
-             }
+              if (snapshot.hasData && snapshot.data != null) {
+                return GridView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  physics: ScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: MediaQuery.of(context).size.width /
+                        (MediaQuery.of(context).size.height / 1.4),
+                  ),
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot data = snapshot.data.docs[index];
+                    return GridProduct(
+                        // img: data['profile_pic'],
+                        details: data,
+                        isVerified: data['verification'] == "VERIFIED",
+                        name: data['first_name'],
+                        rating: 5.0,
+                        raters: 23,
+                        gender: data["gender"],
+                        img: data['dp'],
+                        isClient: widget.isClient);
+                  },
+                );
+              } else {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return Center(child: Text('No relevant Data found!'));
+                }
+              }
             },
           ),
         ],
