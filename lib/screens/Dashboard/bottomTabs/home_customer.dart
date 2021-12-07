@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -25,11 +27,26 @@ const double loginAlign = -1;
 const double signInAlign = 1;
 const Color selectedColor = Colors.white;
 const Color normalColor = Colors.grey;
-
 CollectionReference collectionReferenceUser =
     FirebaseFirestore.instance.collection('user');
 
 class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  double rateSlider = 25;
+  double heightFilter = 124.1;
+  bool heightAny = true;
+  bool rateAny = true;
+  bool weightAny = true;
+  double dress = 0;
+  double bust = 20;
+  double waist = 20;
+  double hips = 22;
+  double neck = 13;
+  double jacket = 0;
+  double inseam = 20;
+  double shoe = 5;
+  double weight = 100;
+
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Future<bool> _saveTokenToDatabase() async {
@@ -92,10 +109,14 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       },
     );
   }
-bool isClient = false;
+
+  bool isClient = false;
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.grey[900],
         appBar: AppBar(
           backgroundColor: Colors.black12,
@@ -108,13 +129,379 @@ bool isClient = false;
             IconButton(
               icon: Icon(Icons.search, size: 30),
               onPressed: () {
-               
-                Navigator.of(context).push(PageRouteBuilder(
+                Navigator.of(context).push(
+                  PageRouteBuilder(
                     opaque: false,
                     pageBuilder: (BuildContext context, _, __) {
                       return Search(isClient: isClient);
-                    }));
+                    },
+                  ),
+                );
               },
+            ),
+            IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  isDismissible: true,
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => StatefulBuilder(
+                    builder: (context, setState) {
+                      return Container(
+                        height: height / 2,
+                        width: width,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(34, 39, 46, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    "Filters",
+                                    style: TextStyle(fontSize: 17.0),
+                                  ),
+                                  SizedBox(
+                                    height: 6.0,
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                    child: Divider(),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text("City : "),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Rate : "),
+                                      Text(
+                                          '${rateAny ? "Any" : "\$$rateSlider"}')
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: width / 2.2,
+                                        child: Slider(
+                                          value: rateSlider,
+                                          label: '\$$rateSlider',
+                                          min: 25,
+                                          max: 500,
+                                          divisions: 25,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              rateAny = false;
+                                              rateSlider = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Checkbox(
+                                            activeColor: Colors.blue,
+                                            value: rateAny,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                print(value);
+                                                rateAny = !rateAny;
+                                              });
+                                            },
+                                          ),
+                                          Text("Any")
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Height : "),
+                                      Text(
+                                        heightAny
+                                            ? "Any"
+                                            : "${(heightFilter / 30).toStringAsFixed(2).split(".")[0]}\'${(heightFilter / 30).toStringAsFixed(2).split(".")[1]}\''",
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: width / 2.2,
+                                        child: Slider(
+                                          value: heightFilter,
+                                          label:
+                                              "${(heightFilter / 30).toStringAsFixed(2).split(".")[0]}\'${(heightFilter / 30).toStringAsFixed(2).split(".")[1]}\''",
+                                          min: 123.3,
+                                          max: 183.3,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              heightAny = false;
+                                              heightFilter = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Checkbox(
+                                            activeColor: Colors.blue,
+                                            value: heightAny,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                heightAny = !heightAny;
+                                              });
+                                            },
+                                          ),
+                                          Text("Any")
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Weight : "),
+                                      Text(
+                                        weightAny
+                                            ? "Any"
+                                            : "${weight.toStringAsFixed(1)}lbs",
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: width / 2.2,
+                                        child: Slider(
+                                          value: weight,
+                                          label:
+                                              "${weight.toStringAsFixed(1)}lbs",
+                                          min: 100,
+                                          max: 280,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              weightAny = false;
+                                              weight = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Checkbox(
+                                            activeColor: Colors.blue,
+                                            value: weightAny,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                weightAny = !weightAny;
+                                              });
+                                            },
+                                          ),
+                                          Text("Any")
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    "Measurement",
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Dress : "),
+                                            Text("${dress.toStringAsFixed(1)}"),
+                                          ],
+                                        ),
+                                        Slider(
+                                          value: dress,
+                                          label: "${dress.toStringAsFixed(1)}",
+                                          min: 0,
+                                          max: 32,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              dress = value;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Bust : "),
+                                            Text("${bust.toStringAsFixed(1)}"),
+                                          ],
+                                        ),
+                                        Slider(
+                                          value: bust,
+                                          label: "${bust.toStringAsFixed(1)}",
+                                          min: 20,
+                                          max: 60,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              bust = value;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Waist : "),
+                                            Text("${waist.toStringAsFixed(1)}"),
+                                          ],
+                                        ),
+                                        Slider(
+                                          value: waist,
+                                          label: "${waist.toStringAsFixed(1)}",
+                                          min: 20,
+                                          max: 50,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              waist = value;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Neck : "),
+                                            Text("${neck.toStringAsFixed(1)}"),
+                                          ],
+                                        ),
+                                        Slider(
+                                          value: neck,
+                                          label: "${neck.toStringAsFixed(1)}",
+                                          min: 13,
+                                          max: 22,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              neck = value;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Jacket : "),
+                                            Text(
+                                                "${jacket.toStringAsFixed(1)}"),
+                                          ],
+                                        ),
+                                        Slider(
+                                          value: jacket,
+                                          label: "${jacket.toStringAsFixed(1)}",
+                                          min: 0,
+                                          max: 50,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              jacket = value;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Inseam : "),
+                                            Text(
+                                                "${inseam..toStringAsFixed(1)}"),
+                                          ],
+                                        ),
+                                        Slider(
+                                          value: inseam,
+                                          label: "${inseam.toStringAsFixed(1)}",
+                                          min: 20,
+                                          max: 60,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              inseam = value;
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text("Shoe : "),
+                                            Text("${shoe..toStringAsFixed(0)}"),
+                                          ],
+                                        ),
+                                        Slider(
+                                          value: shoe,
+                                          label: "${shoe.toStringAsFixed(0)}",
+                                          min: 5,
+                                          max: 20,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              shoe = value;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.filter_alt_rounded,
+                color: Colors.white,
+                size: 30,
+              ),
             )
           ],
         ),
