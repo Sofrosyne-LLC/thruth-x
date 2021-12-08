@@ -155,7 +155,7 @@ class _ModelDetailsState extends State<ModelDetails> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (_) =>
-                                                          ProposalsDetails()));
+                                                          ProposalsDetails(details : widget.modelDetail)));
                                             },
                                             child: Center(
                                               child: Text(

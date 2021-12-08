@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:truthinx/screens/Dashboard/bottomTabs/Drawer.dart';
 import 'package:truthinx/screens/Dashboard/bottomTabs/ModelDrawer.dart';
 import 'package:truthinx/screens/Dashboard/search.dart';
 import 'package:truthinx/screens/Widgets/Model_Grid_Item.dart';
+import 'package:truthinx/utils/constants.dart';
 
 class HomeScreenCustomer extends StatefulWidget {
   HomeScreenCustomer({Key key}) : super(key: key);
@@ -46,7 +48,10 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
   double inseam = 20;
   double shoe = 5;
   double weight = 100;
-
+  List<String> cupList = ["A", "B", "C", "D", "DD+"];
+  String cup = '';
+  List<String> selectedModeling = [];
+  List<String> selectedPhysicalAttribs = [];
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Future<bool> _saveTokenToDatabase() async {
@@ -342,6 +347,66 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                     padding: EdgeInsets.all(5.0),
                                     child: Column(
                                       children: [
+                                        Container(
+                                          margin: EdgeInsets.only(top: 20),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                child: Text(
+                                                  "Cup",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12),
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(5)),
+                                                    border: Border.all(
+                                                        color:
+                                                            Colors.grey[400])),
+                                                child: DropdownSearch<String>(
+                                                  showSearchBox: true,
+                                                  dropdownSearchDecoration:
+                                                      InputDecoration(
+                                                    // hintText: null,
+                                                    // labelText: "Whar is Your Indusry?",
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                      left: 10,
+                                                    ),
+                                                    border: InputBorder.none,
+                                                    floatingLabelBehavior:
+                                                        FloatingLabelBehavior
+                                                            .never,
+                                                  ),
+                                                  searchBoxDecoration:
+                                                      InputDecoration(
+                                                    hintText: "Search Course",
+                                                  ),
+                                                  mode: Mode.DIALOG,
+                                                  // showSelectedItem: true,
+                                                  items: cupList,
+                                                  // label: "Indusry",
+                                                  itemAsString: (item) => item,
+                                                  hint: "Choose Cup Type",
+                                                  // popupItemDisabled: (String s) => s.startsWith('I'),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      cup = value;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                         SizedBox(
                                           height: 10.0,
                                         ),
@@ -450,7 +515,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                           children: [
                                             Text("Inseam : "),
                                             Text(
-                                                "${inseam..toStringAsFixed(1)}"),
+                                                "${inseam.toStringAsFixed(1)}"),
                                           ],
                                         ),
                                         Slider(
@@ -470,7 +535,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         Row(
                                           children: [
                                             Text("Shoe : "),
-                                            Text("${shoe..toStringAsFixed(0)}"),
+                                            Text("${shoe.toStringAsFixed(0)}"),
                                           ],
                                         ),
                                         Slider(
@@ -485,6 +550,183 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                           },
                                         ),
                                       ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    "Modeling",
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        border: Border.all(
+                                            color: Colors.grey[400])),
+                                    child: DropdownSearch<String>(
+                                      showSearchBox: true,
+                                      dropdownSearchDecoration: InputDecoration(
+                                        // hintText: null,
+                                        // labelText: "Whar is Your Indusry?",
+                                        contentPadding: EdgeInsets.only(
+                                          left: 10,
+                                        ),
+                                        border: InputBorder.none,
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                      ),
+                                      searchBoxDecoration: InputDecoration(
+                                        hintText: "Search Course",
+                                      ),
+                                      mode: Mode.DIALOG,
+                                      // showSelectedItem: true,
+                                      items: Constants.modeling,
+                                      // label: "Indusry",
+                                      itemAsString: (item) => item,
+                                      hint: "Choose Modeling Type",
+                                      // popupItemDisabled: (String s) => s.startsWith('I'),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedModeling.add(value);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: selectedModeling.length > 0
+                                        ? true
+                                        : false,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0),
+                                      child: Container(
+                                        width: width,
+                                        child: Wrap(
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.start,
+                                          children: List.generate(
+                                            selectedModeling.length,
+                                            (index) => GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedModeling.remove(
+                                                      selectedModeling[index]);
+                                                });
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 3.0,
+                                                    vertical: 5.0),
+                                                margin: EdgeInsets.all(3.0),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          25.0),
+                                                ),
+                                                child: Text(
+                                                  "${selectedModeling[index]}",
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Physical Attributes",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        border: Border.all(
+                                            color: Colors.grey[400])),
+                                    child: DropdownSearch<String>(
+                                      showSearchBox: true,
+                                      dropdownSearchDecoration: InputDecoration(
+                                        // hintText: null,
+                                        // labelText: "Whar is Your Indusry?",
+                                        contentPadding: EdgeInsets.only(
+                                          left: 10,
+                                        ),
+                                        border: InputBorder.none,
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                      ),
+                                      searchBoxDecoration: InputDecoration(
+                                        hintText: "Search Course",
+                                      ),
+                                      mode: Mode.DIALOG,
+                                      // showSelectedItem: true,
+                                      items: Constants.physicalAttribs,
+                                      // label: "Indusry",
+                                      itemAsString: (item) => item,
+                                      hint: "Choose Physical Attributes",
+                                      // popupItemDisabled: (String s) => s.startsWith('I'),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedPhysicalAttribs.add(value);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: selectedPhysicalAttribs.length > 0
+                                        ? true
+                                        : false,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0),
+                                      child: Container(
+                                        width: width,
+                                        child: Wrap(
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.start,
+                                          children: List.generate(
+                                            selectedPhysicalAttribs.length,
+                                            (index) => GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedPhysicalAttribs
+                                                      .remove(
+                                                    selectedPhysicalAttribs[
+                                                        index],
+                                                  );
+                                                });
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 3.0,
+                                                    vertical: 5.0),
+                                                margin: EdgeInsets.all(3.0),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          25.0),
+                                                ),
+                                                child: Text(
+                                                  "${selectedPhysicalAttribs[index]}",
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],

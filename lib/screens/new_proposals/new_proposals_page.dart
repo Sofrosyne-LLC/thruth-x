@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:checkbox_grouped/checkbox_grouped.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:insta_public_api/models/response_model.dart';
+import 'package:truthinx/Services/ProfileServices.dart';
 import 'package:truthinx/screens/new_proposals/proposal_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -13,7 +15,8 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'checkbox_widget.dart';
 
 class ProposalsDetails extends StatefulWidget {
-  const ProposalsDetails({Key key}) : super(key: key);
+  DocumentSnapshot details;
+  ProposalsDetails({Key key, this.details}) : super(key: key);
 
   @override
   State<ProposalsDetails> createState() => _ProposalsDetailsState();
@@ -138,6 +141,16 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
         });
       }
     }
+  }
+
+  @override
+  void initState() {
+    if (widget.details.data().containsKey("categories")) {
+      jobTypeList = widget.details["categories"].cast<String>();
+    } else {
+      jobTypeList = <String>[];
+    }
+    super.initState();
   }
 
   @override
