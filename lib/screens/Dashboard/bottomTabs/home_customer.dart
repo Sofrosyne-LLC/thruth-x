@@ -48,8 +48,11 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
   double inseam = 20;
   double shoe = 5;
   double weight = 100;
+  TextEditingController cityController = TextEditingController();
   List<String> cupList = ["A", "B", "C", "D", "DD+"];
   String cup = '';
+  bool filterOn = false;
+  String selectNudity = '';
   List<String> selectedModeling = [];
   List<String> selectedPhysicalAttribs = [];
   final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -69,11 +72,171 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
     return Future.value(true);
   }
 
+  List<QueryDocumentSnapshot> snapshots = [];
+  List<QueryDocumentSnapshot> sortableSnapshots = [];
+
+  getData() async {
+    Stream<QuerySnapshot> snap = collectionReferenceUser
+        // .where("verification", isEqualTo: 'submitted')
+        .where("role", isEqualTo: 'Model')
+        .snapshots();
+    snap.forEach((element) {
+      setState(() {
+        snapshots = [];
+        snapshots.addAll(element.docs.cast<QueryDocumentSnapshot>());
+        if (!filterOn) sortableSnapshots = snapshots;
+      });
+    });
+  }
+
+  filter() {
+    sortableSnapshots = snapshots;
+    setState(() {
+      filterOn = true;
+    });
+
+    if (!rateAny) {
+      setState(() {
+        sortableSnapshots = sortableSnapshots
+            .where((element) {
+              log("${element.data()["height"]}");
+              return element.data().containsKey("height") &&
+                  element.data()["height"] >= rateSlider;
+            })
+            .toList()
+            .cast<QueryDocumentSnapshot>();
+      });
+    }
+    if (!heightAny) {
+      setState(() {
+        sortableSnapshots = sortableSnapshots
+            .where((element) {
+              return element.data().containsKey("height") &&
+                  element.data()["height"] >= heightFilter;
+            })
+            .toList()
+            .cast<QueryDocumentSnapshot>();
+      });
+    }
+    if (!weightAny) {
+      setState(() {
+        sortableSnapshots = sortableSnapshots
+            .where((element) {
+              return element.data().containsKey("weight") &&
+                  element.data()["weight"] >= weight;
+            })
+            .toList()
+            .cast<QueryDocumentSnapshot>();
+      });
+    }
+
+    setState(() {
+      sortableSnapshots = sortableSnapshots
+          .where((e) =>
+              e.data().containsKey("measurement") &&
+              (e.data()["measurement"].containsKey("dress") &&
+                  e.data()["measurement"]["dress"] >= dress) &&
+              (e.data()["measurement"].containsKey("bust") &&
+                  e.data()["measurement"]["bust"] >= bust) &&
+              (e.data()["measurement"].containsKey("waist") &&
+                  e.data()["measurement"]["waist"] >= waist) &&
+              (e.data()["measurement"].containsKey("hips") &&
+                  e.data()["measurement"]["hips"] >= hips) &&
+              (e.data()["measurement"].containsKey("neck") &&
+                  e.data()["measurement"]["neck"] >= neck) &&
+              (e.data()["measurement"].containsKey("jacket") &&
+                  e.data()["measurement"]["jacket"] >= jacket) &&
+              (e.data()["measurement"].containsKey("inseam") &&
+                  e.data()["measurement"]["inseam"] >= inseam) &&
+              (e.data()["measurement"].containsKey("shoe") &&
+                  e.data()["measurement"]["shoe"] >= shoe))
+          .toList()
+          .cast<QueryDocumentSnapshot>();
+    });
+
+    if (cup != '') {
+      setState(() {
+        sortableSnapshots = sortableSnapshots
+            .where((element) {
+              return element.data().containsKey("measurement") &&
+                  element.data()["measurement"].containsKey("cup") &&
+                  element.data()["measurement"]["cup"] == cup;
+            })
+            .toList()
+            .cast<QueryDocumentSnapshot>();
+      });
+    }
+
+    if (selectNudity != '') {
+      setState(() {
+        sortableSnapshots = sortableSnapshots
+            .where((element) {
+              return element.data().containsKey("nudityStatus") &&
+                  element.data()["nudityStatus"] == selectNudity;
+            })
+            .toList()
+            .cast<QueryDocumentSnapshot>();
+      });
+    }
+
+    selectedModeling.forEach((el) {
+      setState(() {
+        List<QueryDocumentSnapshot> temp = sortableSnapshots
+            .where((element) {
+              return element.data().containsKey("categories") &&
+                  element.data()["categories"].contains(el);
+            })
+            .toList()
+            .cast<QueryDocumentSnapshot>();
+      });
+    });
+
+    selectedPhysicalAttribs.forEach((el) {
+      setState(() {
+        sortableSnapshots = sortableSnapshots
+            .where((element) {
+              return element.data().containsKey("attributes") &&
+                  element.data()["attributes"].contains(el);
+            })
+            .toList()
+            .cast<QueryDocumentSnapshot>();
+      });
+    });
+    Navigator.of(context).pop();
+  }
+
+  reset() {
+    setState(() {
+      rateSlider = 25;
+      rateAny = true;
+      heightFilter = 124.1;
+      heightAny = true;
+      weightAny = true;
+      dress = 0;
+      bust = 20;
+      waist = 20;
+      hips = 22;
+      neck = 13;
+      jacket = 0;
+      inseam = 20;
+      shoe = 5;
+      weight = 100;
+      cupList = ["A", "B", "C", "D", "DD+"];
+      cup = '';
+      selectNudity = '';
+      selectedModeling = [];
+      selectedPhysicalAttribs = [];
+      sortableSnapshots = snapshots;
+    });
+    Navigator.of(context).pop();
+  }
+
   ProfileServices profileData = ProfileServices();
   AppUser user;
 
   @override
   void initState() {
+    getData();
     super.initState();
     //  profileData.getLocalUser().then((value) {
     //   setState(() {
@@ -192,7 +355,34 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                   SizedBox(
                                     height: 10.0,
                                   ),
-                                  Text("City : "),
+                                  Container(
+                                    padding: EdgeInsets.all(5.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        border: Border.all(
+                                            color: Colors.grey[400])),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: TextFormField(
+                                        style: TextStyle(color: Colors.white),
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "City",
+                                            fillColor: Colors.white,
+                                            hintStyle: TextStyle(
+                                                color: Colors.grey[400])),
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'City';
+                                          }
+                                          return null;
+                                        },
+                                        controller: cityController,
+                                      ),
+                                    ),
+                                  ),
                                   SizedBox(
                                     height: 10.0,
                                   ),
@@ -729,6 +919,92 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                       ),
                                     ),
                                   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Nudity",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
+                                        border: Border.all(
+                                            color: Colors.grey[400])),
+                                    child: DropdownSearch<String>(
+                                      showSearchBox: true,
+                                      dropdownSearchDecoration: InputDecoration(
+                                        // hintText: null,
+                                        // labelText: "Whar is Your Indusry?",
+                                        contentPadding: EdgeInsets.only(
+                                          left: 10,
+                                        ),
+                                        border: InputBorder.none,
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                      ),
+                                      searchBoxDecoration: InputDecoration(
+                                        hintText: "Search Course",
+                                      ),
+                                      mode: Mode.DIALOG,
+                                      // showSelectedItem: true,
+                                      items: ["None", "Partial", "Full"],
+                                      // label: "Indusry",
+                                      itemAsString: (item) => item,
+                                      hint: "Choose Nudity",
+                                      // popupItemDisabled: (String s) => s.startsWith('I'),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectNudity = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  GestureDetector(
+                                    onTap: filter,
+                                    child: Container(
+                                      width: width,
+                                      height: 60.0,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          13.0,
+                                        ),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.yellow,
+                                            Colors.orange
+                                          ],
+                                        ),
+                                      ),
+                                      child:
+                                          Center(child: Text("Apply Filter")),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  GestureDetector(
+                                    onTap: reset,
+                                    child: Container(
+                                      width: width,
+                                      height: 60.0,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          13.0,
+                                        ),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.yellow,
+                                            Colors.orange,
+                                          ],
+                                        ),
+                                      ),
+                                      child: Center(child: Text("Reset")),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -764,14 +1040,14 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
         body: Column(
           children: [
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: collectionReferenceUser
-                    // .where("verification", isEqualTo: 'submitted')
-                    .where("role", isEqualTo: 'Model')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  return !snapshot.hasData
-                      ? Center(child: CircularProgressIndicator())
+              child: !filterOn && sortableSnapshots.length == 0
+                  ? Center(child: CircularProgressIndicator())
+                  : filterOn && sortableSnapshots.length == 0
+                      ? Container(
+                          height: height,
+                          width: width,
+                          child: Center(child: Text("No Data Found")),
+                        )
                       : GridView.builder(
                           shrinkWrap: true,
                           primary: false,
@@ -783,9 +1059,9 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                 MediaQuery.of(context).size.width /
                                     (MediaQuery.of(context).size.height / 1.4),
                           ),
-                          itemCount: snapshot.data.docs.length,
+                          itemCount: sortableSnapshots.length,
                           itemBuilder: (context, index) {
-                            DocumentSnapshot data = snapshot.data.docs[index];
+                            DocumentSnapshot data = sortableSnapshots[index];
                             return GridProduct(
                               // img: data['profile_pic'],
                               isVerified: data['verification'] == "VERIFIED",
@@ -798,9 +1074,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                               isClient: isClient,
                             );
                           },
-                        );
-                },
-              ),
+                        ),
             ),
 //             Expanded(
 //               child: GridView.builder(

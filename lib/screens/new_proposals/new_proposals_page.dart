@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:insta_public_api/models/response_model.dart';
 import 'package:truthinx/Services/ProfileServices.dart';
+import 'package:truthinx/Services/proposal_services.dart';
 import 'package:truthinx/screens/new_proposals/proposal_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -39,6 +40,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
   String estimatedDuration = '';
   GroupController checkBoxController = GroupController();
 
+  String isMakeupReady = '';
 //firebase
 //
   bool passwordVisibility = false;
@@ -54,6 +56,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
   TextEditingController stateController = TextEditingController();
   TextEditingController zipController = TextEditingController();
   TextEditingController wardrobController = TextEditingController();
+  TextEditingController anythingElseController = TextEditingController();
 
   String isProvidingWardrobe = '';
 
@@ -130,7 +133,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
               Fluttertoast.showToast(msg: "please enter both city and state");
             } else {
               locations.add(
-                  "${cityController.text.trim()}, ${stateController.text.trim()}}");
+                  "${cityController.text.trim()}, ${stateController.text.trim()}");
             }
           } else {
             locations.add(zipController.text.trim());
@@ -527,7 +530,9 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                   SizedBox(height: 10),
                   CustomCheckBox(
                     title: "Should Model arrive Make-up ready ?",
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      isMakeupReady = value;
+                    },
                     values: ["Yes", "No"],
                   )
                 ],
@@ -553,11 +558,57 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              // controller: _proposalController,
+              controller: anythingElseController,
               textCapitalization: TextCapitalization.sentences,
               maxLines: null,
               decoration: InputDecoration(
                   border: InputBorder.none, hintText: "Send Custom Proposal"),
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        GestureDetector(
+          onTap: () async {
+            if (selectedJobType == '' ||
+                estimatedDuration == '' ||
+                _selectedDates.length == 0 ||
+                locations.length == 0 ||
+                wardrobController.text.isEmpty ||
+                isProvidingWardrobe == null ||
+                isMakeupReady == null) {
+              Fluttertoast.showToast(msg: "complete all details");
+            } else {
+              await ProposalService.submitProposal(
+                  anythingElse: anythingElseController.text,
+                  locations: locations,
+                  duration: estimatedDuration,
+                  hourlyRate: widget.details.data()["hourlyRate"],
+                  jobtype: selectedJobType,
+                  potDates: _selectedDates,
+                  uid: widget.details.data()["uid"],
+                  wardrob: isProvidingWardrobe,
+                  wardspecs: wardrobController.text,
+                  isMakeupReady: isMakeupReady);
+              Fluttertoast.showToast(msg: "proposal submitted");
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(colors: [
+                    Color.fromRGBO(143, 148, 251, 1),
+                    Color.fromRGBO(143, 148, 251, .6),
+                  ])),
+              child: Center(
+                child: Text(
+                  "Submit Application",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
           ),
         ),
