@@ -7,7 +7,11 @@ import 'package:geocoding/geocoding.dart';
 import 'package:lottie/lottie.dart';
 import 'package:truthinx/Services/NotificationServices.dart';
 
-verifyArrival({BuildContext context,String docId,String modelId,Function setState}) {
+verifyArrival(
+    {required BuildContext context,
+    String? docId,
+    String? modelId,
+    Function? setState}) {
   showModalBottomSheet(
       isDismissible: true,
       backgroundColor: Colors.white,
@@ -49,7 +53,7 @@ verifyArrival({BuildContext context,String docId,String modelId,Function setStat
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              snapshot.data,
+                              "${snapshot.data}",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
@@ -69,7 +73,8 @@ verifyArrival({BuildContext context,String docId,String modelId,Function setStat
                             CupertinoButton.filled(
                                 child: Text("Confirm Location"),
                                 onPressed: () {
-                                  verifyModelLocation(docId, modelId, context, setState);
+                                  verifyModelLocation(
+                                      docId, modelId, context, setState);
                                 })
                           ],
                         ),
@@ -88,7 +93,8 @@ verifyArrival({BuildContext context,String docId,String modelId,Function setStat
       });
 }
 
-verifyModelLocation(String docId, String modelId, BuildContext context, Function setState) async {
+verifyModelLocation(String? docId, String? modelId, BuildContext? context,
+    Function? setState) async {
   await FirebaseFirestore.instance
       .collection("user")
       .doc(modelId)
@@ -97,27 +103,24 @@ verifyModelLocation(String docId, String modelId, BuildContext context, Function
       .update({"status": "VERIFIED"});
   FirebaseFirestore.instance
       .collection("user")
-      .doc(FirebaseAuth.instance.currentUser.uid)
+      .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection("Bookings")
       .doc(docId)
       .update({"status": "VERIFIED"});
-    Fluttertoast.showToast(msg: "Model Verified Successfully!");
-    setState();
+  Fluttertoast.showToast(msg: "Model Verified Successfully!");
 
-     DocumentSnapshot client = await FirebaseFirestore
-                                    .instance
-                                    .collection("user")
-                                    .doc(FirebaseAuth.instance.currentUser.uid)
-                                    .get();
+  DocumentSnapshot client = await FirebaseFirestore.instance
+      .collection("user")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .get();
 
-                                sendNotifications(
-                                  bodyText:
-                                      "${client["first_name"]}  ${client["last_name"]}, have verified your location.",
-                                  id: modelId ,
-                                  title: "Location Verified!",
-                                );
-    Navigator.pop(context);
-    
+  sendNotifications(
+    bodyText:
+        "${client["first_name"]}  ${client["last_name"]}, have verified your location.",
+    id: modelId,
+    title: "Location Verified!",
+  );
+  Navigator.pop(context!);
 }
 
 Future<String> getLocationName(docId) async {
@@ -125,13 +128,13 @@ Future<String> getLocationName(docId) async {
     print("Started");
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("Bookings")
         .doc(docId)
         .get();
 
     print("Got Doc");
-    if (doc.data().containsKey("modelLocation")) {
+    if ((doc.data() as dynamic).containsKey("modelLocation")) {
       GeoPoint gp = doc["modelLocation"];
 
       print("Got Location");
@@ -143,8 +146,8 @@ Future<String> getLocationName(docId) async {
       return "-1";
     }
   } catch (e) {
-    debugPrint(e);
-    Fluttertoast.showToast(msg: e.message);
+    debugPrint("${e}");
+    Fluttertoast.showToast(msg: (e as dynamic).message);
 
     return "-1";
   }

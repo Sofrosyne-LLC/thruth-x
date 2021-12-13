@@ -6,39 +6,33 @@ import 'package:truthinx/Models/Proposal.dart';
 import 'package:truthinx/screens/Dashboard/MyProposals/ModelProposalCard.dart';
 
 class ModelProposals extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("My Proposals"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("user").doc(FirebaseAuth.instance.currentUser.uid).collection("MyProposals")
-            
+            .collection("user")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection("MyProposals")
             .snapshots(),
         // initialData: initialData,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            int allDocs = snapshot.data.docs.length;
-           
-            
-            List<DocumentSnapshot> docs = snapshot.data.docs;
-           
-            
-           
-                       
-            return PageView(
+            int allDocs = snapshot.data!.docs.length;
 
+            List<DocumentSnapshot> docs = snapshot.data!.docs;
+
+            return PageView(
               children: List.generate(allDocs, (index) {
                 return ModelProposalCard(
-                  proposal: ModelProposal.fromMap(docs[index].data()),
-                  proposalIndex: index+1,
-                  totalProposals: allDocs,
-                  docId: docs[index].id
-
-                );
+                    proposal:
+                        ModelProposal.fromMap((docs as dynamic)[index].data()),
+                    proposalIndex: index + 1,
+                    totalProposals: allDocs,
+                    docId: docs[index].id);
               }),
             );
           } else {

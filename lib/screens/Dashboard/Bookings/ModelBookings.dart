@@ -16,19 +16,19 @@ class ModelBookings extends StatelessWidget {
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("user").doc(FirebaseAuth.instance.currentUser.uid).collection("Bookings")
+            .collection("user").doc(FirebaseAuth.instance.currentUser!.uid).collection("Bookings")
            
             .snapshots(),
         // initialData: initialData,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            int allDocs = snapshot.data.docs.length;
-            List<DocumentSnapshot> docs = snapshot.data.docs;
+            int allDocs = snapshot.data!.docs.length;
+            List<DocumentSnapshot> docs = snapshot.data!.docs;
             return PageView(
 
               children: List.generate(allDocs, (index) {
                 return ModelBookingCard(
-                  bm: BookingModalForModel.fromMap(docs[index].data()),
+                  bm: BookingModalForModel.fromMap((docs as dynamic)[index].data()),
                   bookingIndex: index+1,
                   docId: docs[index].id,
                   totalBookings: allDocs,

@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class AppUser {
-  String email;
-  String first_name;
-  String last_name;
-  String role;
-  String gender;
-  String verification;
-  String instagram;
-  List<String> cetegories;
+  String? email;
+  String? first_name;
+  String? last_name;
+  String? role;
+  String? gender;
+  String? verification;
+  String? instagram;
+  List<String>? cetegories;
   AppUser({
      this.email,
      this.first_name,
@@ -23,14 +23,14 @@ class AppUser {
   });
 
   AppUser copyWith({
-    String email,
-    String first_name,
-    String last_name,
-    String role,
-    String gender,
-    String verification,
-    String instagram,
-    List<String> cetegories,
+    String? email,
+    String? first_name,
+    String? last_name,
+    String? role,
+    String? gender,
+    String? verification,
+    String? instagram,
+    List<String>? cetegories,
   }) {
     return AppUser(
       email: email ?? this.email,

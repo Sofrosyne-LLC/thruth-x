@@ -5,19 +5,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class StripeServer {
-  final String userId;
-  final int price;
+  final String? userId;
+  final int? price;
   StripeServer({this.price, this.userId});
 
   Future<String> createCheckout() async {
     // final auth = "Basic " + base64Encode(utf8.encode('$secretKey'));
-    final auth = "Basic " + base64Encode(utf8.encode(env['secretKey']));
+    final auth = "Basic " + base64Encode(utf8.encode(dotenv.env['secretKey']!));
     final body = {
       'payment_method_types': ['card'],
       'line_items': [
         {
           'name': "Yearly Subscription",
-          'amount': price.round(),
+          'amount': price!.round(),
           'currency': 'usd',
           'quantity': 1,
         }

@@ -8,7 +8,7 @@ import 'package:truthinx/screens/Dashboard/bottomTabs/client_info.dart';
 import 'package:truthinx/screens/Startup_screens/welcome.dart';
 
 class TruthinXDrawer extends StatelessWidget {
-  const TruthinXDrawer({Key key}) : super(key: key);
+  const TruthinXDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

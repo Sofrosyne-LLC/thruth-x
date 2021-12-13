@@ -9,11 +9,12 @@ import 'package:truthinx/Models/AppUser.dart';
 import 'package:truthinx/Models/Gig.dart';
 import 'package:truthinx/screens/Dashboard/MyGigs/DescriptionWidget.dart';
 import '../../../Services/NotificationServices.dart';
+
 class ModelGigCard extends StatefulWidget {
-  final Gig gig;
-  final String docId;
-  final int totalProposals;
-  final int proposalIndex;
+  final Gig? gig;
+  final String? docId;
+  final int? totalProposals;
+  final int? proposalIndex;
   ModelGigCard({this.gig, this.proposalIndex, this.totalProposals, this.docId});
 
   @override
@@ -25,22 +26,24 @@ class _ModelGigCardState extends State<ModelGigCard> {
   TextEditingController hourlyrate = TextEditingController();
 
   ProfileServices profileData = ProfileServices();
-  AppUser user;
+  AppUser? user;
   @override
   void dispose() {
     _gigRequestController.dispose();
 
     super.dispose();
   }
- void initState() {
+
+  void initState() {
     super.initState();
     profileData.getLocalUser().then((value) {
       setState(() {
         user = value;
-        print(user.instagram);
+        print(user!.instagram);
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,15 +62,16 @@ class _ModelGigCardState extends State<ModelGigCard> {
                   children: [
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: widget.gig.clientDp == "default"
+                        backgroundImage: widget.gig!.clientDp == "default"
                             ? AssetImage("assets/userP.png")
-                            : NetworkImage(widget.gig.clientDp),
+                            : NetworkImage(widget.gig!.clientDp!)
+                                as ImageProvider<Object>,
                         backgroundColor: Colors.grey[200],
                         radius: 25,
                       ),
-                      title: Text(widget.gig.clientName),
+                      title: Text(widget.gig!.clientName!),
                       subtitle: Text(DateFormat(DateFormat.YEAR_MONTH_DAY)
-                          .format(widget.gig.dateCreated.toDate())),
+                          .format(widget.gig!.dateCreated!.toDate())),
                     ),
                     AnimatedContainer(
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -76,7 +80,7 @@ class _ModelGigCardState extends State<ModelGigCard> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       duration: Duration(milliseconds: 600),
-                      child: DescriptionTextWidget(text: widget.gig.desc),
+                      child: DescriptionTextWidget(text: widget.gig!.desc),
                     ),
                     SizedBox(height: 10),
                     Padding(
@@ -96,7 +100,7 @@ class _ModelGigCardState extends State<ModelGigCard> {
                               SizedBox(width: 10),
                               Text("Role:"),
                               SizedBox(width: 10),
-                              Text(widget.gig.role)
+                              Text(widget.gig!.role!)
                             ],
                           ),
                           SizedBox(height: 10),
@@ -112,7 +116,7 @@ class _ModelGigCardState extends State<ModelGigCard> {
                               SizedBox(width: 10),
                               Text("Gender:"),
                               SizedBox(width: 10),
-                              Text(widget.gig.gender),
+                              Text(widget.gig!.gender!),
                             ],
                           ),
                           SizedBox(height: 10),
@@ -128,7 +132,7 @@ class _ModelGigCardState extends State<ModelGigCard> {
                               SizedBox(width: 10),
                               Text("Budget:"),
                               SizedBox(width: 10),
-                              Text("\$${widget.gig.hourlyRate} / hour")
+                              Text("\$${widget.gig!.hourlyRate} / hour")
                             ],
                           ),
                         ],
@@ -147,43 +151,42 @@ class _ModelGigCardState extends State<ModelGigCard> {
                       ),
                       duration: Duration(milliseconds: 600),
                       child: DescriptionTextWidget(
-                          text: "Requirements:\n\n${widget.gig.requirements}"),
+                          text: "Requirements:\n\n${widget.gig!.requirements}"),
                     ),
                     FutureBuilder(
-                      future: checkAlreadyApplied(),
-                      builder: (context,AsyncSnapshot<bool> snapshot) {
-                        if(snapshot.hasData && snapshot.data !=null){
-                          
+                        future: checkAlreadyApplied(),
+                        builder: (context, AsyncSnapshot<bool> snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
                             print("APPLIED : ${snapshot.data}");
-                          return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Container(
-                              height: 60,
-                              child: InkWell(
-                                  onTap:!snapshot.data  ? () {
-                                    
-                                    openApplyGigPanel();
-                                  } : null,
-                                  child: Center(
-                                      child: Text(
-                                        !snapshot.data ?
-                                    "Apply" : "Applied",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ))),
-                            ),
-                          ),
-                        );
-                        }
-                        else{
-                          return Container();
-                        }
-                      }
-                    ),
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Container(
+                                  height: 60,
+                                  child: InkWell(
+                                      onTap: !(snapshot.data as dynamic)
+                                          ? () {
+                                              openApplyGigPanel();
+                                            }
+                                          : null,
+                                      child: Center(
+                                          child: Text(
+                                        !(snapshot.data as dynamic)
+                                            ? "Apply"
+                                            : "Applied",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ))),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }),
                   ],
                 ),
               ),
@@ -198,26 +201,28 @@ class _ModelGigCardState extends State<ModelGigCard> {
     );
   }
 
-
- Future<bool> checkAlreadyApplied() async {
+  Future<bool> checkAlreadyApplied() async {
     bool exists = false;
     try {
       await FirebaseFirestore.instance
-        .collection("Gigs")
-        .doc(widget.docId)
-        .collection("Proposals")
-        .doc(FirebaseAuth.instance.currentUser.uid).get().then((doc) {
+          .collection("Gigs")
+          .doc(widget.docId)
+          .collection("Proposals")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((doc) {
         if (doc.exists)
           exists = true;
         else
           exists = false;
       });
-      
+
       return exists;
     } catch (e) {
       return false;
     }
   }
+
   void openApplyGigPanel() async {
     showModalBottomSheet(
         isScrollControlled: true,
@@ -337,7 +342,7 @@ class _ModelGigCardState extends State<ModelGigCard> {
     // user = await profileData.getLocalUser();
     DocumentSnapshot model = await FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     // FirebaseFirestore.instance.collection("user").doc(widget.gig.clien).collection("MyProposals").doc().set({
     //   "proposal" : _gigRequestController.text,
@@ -352,34 +357,35 @@ class _ModelGigCardState extends State<ModelGigCard> {
         .collection("Gigs")
         .doc(widget.docId)
         .collection("Proposals")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .set({
       "proposal": _gigRequestController.text,
-      "modelId": FirebaseAuth.instance.currentUser.uid,
-      "modelEmail": FirebaseAuth.instance.currentUser.email,
+      "modelId": FirebaseAuth.instance.currentUser!.uid,
+      "modelEmail": FirebaseAuth.instance.currentUser!.email,
       "modelName": "${model["first_name"]}  ${model["last_name"]}",
       "order": DateTime.now().millisecondsSinceEpoch,
       "time": Timestamp.now(),
       "modelDp": model["dp"],
       "rate": hourlyrate.text,
-      "modelInsta" : model["instagram_username"]
+      "modelInsta": model["instagram_username"]
     });
     FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
-        .collection("ProposalSent").doc(widget.docId)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("ProposalSent")
+        .doc(widget.docId)
         .set({
-          "proposalID" : widget.docId,
-      });
-       sendNotifications(
-                    bodyText: "You have recieved a request from ${model["first_name"]}  ${model["last_name"]}, on your gig.",
-                    id: widget.gig.clientID,
-                    title: "New Proposal!",
-                  );
+      "proposalID": widget.docId,
+    });
+    sendNotifications(
+      bodyText:
+          "You have recieved a request from ${model["first_name"]}  ${model["last_name"]}, on your gig.",
+      id: widget.gig!.clientID,
+      title: "New Proposal!",
+    );
     Fluttertoast.showToast(msg: "Proposal sent!");
     _gigRequestController.clear();
     hourlyrate.clear();
     Navigator.pop(context);
-    
   }
 }

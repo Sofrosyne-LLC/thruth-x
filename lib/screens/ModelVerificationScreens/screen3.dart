@@ -4,7 +4,7 @@ import 'package:truthinx/Models/modelDataModel.dart';
 import 'package:truthinx/screens/ModelVerificationScreens/screen4.dart';
 
 class Screen3 extends StatelessWidget {
-  ModelDataModel modelData;
+  ModelDataModel? modelData;
   Screen3({this.modelData});
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class Screen3 extends StatelessWidget {
                       onPressed: () {
                         print(categories.length);
                         if (categories.isNotEmpty) {
-                          modelData.categories = categories;
+                          modelData!.categories = categories;
 
                           Navigator.push(
                             context,
@@ -161,8 +161,8 @@ class Screen3 extends StatelessWidget {
 }
 
 class CategoryItem extends StatefulWidget {
-  final String categoryName;
-  final Function selectCategory;
+  final String? categoryName;
+  final Function? selectCategory;
   const CategoryItem(
       {@required this.categoryName, @required this.selectCategory});
   @override
@@ -194,7 +194,7 @@ class _CategoryItemState extends State<CategoryItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.categoryName,
+                    "${widget.categoryName}",
                     textScaleFactor: 1.5,
                   ),
                   if (isresponse)
@@ -220,7 +220,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "None";
                         });
 
-                        widget.selectCategory(
+                        widget.selectCategory!(
                             "${widget.categoryName} *** $responseText");
                         categorySelected();
                       },
@@ -236,7 +236,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "Less than 1 year";
                         });
 
-                        widget.selectCategory(
+                        widget.selectCategory!(
                             "${widget.categoryName} *** $responseText");
                         categorySelected();
                       },
@@ -252,7 +252,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "1 Year";
                         });
 
-                        widget.selectCategory(
+                        widget.selectCategory!(
                             "${widget.categoryName} *** $responseText");
                         categorySelected();
                       },
@@ -268,7 +268,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "2 Year";
                         });
 
-                        widget.selectCategory(
+                        widget.selectCategory!(
                             "${widget.categoryName} *** $responseText");
                         categorySelected();
                       },
@@ -284,7 +284,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "3 Year";
                         });
 
-                        widget.selectCategory(
+                        widget.selectCategory!(
                             "${widget.categoryName} *** $responseText");
                         categorySelected();
                       },
@@ -300,7 +300,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "4 Year";
                         });
 
-                        widget.selectCategory(
+                        widget.selectCategory!(
                             "${widget.categoryName} *** $responseText");
                         categorySelected();
                       },
@@ -316,7 +316,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "5+ Year";
                         });
 
-                        widget.selectCategory(
+                        widget.selectCategory!(
                             "${widget.categoryName} *** $responseText");
                         categorySelected();
                       },

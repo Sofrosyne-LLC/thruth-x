@@ -129,8 +129,8 @@ class Screen6 extends StatelessWidget {
 }
 
 class CategoryItem extends StatefulWidget {
-  final String categoryName;
-  final Function addAttributes;
+  final String? categoryName;
+  final Function? addAttributes;
   const CategoryItem(
       {@required this.categoryName, @required this.addAttributes});
   @override
@@ -149,7 +149,7 @@ class _CategoryItemState extends State<CategoryItem> {
               setState(() {
                 isMark = !isMark;
               });
-              widget.addAttributes(widget.categoryName);
+              widget.addAttributes!(widget.categoryName);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -164,7 +164,7 @@ class _CategoryItemState extends State<CategoryItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.categoryName,
+                    widget.categoryName!,
                     textScaleFactor: 1.5,
                     style: TextStyle(
                         fontWeight: isMark ? FontWeight.w600 : FontWeight.w300),

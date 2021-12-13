@@ -10,7 +10,7 @@ import 'package:truthinx/Models/widgets/base_appbar.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class Characteristics extends StatefulWidget {
-  Characteristics({Key key}) : super(key: key);
+  Characteristics({Key? key}) : super(key: key);
 
   @override
   _CharacteristicsState createState() => _CharacteristicsState();
@@ -83,9 +83,9 @@ class _CharacteristicsState extends State<Characteristics> {
       isLoading = true;
     });
 
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
-    collectionReferenceUser.doc(user.uid).set({
+    collectionReferenceUser.doc(user!.uid).set({
       "gender": Constants.gender ?? '',
       "height": _valueHeight ?? '',
       "weight": _valueweight ?? '',
@@ -134,7 +134,7 @@ class _CharacteristicsState extends State<Characteristics> {
 
   @override
   void initState() {
-super.initState();
+    super.initState();
     Fluttertoast.showToast(
         msg: 'Select all the values carefully and correctly',
         toastLength: Toast.LENGTH_LONG,
@@ -231,7 +231,7 @@ super.initState();
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: Constants.maincolor.withOpacity(0.7),
-              inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+              inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
               trackShape: RoundedRectSliderTrackShape(),
               trackHeight: 2.0,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
@@ -285,7 +285,7 @@ super.initState();
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: Constants.maincolor.withOpacity(0.7),
-              inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+              inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
               trackShape: RoundedRectSliderTrackShape(),
               trackHeight: 2.0,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
@@ -343,7 +343,7 @@ super.initState();
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Constants.maincolor.withOpacity(0.7),
-                        inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+                        inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
                         trackShape: RoundedRectSliderTrackShape(),
                         trackHeight: 2.0,
                         thumbShape:
@@ -407,7 +407,7 @@ super.initState();
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Constants.maincolor.withOpacity(0.7),
-                        inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+                        inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
                         trackShape: RoundedRectSliderTrackShape(),
                         trackHeight: 2.0,
                         thumbShape:
@@ -469,7 +469,7 @@ super.initState();
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Constants.maincolor.withOpacity(0.7),
-                        inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+                        inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
                         trackShape: RoundedRectSliderTrackShape(),
                         trackHeight: 2.0,
                         thumbShape:
@@ -548,7 +548,7 @@ super.initState();
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Constants.maincolor.withOpacity(0.7),
-                        inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+                        inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
                         trackShape: RoundedRectSliderTrackShape(),
                         trackHeight: 2.0,
                         thumbShape:
@@ -611,7 +611,7 @@ super.initState();
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Constants.maincolor.withOpacity(0.7),
-                        inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+                        inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
                         trackShape: RoundedRectSliderTrackShape(),
                         trackHeight: 2.0,
                         thumbShape:
@@ -670,7 +670,7 @@ super.initState();
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: Constants.maincolor.withOpacity(0.7),
-              inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+              inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
               trackShape: RoundedRectSliderTrackShape(),
               trackHeight: 2.0,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
@@ -743,7 +743,7 @@ super.initState();
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Constants.maincolor.withOpacity(0.7),
-                        inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+                        inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
                         trackShape: RoundedRectSliderTrackShape(),
                         trackHeight: 2.0,
                         thumbShape:
@@ -801,7 +801,7 @@ super.initState();
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: Constants.maincolor.withOpacity(0.7),
-              inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+              inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
               trackShape: RoundedRectSliderTrackShape(),
               trackHeight: 2.0,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),

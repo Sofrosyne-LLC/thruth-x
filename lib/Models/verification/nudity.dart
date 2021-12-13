@@ -14,9 +14,10 @@ class Nudity extends StatefulWidget {
 }
 
 class NudityState extends State<Nudity> {
-  List<RadioModel> sampleData = new List<RadioModel>();
+  // ignore: deprecated_member_use
+  List<RadioModel>? sampleData;
 
-  String nudity;
+  String? nudity;
   CollectionReference collectionReferenceUser =
       FirebaseFirestore.instance.collection('user');
 
@@ -25,9 +26,9 @@ class NudityState extends State<Nudity> {
   @override
   void initState() {
     super.initState();
-    sampleData.add(new RadioModel(false, 'A', 'None'));
-    sampleData.add(new RadioModel(false, 'B', 'Partial'));
-    sampleData.add(new RadioModel(false, 'C', 'Full'));
+    sampleData!.add(new RadioModel(false, 'A', 'None'));
+    sampleData!.add(new RadioModel(false, 'B', 'Partial'));
+    sampleData!.add(new RadioModel(false, 'C', 'Full'));
   }
 
   void hitNudity() {
@@ -35,9 +36,9 @@ class NudityState extends State<Nudity> {
       isLoading = true;
     });
 
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
-    collectionReferenceUser.doc(user.uid).set({
+    collectionReferenceUser.doc(user!.uid).set({
       "nudity": nudity,
     }, SetOptions(merge: true)).then((res) {
       setState(() {
@@ -101,21 +102,21 @@ class NudityState extends State<Nudity> {
           Expanded(
             child: Container(
               child: ListView.builder(
-                itemCount: sampleData.length,
+                itemCount: sampleData!.length,
                 itemBuilder: (BuildContext context, int index) {
                   return new InkWell(
                     //highlightColor: Colors.red,
                     splashColor: Constants.maincolor,
                     onTap: () {
                       setState(() {
-                        sampleData
+                        sampleData!
                             .forEach((element) => element.isSelected = false);
-                        sampleData[index].isSelected = true;
-                        nudity = sampleData[index].text;
+                        sampleData![index].isSelected = true;
+                        nudity = sampleData![index].text;
                       });
                     },
                     child: new RadioItem(
-                      sampleData[index],
+                      sampleData![index],
                     ),
                   );
                 },
@@ -138,7 +139,7 @@ class NudityState extends State<Nudity> {
                         ),
                         color: Constants.maincolor,
                         onPressed: () {
-                          if ( nudity == null) {
+                          if (nudity == null) {
                             Fluttertoast.showToast(
                                 msg: 'please select an option',
                                 toastLength: Toast.LENGTH_SHORT,

@@ -4,7 +4,7 @@ import 'package:truthinx/Models/modelDataModel.dart';
 import 'package:truthinx/screens/ModelVerificationScreens/screen5.dart';
 
 class Screen4 extends StatelessWidget {
-  final ModelDataModel modelDala;
+  final ModelDataModel? modelDala;
   Screen4(this.modelDala);
   List<String> skills = [];
   @override
@@ -124,12 +124,12 @@ class Screen4 extends StatelessWidget {
                       onPressed: () {
                         print(skills.length);
                         if (skills.isNotEmpty) {
-                          modelDala.skills = skills;
+                          modelDala!.skills = skills;
 
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Screen5(modelDala)),
+                                builder: (context) => Screen5(modelDala!)),
                           );
                         } else {
                           Fluttertoast.showToast(
@@ -182,8 +182,8 @@ class Screen4 extends StatelessWidget {
 }
 
 class CategoryItem extends StatefulWidget {
-  final String categoryName;
-  final Function selectSkills;
+  final String? categoryName;
+  final Function? selectSkills;
   const CategoryItem(
       {@required this.categoryName, @required this.selectSkills});
   @override
@@ -215,7 +215,7 @@ class _CategoryItemState extends State<CategoryItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.categoryName,
+                    widget.categoryName!,
                     textScaleFactor: 1.5,
                   ),
                   if (isresponse)
@@ -240,7 +240,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           isSetNewValue = true;
                           responseText = "None";
                         });
-                        widget.selectSkills(
+                        widget.selectSkills!(
                             "${widget.categoryName} *** $responseText");
                         skillSelected();
                       },
@@ -256,7 +256,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "Less than 1 year";
                         });
 
-                        widget.selectSkills(
+                        widget.selectSkills!(
                             "${widget.categoryName} *** $responseText");
                         skillSelected();
                       },
@@ -272,7 +272,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "1 Year";
                         });
 
-                        widget.selectSkills(
+                        widget.selectSkills!(
                             "${widget.categoryName} *** $responseText");
                         skillSelected();
                       },
@@ -288,7 +288,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "2 Year";
                         });
 
-                        widget.selectSkills(
+                        widget.selectSkills!(
                             "${widget.categoryName} *** $responseText");
                         skillSelected();
                       },
@@ -304,7 +304,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "3 Year";
                         });
 
-                        widget.selectSkills(
+                        widget.selectSkills!(
                             "${widget.categoryName} *** $responseText");
                         skillSelected();
                       },
@@ -320,7 +320,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "4 Year";
                         });
 
-                        widget.selectSkills(
+                        widget.selectSkills!(
                             "${widget.categoryName} *** $responseText");
                         skillSelected();
                       },
@@ -336,7 +336,7 @@ class _CategoryItemState extends State<CategoryItem> {
                           responseText = "5+ Year";
                         });
 
-                        widget.selectSkills(
+                        widget.selectSkills!(
                             "${widget.categoryName} *** $responseText");
                         skillSelected();
                       },

@@ -3,20 +3,20 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class ModelDataModel {
-  String dp;
-  DateTime dpDate;
-  bool enablePushNotifications;
-  int hourlyRate;
-  List<String> bestPhotos = [];
-  String zipCode;
-  String phoneNumber;
-  String instaUserName;
-  List<String> categories = [];
-  List<String> skills = [];
-  List<String> personality = [];
-  List<String> attributes = [];
-  String nudityStatus;
-  String verification;
+  String? dp;
+  DateTime? dpDate;
+  bool? enablePushNotifications;
+  int? hourlyRate;
+  List<String>? bestPhotos = [];
+  String? zipCode;
+  String? phoneNumber;
+  String? instaUserName;
+  List<String>? categories = [];
+  List<String>? skills = [];
+  List<String>? personality = [];
+  List<String>? attributes = [];
+  String? nudityStatus;
+  String? verification;
   ModelDataModel({
     this.dp,
     this.dpDate,
@@ -35,20 +35,20 @@ class ModelDataModel {
   });
 
   ModelDataModel copyWith({
-    String dp,
-    DateTime dpDate,
-    bool enablePushNotifications,
-    int hourlyRate,
-    List<String> bestPhotos,
-    String zipCode,
-    String phoneNumber,
-    String instaUserName,
-    List<String> categories,
-    List<String> skills,
-    List<String> personality,
-    List<String> attributes,
-    String nudityStatus,
-    String verification,
+    String? dp,
+    DateTime? dpDate,
+    bool? enablePushNotifications,
+    int? hourlyRate,
+    List<String>? bestPhotos,
+    String? zipCode,
+    String? phoneNumber,
+    String? instaUserName,
+    List<String>? categories,
+    List<String>? skills,
+    List<String>? personality,
+    List<String>? attributes,
+    String? nudityStatus,
+    String? verification,
   }) {
     return ModelDataModel(
       dp: dp ?? this.dp,
@@ -72,7 +72,7 @@ class ModelDataModel {
   Map<String, dynamic> toMap() {
     return {
       'dp': dp,
-      'dpDate': dpDate.millisecondsSinceEpoch,
+      'dpDate': dpDate!.millisecondsSinceEpoch,
       'enablePushNotifications': enablePushNotifications,
       'hourlyRate': hourlyRate,
       'bestPhotos': bestPhotos,

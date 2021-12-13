@@ -6,8 +6,8 @@ import 'package:truthinx/Models/AppUser.dart';
 import 'package:truthinx/screens/Startup_screens/welcome.dart';
 
 class DeactivateAccount extends StatefulWidget {
-  final AppUser userData;
-  DeactivateAccount({Key key, this.userData}) : super(key: key);
+  final AppUser? userData;
+  DeactivateAccount({Key? key, this.userData}) : super(key: key);
 
   @override
   _DeactivateAccountState createState() => _DeactivateAccountState();
@@ -60,7 +60,7 @@ class _DeactivateAccountState extends State<DeactivateAccount> {
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(
-                  'I  ${widget.userData.first_name}, agree to deactivate my\naccount .',
+                  'I  ${widget.userData!.first_name}, agree to deactivate my\naccount .',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * .02),
@@ -119,18 +119,22 @@ class _DeactivateAccountState extends State<DeactivateAccount> {
                       context,
                       MaterialPageRoute(builder: (context) => Welcome()),
                       (route) => false);
-                }
-                else{
-                  Fluttertoast.showToast(msg: "Please mark your will to proceed");
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "Please mark your will to proceed");
                 }
               },
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    gradient:_lights ? LinearGradient(
-                        colors: [Colors.red[400], Colors.red[600]]) :  LinearGradient(
-                        colors: [Colors.grey[200], Colors.grey[600]])),
+                    gradient: _lights
+                        ? LinearGradient(
+                            colors: [Colors.red.shade400, Colors.red.shade600])
+                        : LinearGradient(colors: [
+                            Colors.grey.shade200,
+                            Colors.grey.shade600
+                          ])),
                 child: Center(
                   child: Text(
                     "Deactivate",

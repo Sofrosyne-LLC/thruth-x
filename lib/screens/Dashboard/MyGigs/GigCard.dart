@@ -5,10 +5,10 @@ import 'package:truthinx/screens/Dashboard/MyGigs/AllRequests.dart';
 import 'package:truthinx/screens/Dashboard/MyGigs/DescriptionWidget.dart';
 
 class GigCard extends StatelessWidget {
-  final Gig gig;
-  final String docId;
-  final int totalProposals;
-  final int proposalIndex;
+  final Gig? gig;
+  final String? docId;
+  final int? totalProposals;
+  final int? proposalIndex;
   GigCard({this.gig, this.proposalIndex, this.totalProposals, this.docId});
   @override
   Widget build(BuildContext context) {
@@ -28,15 +28,16 @@ class GigCard extends StatelessWidget {
                   children: [
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: gig.clientDp == "default"
+                        backgroundImage: gig!.clientDp == "default"
                             ? AssetImage("assets/userP.png")
-                            : NetworkImage(gig.clientDp),
+                            : NetworkImage(gig!.clientDp!)
+                                as ImageProvider<Object>,
                         backgroundColor: Colors.grey[200],
                         radius: 25,
                       ),
-                      title: Text(gig.clientName),
+                      title: Text(gig!.clientName!),
                       subtitle: Text(DateFormat(DateFormat.YEAR_MONTH_DAY)
-                          .format(gig.dateCreated.toDate())),
+                          .format(gig!.dateCreated!.toDate())),
                     ),
                     AnimatedContainer(
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -45,7 +46,7 @@ class GigCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       duration: Duration(milliseconds: 600),
-                      child: DescriptionTextWidget(text: gig.desc),
+                      child: DescriptionTextWidget(text: gig!.desc),
                     ),
                     SizedBox(height: 10),
                     Padding(
@@ -65,7 +66,7 @@ class GigCard extends StatelessWidget {
                               SizedBox(width: 10),
                               Text("Role:"),
                               SizedBox(width: 10),
-                              Text(gig.role)
+                              Text(gig!.role!)
                             ],
                           ),
                           SizedBox(height: 10),
@@ -81,7 +82,7 @@ class GigCard extends StatelessWidget {
                               SizedBox(width: 10),
                               Text("Gender:"),
                               SizedBox(width: 10),
-                              Text(gig.gender),
+                              Text(gig!.gender!),
                             ],
                           ),
                           SizedBox(height: 10),
@@ -97,7 +98,7 @@ class GigCard extends StatelessWidget {
                               SizedBox(width: 10),
                               Text("Budget:"),
                               SizedBox(width: 10),
-                              Text("\$${gig.hourlyRate} / hour")
+                              Text("\$${gig!.hourlyRate} / hour")
                             ],
                           ),
                         ],
@@ -116,7 +117,7 @@ class GigCard extends StatelessWidget {
                       ),
                       duration: Duration(milliseconds: 600),
                       child: DescriptionTextWidget(
-                          text: "Requirements:\n\n${gig.requirements}"),
+                          text: "Requirements:\n\n${gig!.requirements}"),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),

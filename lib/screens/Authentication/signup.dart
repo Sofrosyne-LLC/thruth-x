@@ -15,8 +15,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  int _radioValue1 = -1;
-  void _handleRadioValueChange1(int value) {
+  int? _radioValue1 = -1;
+  void _handleRadioValueChange1(int? value) {
     setState(() {
       _radioValue1 = value;
 
@@ -75,17 +75,13 @@ class _SignUpState extends State<SignUp> {
     prefs.setStringList("userData", userData);
 
     prefs.setStringList("categories", []);
-
-    
   }
 
-  void register() async{
-   
-
-  UserCredential userCredential = await firebaseAuth
+  void register() async {
+    UserCredential? userCredential = await firebaseAuth
         .createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
-        .then((result) async{
+        .then((result) async {
       String role;
       if (_radioValue1 == 0) {
         role = 'Model';
@@ -98,15 +94,18 @@ class _SignUpState extends State<SignUp> {
       } else {
         gender = _selectedGender;
       }
-      await  FirebaseFirestore.instance.collection("notifications").doc(result.user.uid).set({"allowed" : false});
-      collectionReferenceUser.doc(result.user.uid).set({
+      await FirebaseFirestore.instance
+          .collection("notifications")
+          .doc(result.user!.uid)
+          .set({"allowed": false});
+      collectionReferenceUser.doc(result.user!.uid).set({
         "role": role,
         "email": emailController.text.trim(),
         "first_name": _firstName.text.trim(),
         "last_name": _lastName.text.trim(),
         "gender": gender ?? '',
         "verification": "UNKNOWN",
-        "dp" : "default",
+        "dp": "default",
         "instagram_username": "default"
       }).then((res) async {
         setState(() {
@@ -138,7 +137,6 @@ class _SignUpState extends State<SignUp> {
         Fluttertoast.showToast(msg: 'success', toastLength: Toast.LENGTH_SHORT);
       });
     }).catchError((err) {
-
       print("------------------Firebase Error --------------");
       print(err.toString());
 
@@ -257,7 +255,7 @@ class _SignUpState extends State<SignUp> {
                                     hintStyle:
                                         TextStyle(color: Colors.grey[400])),
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value!.isEmpty) {
                                     return 'Enter First Name';
                                   }
                                   return null;
@@ -287,7 +285,7 @@ class _SignUpState extends State<SignUp> {
                                     hintStyle:
                                         TextStyle(color: Colors.grey[400])),
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value!.isEmpty) {
                                     return 'Enter Last Name';
                                   }
                                   return null;
@@ -318,7 +316,7 @@ class _SignUpState extends State<SignUp> {
                                         TextStyle(color: Colors.grey[400])),
                                 // The validator receives the text that the user has entered.
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value!.isEmpty) {
                                     return 'Enter an Email Address';
                                   } else if (!value.contains('@') ||
                                       !value.contains(".com")) {
@@ -363,7 +361,7 @@ class _SignUpState extends State<SignUp> {
                                       hintStyle:
                                           TextStyle(color: Colors.grey[400])),
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Enter Password';
                                     } else if (value.length < 6) {
                                       return 'Password must be atleast 6 characters!';
@@ -439,7 +437,7 @@ class _SignUpState extends State<SignUp> {
                       ? Center(child: CircularProgressIndicator())
                       : GestureDetector(
                           onTap: () {
-                            if (_formKey.currentState.validate()) {
+                            if (_formKey.currentState!.validate()) {
                               if (_radioValue1 == -1) {
                                 Fluttertoast.showToast(
                                     msg: 'Select between user and model',

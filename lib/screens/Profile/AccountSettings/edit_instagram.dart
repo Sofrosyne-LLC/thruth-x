@@ -11,8 +11,8 @@ import 'package:truthinx/Services/ProfileServices.dart';
 import 'package:truthinx/Models/AppUser.dart';
 
 class EditInstagram extends StatefulWidget {
-  final String instagram;
-  EditInstagram({Key key, this.instagram}) : super(key: key);
+  final String? instagram;
+  EditInstagram({Key? key, this.instagram}) : super(key: key);
 
   @override
   _EditInstagramState createState() => _EditInstagramState();
@@ -26,19 +26,19 @@ class _EditInstagramState extends State<EditInstagram> {
     super.dispose();
     instaController.dispose();
   }
+
   ProfileServices profileData = ProfileServices();
-  AppUser appUser;
+  AppUser? appUser;
   @override
   void initState() {
     super.initState();
     profileData.getLocalUser().then((value) {
       setState(() {
         appUser = value;
-        print(appUser.instagram);
+        print(appUser!.instagram);
       });
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,9 @@ class _EditInstagramState extends State<EditInstagram> {
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: widget.instagram == "default" ? "@example" : widget.instagram,
+                      hintText: widget.instagram == "default"
+                          ? "@example"
+                          : widget.instagram,
                       fillColor: Colors.white,
                       hintStyle: TextStyle(color: Colors.grey[400])),
                 ),
@@ -116,34 +118,32 @@ class _EditInstagramState extends State<EditInstagram> {
     setState(() {
       loading = true;
     });
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
     FirebaseFirestore.instance
         .collection("user")
-        .doc(user.uid)
+        .doc(user!.uid)
         .update({"instagram": instaController.text.trim()}).then((value) async {
       Fluttertoast.showToast(msg: "Successfully Updated");
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      List<String> data = prefs.getStringList('userData');
-      data[6] = instaController.text.trim();
+      List<String>? data = prefs.getStringList('userData');
+      data![6] = instaController.text.trim();
       prefs.setStringList("userData", data);
       setState(() {
         loading = false;
       });
 
-      if(appUser.role == "Client"){
-Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => MainScreenCustomer()),
-          (route) => false);
-      }
-      else{
+      if (appUser!.role == "Client") {
         Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => MainScreenModel()),
-          (route) => false);
+            context,
+            MaterialPageRoute(builder: (context) => MainScreenCustomer()),
+            (route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreenModel()),
+            (route) => false);
       }
-      
     });
   }
 }

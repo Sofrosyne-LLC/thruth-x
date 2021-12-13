@@ -26,8 +26,8 @@ class _Screen7State extends State<Screen7> {
   String uuid = '';
   final RoundedLoadingButtonController _btnController =
       RoundedLoadingButtonController();
-ProfileServices profileData = ProfileServices();
-  AppUser user;
+  ProfileServices profileData = ProfileServices();
+  AppUser? user;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ ProfileServices profileData = ProfileServices();
   }
 
   getLocalUser() async {
-    uuid = FirebaseAuth.instance.currentUser.uid;
+    uuid = FirebaseAuth.instance.currentUser!.uid;
   }
 
   @override
@@ -142,12 +142,12 @@ ProfileServices profileData = ProfileServices();
   }
 
   void sendProfileDataToVerify() async {
-    String headshotURL = await uploadImageToFirebase(widget.modelData.dp);
+    String headshotURL = await uploadImageToFirebase(widget.modelData.dp!);
     widget.modelData.dp = headshotURL;
     List<String> bestPhotosURLs = [];
     for (int i = 0; i < 5; i++) {
       bestPhotosURLs
-          .add(await uploadImageToFirebase(widget.modelData.bestPhotos[i]));
+          .add(await uploadImageToFirebase(widget.modelData.bestPhotos![i]));
     }
     print("+++++++++++++++");
     print(bestPhotosURLs);
@@ -158,7 +158,7 @@ ProfileServices profileData = ProfileServices();
         .doc(uuid)
         .update(widget.modelData.toMap())
         .onError((error, stackTrace) {
-      Fluttertoast.showToast(msg: error.message);
+      Fluttertoast.showToast(msg: (error as dynamic).message);
       _btnController.error();
     }).whenComplete(() {
       FirebaseFirestore.instance
@@ -170,9 +170,9 @@ ProfileServices profileData = ProfileServices();
               "Your Application has been submitted and will be verified by the admin! Stay tuned, you will be notified.",
           toastLength: Toast.LENGTH_LONG);
       _btnController.success();
-      
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MainScreenModel()));
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MainScreenModel()));
     }).onError((error, stackTrace) {
       Fluttertoast.showToast(
           msg: "Something went wrong! Please try again later.",
@@ -199,9 +199,9 @@ ProfileServices profileData = ProfileServices();
 }
 
 class CategoryItem extends StatefulWidget {
-  final String categoryName;
-  final String nudityStatus;
-  final Function setNudity;
+  final String? categoryName;
+  final String? nudityStatus;
+  final Function? setNudity;
   const CategoryItem(
       {@required this.categoryName,
       @required this.nudityStatus,
@@ -230,7 +230,7 @@ class _CategoryItemState extends State<CategoryItem> {
               setState(() {
                 isMark = !isMark;
               });
-              widget.setNudity(widget.categoryName);
+              widget.setNudity!(widget.categoryName);
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -245,7 +245,7 @@ class _CategoryItemState extends State<CategoryItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.categoryName,
+                    widget.categoryName!,
                     textScaleFactor: 1.5,
                     style: TextStyle(
                         fontWeight: isMark ? FontWeight.w600 : FontWeight.w300),

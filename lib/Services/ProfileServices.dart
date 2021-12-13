@@ -14,27 +14,29 @@ class ProfileServices {
   }
 
   Future getFirebaseUser() async {
-    User user = FirebaseAuth.instance.currentUser;
-    DocumentSnapshot userData =
-        await FirebaseFirestore.instance.collection("user").doc(user.uid).get();
+    User? user = FirebaseAuth.instance.currentUser;
+    DocumentSnapshot userData = await FirebaseFirestore.instance
+        .collection("user")
+        .doc(user!.uid)
+        .get();
 
-    AppUser appUser = AppUser.fromMap(userData.data());
+    AppUser appUser = AppUser.fromMap((userData.data() as dynamic));
     loggedInUserStream.add(appUser);
   }
 
   Future<AppUser> getLocalUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    List<String> userData = prefs.getStringList("userData");
+    List<String>? userData = prefs.getStringList("userData");
     List<String> categories = await getUserCategories();
-    return AppUser.fromPreferences(userData, categories);
+    return AppUser.fromPreferences(userData!, categories);
   }
 
   Future<List<String>> getUserCategories() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    List<String> categories = prefs.getStringList("categ");
+    List<String>? categories = prefs.getStringList("categ");
     print(categories);
-    return categories;
+    return categories!;
   }
 }

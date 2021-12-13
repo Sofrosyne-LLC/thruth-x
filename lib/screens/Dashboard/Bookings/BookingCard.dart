@@ -9,17 +9,17 @@ import 'package:truthinx/Services/NotificationServices.dart';
 import 'package:truthinx/screens/Dashboard/Bookings/BookingModel.dart';
 import 'package:truthinx/screens/Dashboard/Bookings/VerifyModel.dart';
 import 'package:truthinx/utils/ApiKeys.dart';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
 class BookingCard extends StatefulWidget {
   final BookingModal bm;
 
-  final String docId;
-  final int totalBookings;
-  final int bookingIndex;
-  BookingCard({this.bm, this.totalBookings, this.bookingIndex, this.docId});
+  final String? docId;
+  final int? totalBookings;
+  final int? bookingIndex;
+  BookingCard(
+      {required this.bm, this.totalBookings, this.bookingIndex, this.docId});
 
   @override
   _BookingCardState createState() => _BookingCardState();
@@ -90,12 +90,12 @@ class _BookingCardState extends State<BookingCard> {
                       leading: CircleAvatar(
                         backgroundImage: widget.bm.modelDp == "default"
                             ? AssetImage("assets/userP.png")
-                            : NetworkImage(widget.bm.modelDp),
+                            : NetworkImage(widget.bm.modelDp) as ImageProvider,
                         backgroundColor: Colors.grey[200],
                         radius: 25,
                       ),
-                      title: Text(widget.bm.modelName),
-                      subtitle: Text(widget.bm.modelEmail),
+                      title: Text("${widget.bm.modelName}"),
+                      subtitle: Text("${widget.bm.modelEmail}"),
                     ),
                     SizedBox(height: 10),
                     Padding(
@@ -115,7 +115,7 @@ class _BookingCardState extends State<BookingCard> {
                               SizedBox(width: 10),
                               Text("Title:"),
                               SizedBox(width: 10),
-                              Text(widget.bm.title),
+                              Text("${widget.bm.title}"),
                             ],
                           ),
                           SizedBox(height: 10),
@@ -131,7 +131,7 @@ class _BookingCardState extends State<BookingCard> {
                               SizedBox(width: 10),
                               Text("Role:"),
                               SizedBox(width: 10),
-                              Text(widget.bm.role)
+                              Text("${widget.bm.role}")
                             ],
                           ),
                           SizedBox(height: 10),
@@ -162,7 +162,7 @@ class _BookingCardState extends State<BookingCard> {
                       leading: Icon(Icons.date_range_rounded),
                       title: Text("Booked on"),
                       subtitle: Text(DateFormat(DateFormat.YEAR_MONTH_DAY)
-                          .format(widget.bm.time.toDate())),
+                          .format(widget.bm.time!.toDate())),
                     ),
                     Divider(
                       indent: 40,
@@ -200,30 +200,30 @@ class _BookingCardState extends State<BookingCard> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PlacePicker(
-                                    apiKey: googleAPI,
-                                    onPlacePicked: (PickResult result) {
-                                      print(
-                                          "__________________________________________");
-                                      print(
-                                          "${result.geometry.location.lat} ___ ${result.geometry.location.lng}");
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => PlacePicker(
+                              //       apiKey: googleAPI,
+                              //       onPlacePicked: (PickResult result) {
+                              //         print(
+                              //             "__________________________________________");
+                              //         print(
+                              //             "${result.geometry!.location.lat} ___ ${result.geometry!.location.lng}");
 
-                                      kInitialPosition = LatLng(
-                                          result.geometry.location.lat,
-                                          result.geometry.location.lng);
-                                      print(
-                                          "__________________________________________");
-                                      setUserLocation();
-                                      Navigator.of(context).pop();
-                                    },
-                                    initialPosition: kInitialPosition,
-                                    useCurrentLocation: true,
-                                  ),
-                                ),
-                              );
+                              //         kInitialPosition = LatLng(
+                              //             result.geometry!.location.lat,
+                              //             result.geometry!.location.lng);
+                              //         print(
+                              //             "__________________________________________");
+                              //         setUserLocation();
+                              //         Navigator.of(context).pop();
+                              //       },
+                              //       initialPosition: kInitialPosition,
+                              //       useCurrentLocation: true,
+                              //     ),
+                              //   ),
+                              // );
                             },
                             child: Row(
                               children: [
@@ -256,15 +256,17 @@ class _BookingCardState extends State<BookingCard> {
                             ),
                           ),
                           InkWell(
-                            onTap: (){
-                              verifyArrival(setState: (){
-
-                                setState(() {
-                                  
-                                });
-                              } ,context : context,docId: widget.docId,modelId:  widget.bm.modelId, );
+                            onTap: () {
+                              verifyArrival(
+                                setState: () {
+                                  setState(() {});
+                                },
+                                context: context,
+                                docId: widget.docId,
+                                modelId: widget.bm.modelId,
+                              );
                             },
-                                                      child: Row(
+                            child: Row(
                               children: [
                                 CircleAvatar(
                                     backgroundColor: Colors.grey[300],
@@ -278,7 +280,8 @@ class _BookingCardState extends State<BookingCard> {
                                 ),
                                 Visibility(
                                     visible: widget.bm.status != "VERIFIED",
-                                    child: Icon(Icons.arrow_forward_ios_rounded))
+                                    child:
+                                        Icon(Icons.arrow_forward_ios_rounded))
                               ],
                             ),
                           ),
@@ -293,27 +296,27 @@ class _BookingCardState extends State<BookingCard> {
                         child: Container(
                           height: 60,
                           child: InkWell(
-                              onTap: () async{
+                              onTap: () async {
                                 if (widget.bm.status != "VERIFIED") {
                                   Fluttertoast.showToast(
                                       msg:
                                           "Project can not be marked as complete, Because pre-requisites are not completed.",
                                       toastLength: Toast.LENGTH_LONG);
                                   return;
-                                }
-                                else{
-                                   DocumentSnapshot model = await FirebaseFirestore
-                                    .instance
-                                    .collection("user")
-                                    .doc(FirebaseAuth.instance.currentUser.uid)
-                                    .get();
+                                } else {
+                                  DocumentSnapshot model =
+                                      await FirebaseFirestore.instance
+                                          .collection("user")
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .get();
 
-                                sendNotifications(
-                                  bodyText:
-                                      "${model["first_name"]}  ${model["last_name"]}, have marked the project as completed. You will recieve the payment shortly.",
-                                  id: widget.bm.modelId,
-                                  title: "Congratulations!",
-                                );
+                                  sendNotifications(
+                                    bodyText:
+                                        "${model["first_name"]}  ${model["last_name"]}, have marked the project as completed. You will recieve the payment shortly.",
+                                    id: widget.bm.modelId,
+                                    title: "Congratulations!",
+                                  );
                                 }
                               },
                               child: Center(
@@ -344,7 +347,7 @@ class _BookingCardState extends State<BookingCard> {
     var point = GeoPoint(kInitialPosition.latitude, kInitialPosition.latitude);
     await FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("Bookings")
         .doc(widget.docId)
         .update({
@@ -362,22 +365,20 @@ class _BookingCardState extends State<BookingCard> {
       "status": "SENT",
     });
 
-    DocumentSnapshot client = await FirebaseFirestore
-                                    .instance
-                                    .collection("user")
-                                    .doc(FirebaseAuth.instance.currentUser.uid)
-                                    .get();
+    DocumentSnapshot client = await FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
 
-                                sendNotifications(
-                                  bodyText:
-                                      "${client["first_name"]}  ${client["last_name"]}, have updated the location for your current project.",
-                                  id: widget.bm.modelId ,
-                                  title: "Location Updated!",
-                                );
+    sendNotifications(
+      bodyText:
+          "${client["first_name"]}  ${client["last_name"]}, have updated the location for your current project.",
+      id: widget.bm.modelId,
+      title: "Location Updated!",
+    );
 
     setState(() {
       widget.bm.status = "SENT";
     });
   }
-
 }

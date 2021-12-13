@@ -54,56 +54,55 @@ class _SubscriptionsState extends State<Subscriptions> {
                                 GoogleFonts.nunito(fontWeight: FontWeight.w500)
                                     .fontFamily),
                       )),
-                    
                     ),
                     Visibility(
                       visible: !isSubscribed,
-                                          child: Column(
+                      child: Column(
                         children: [
-                          
-                      Text(
-                        "Pro",
-                        style: TextStyle(
-                            fontSize: 34,
-                            fontFamily:
-                                GoogleFonts.nunito(fontWeight: FontWeight.bold)
+                          Text(
+                            "Pro",
+                            style: TextStyle(
+                                fontSize: 34,
+                                fontFamily: GoogleFonts.nunito(
+                                        fontWeight: FontWeight.bold)
                                     .fontFamily),
-                      ),
-                      Text(
-                        "Advanced Features",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontFamily:
-                                GoogleFonts.nunito(fontWeight: FontWeight.bold)
+                          ),
+                          Text(
+                            "Advanced Features",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontFamily: GoogleFonts.nunito(
+                                        fontWeight: FontWeight.bold)
                                     .fontFamily),
-                      ),
-                      
-                      SizedBox(height: 10),
-                      Text(
-                        "\$90.00",
-                        style: TextStyle(
-                            fontSize: 34,
-                            fontFamily:
-                                GoogleFonts.nunito(fontWeight: FontWeight.bold)
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "\$90.00",
+                            style: TextStyle(
+                                fontSize: 34,
+                                fontFamily: GoogleFonts.nunito(
+                                        fontWeight: FontWeight.bold)
                                     .fontFamily),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        "/per Annum",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontFamily:
-                                GoogleFonts.nunito(fontWeight: FontWeight.bold)
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "/per Annum",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontFamily: GoogleFonts.nunito(
+                                        fontWeight: FontWeight.bold)
                                     .fontFamily),
-                      ),
+                          ),
                         ],
                       ),
                     ),
                     Visibility(
                       visible: isSubscribed,
-                      child: Lottie.network("https://assets1.lottiefiles.com/temp/lf20_305n7k.json", height: 170),
+                      child: Lottie.network(
+                          "https://assets1.lottiefiles.com/temp/lf20_305n7k.json",
+                          height: 170),
                     ),
                     Row(
                       children: [
@@ -220,7 +219,6 @@ class _SubscriptionsState extends State<Subscriptions> {
                         }
                       },
                     ),
-                    
                     SizedBox(height: 1),
                   ],
                 ),
@@ -236,7 +234,7 @@ class _SubscriptionsState extends State<Subscriptions> {
     try {
       FirebaseFirestore.instance
           .collection("user")
-          .doc(FirebaseAuth.instance.currentUser.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("Subscriptions")
           .doc("Yearly")
           .get()
@@ -258,7 +256,7 @@ class _SubscriptionsState extends State<Subscriptions> {
 
   void stripe() async {
     final sessionId = await StripeServer(
-            userId: FirebaseAuth.instance.currentUser.uid, price: 9000)
+            userId: FirebaseAuth.instance.currentUser!.uid, price: 9000)
         .createCheckout();
 
     final result = await Navigator.of(context).push(
@@ -275,14 +273,15 @@ class _SubscriptionsState extends State<Subscriptions> {
       );
       FirebaseFirestore.instance
           .collection("user")
-          .doc(FirebaseAuth.instance.currentUser.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("Subscriptions")
-          .doc("Yearly").set({
-            'subscriptionDate' : Timestamp.now(),
-          });
-          setState(() {
-            isSubscribed = true;
-          });
+          .doc("Yearly")
+          .set({
+        'subscriptionDate': Timestamp.now(),
+      });
+      setState(() {
+        isSubscribed = true;
+      });
     } else {
       snackbar = SnackBar(
         content: Text("Payment Canceled"),

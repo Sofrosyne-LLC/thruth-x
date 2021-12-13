@@ -21,14 +21,14 @@ class _Screen2State extends State<Screen2> {
   DateTime _selectedDate = DateTime.now();
   bool pushNotificationEnabled = false;
   int rate = -1;
-  List<File> bestPhotos = List(5);
+  List<File> bestPhotos = [];
   String zipcode = '';
   TextEditingController zipCodeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController instagramController = TextEditingController();
   ModelDataModel modelData = ModelDataModel();
   String date = '';
-  File headShot;
+  late File headShot;
   @override
   void dispose() {
     super.dispose();

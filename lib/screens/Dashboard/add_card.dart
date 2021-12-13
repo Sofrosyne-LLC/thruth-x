@@ -5,7 +5,7 @@ import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddCard extends StatefulWidget {
-  AddCard({Key key}) : super(key: key);
+  AddCard({Key? key}) : super(key: key);
 
   @override
   _AddCardState createState() => _AddCardState();
@@ -114,12 +114,10 @@ class _AddCardState extends State<AddCard> {
                         ),
                       ),
                       onPressed: () {
-                        if (formKey.currentState.validate()) {
+                        if (formKey.currentState!.validate()) {
                           Fluttertoast.showToast(
                               msg: 'Card added Successfully',
                               toastLength: Toast.LENGTH_SHORT);
-                    
-                    
                         } else {
                           print('invalid!');
                         }

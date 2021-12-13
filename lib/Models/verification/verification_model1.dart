@@ -14,14 +14,14 @@ import 'package:truthinx/utils/constants.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class ModelVerification1 extends StatefulWidget {
-  ModelVerification1({Key key}) : super(key: key);
+  ModelVerification1({Key? key}) : super(key: key);
 
   @override
   _ModelVerification1State createState() => _ModelVerification1State();
 }
 
 class _ModelVerification1State extends State<ModelVerification1> {
-  File _image;
+  File? _image;
 
   double _value = 40;
   final _formKeyzipcode = GlobalKey<FormState>();
@@ -29,11 +29,11 @@ class _ModelVerification1State extends State<ModelVerification1> {
   final _formKeyfacebook = GlobalKey<FormState>();
   final _formKeyinstagram = GlobalKey<FormState>();
 
-  String imageUrl;
-  String modelVerificationimageUrl;
-  bool _imageLoading = false;
-  bool _vimageLoading = false;
-  String formatter;
+  String? imageUrl;
+  String? modelVerificationimageUrl;
+  bool? _imageLoading = false;
+  bool? _vimageLoading = false;
+  String? formatter;
 
   DateTime now = DateTime.now();
 
@@ -65,7 +65,7 @@ class _ModelVerification1State extends State<ModelVerification1> {
     _timeNow();
     final _firebaseStorage = FirebaseStorage.instance;
     final _imagePicker = ImagePicker();
-    PickedFile image;
+    PickedFile? image;
     //Check Permissions
     await Permission.photos.request();
 
@@ -74,7 +74,7 @@ class _ModelVerification1State extends State<ModelVerification1> {
     if (permissionStatus.isGranted) {
       //Select Image
       image = await _imagePicker.getImage(source: ImageSource.gallery);
-      var file = File(image.path);
+      var file = File(image!.path);
 
       if (image != null) {
         setState(() {
@@ -113,7 +113,7 @@ class _ModelVerification1State extends State<ModelVerification1> {
   _uploadVerificationImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
     final _imagePicker = ImagePicker();
-    PickedFile image;
+    PickedFile? image;
     //Check Permissions
     await Permission.photos.request();
 
@@ -122,7 +122,7 @@ class _ModelVerification1State extends State<ModelVerification1> {
     if (permissionStatus.isGranted) {
       //Select Image
       image = await _imagePicker.getImage(source: ImageSource.gallery);
-      var file = File(image.path);
+      var file = File(image!.path);
 
       if (image != null) {
         setState(() {
@@ -160,7 +160,7 @@ class _ModelVerification1State extends State<ModelVerification1> {
 
   @override
   void initState() {
-super.initState();
+    super.initState();
     initializeDateFormatting();
 
     //   new DateFormat.yMMMMd('en_US')
@@ -174,9 +174,9 @@ super.initState();
       isLoading = true;
     });
 
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
-    collectionReferenceUser.doc(user.uid).set({
+    collectionReferenceUser.doc(user!.uid).set({
       "profile_pic": imageUrl,
       "verif_image": modelVerificationimageUrl ?? '',
       "hourly_rate": _value.toStringAsFixed(0) ?? '',
@@ -301,7 +301,7 @@ super.initState();
                                   Border.all(color: Colors.white, width: 1.5)),
                           child: (imageUrl != null)
                               ? Image.network(
-                                  imageUrl,
+                                  imageUrl!,
                                   fit: BoxFit.cover,
                                 )
                               : Image.asset(
@@ -314,7 +314,7 @@ super.initState();
                         //  right: 20.0,
                         bottom: 15.0,
                         left: 20,
-                        child: _imageLoading
+                        child: _imageLoading!
                             ? Padding(
                                 padding: const EdgeInsets.only(left: 65.0),
                                 child:
@@ -412,7 +412,7 @@ super.initState();
                           height: MediaQuery.of(context).size.height * 0.2,
                           child: (modelVerificationimageUrl != null)
                               ? Image.network(
-                                  modelVerificationimageUrl,
+                                  modelVerificationimageUrl!,
                                   fit: BoxFit.cover,
                                 )
                               : Image.asset(
@@ -423,7 +423,7 @@ super.initState();
                         Positioned(
                           right: 10.0,
                           bottom: 10.0,
-                          child: _vimageLoading
+                          child: _vimageLoading!
                               ? CircularProgressIndicator()
                               : InkWell(
                                   onTap: _uploadVerificationImage,
@@ -768,7 +768,7 @@ super.initState();
                                 Border.all(color: Colors.white, width: 1.5)),
                         child: (_image != null)
                             ? Image.file(
-                                _image,
+                                _image!,
                                 fit: BoxFit.cover,
                               )
                             : Image.asset(
@@ -785,7 +785,7 @@ super.initState();
                                 Border.all(color: Colors.white, width: 1.5)),
                         child: (_image != null)
                             ? Image.file(
-                                _image,
+                                _image!,
                                 fit: BoxFit.cover,
                               )
                             : Image.asset(
@@ -847,7 +847,7 @@ super.initState();
                                 hintStyle: TextStyle(color: Colors.grey[400])),
                             controller: _zipcode,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Zipcode required';
                               }
                               return null;
@@ -910,7 +910,7 @@ super.initState();
                             controller: _phoneNumber,
                             keyboardType: TextInputType.number,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Phone Number required';
                               }
                               return null;
@@ -1008,7 +1008,7 @@ super.initState();
                                       TextStyle(color: Colors.grey[400])),
                               controller: _dob,
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Date of birth required';
                                 }
                                 return null;
@@ -1048,7 +1048,7 @@ super.initState();
 
                               controller: _houseNo,
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'Feild required';
                                 }
                                 return null;
@@ -1078,7 +1078,7 @@ super.initState();
                                   hintStyle:
                                       TextStyle(color: Colors.grey[400])),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'APT unit number required';
                                 }
                                 return null;
@@ -1109,7 +1109,7 @@ super.initState();
                                       TextStyle(color: Colors.grey[400])),
                               controller: _city,
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'City required';
                                 }
                                 return null;
@@ -1139,7 +1139,7 @@ super.initState();
                                       TextStyle(color: Colors.grey[400])),
                               controller: _state,
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'State required';
                                 }
                                 return null;
@@ -1229,7 +1229,7 @@ super.initState();
                                       controller: _facebookController,
                                       keyboardType: TextInputType.url,
                                       validator: (value) {
-                                        if (value.isEmpty) {
+                                        if (value!.isEmpty) {
                                           return 'profile link required';
                                         }
                                         return null;
@@ -1296,7 +1296,7 @@ super.initState();
                                     controller: _instagramController,
                                     keyboardType: TextInputType.emailAddress,
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return 'instagram profile required';
                                       }
                                       return null;
@@ -1363,11 +1363,11 @@ super.initState();
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.CENTER);
                                     } else {
-                                      if (_formKeyzipcode.currentState
+                                      if (_formKeyzipcode.currentState!
                                           .validate()) {
-                                        if (_formKeyphone.currentState
+                                        if (_formKeyphone.currentState!
                                             .validate()) {
-                                          if (_formKeyHomeAddress.currentState
+                                          if (_formKeyHomeAddress.currentState!
                                               .validate()) {
                                             if (_facebookController
                                                     .text.isEmpty &&

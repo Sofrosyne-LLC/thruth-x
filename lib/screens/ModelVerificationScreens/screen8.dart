@@ -216,10 +216,10 @@ class MaleMenu extends StatelessWidget {
 }
 
 class SlideBar extends StatefulWidget {
-  final String itemName;
-  final double min;
-  final double max;
-  final int divisions;
+  final String? itemName;
+  final double? min;
+  final double? max;
+  final int? divisions;
 
   const SlideBar({this.itemName, this.min, this.max, this.divisions});
   @override
@@ -228,10 +228,10 @@ class SlideBar extends StatefulWidget {
 
 class _SlideBarState extends State<SlideBar> {
   int _value = 1;
-  String itemName;
-  double min;
-  double max;
-  int divisions;
+  String? itemName;
+  double? min;
+  double? max;
+  int? divisions;
   @override
   void initState() {
     super.initState();
@@ -251,7 +251,7 @@ class _SlideBarState extends State<SlideBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                widget.itemName + ":  ",
+                widget.itemName! + ":  ",
                 textScaleFactor: 1.5,
                 style: TextStyle(color: Colors.orange),
               ),
@@ -273,8 +273,8 @@ class _SlideBarState extends State<SlideBar> {
           // ),
           Slider(
             value: _value.toDouble(),
-            min: min,
-            max: max,
+            min: min ?? 0.0,
+            max: max ?? 0.0,
             divisions: divisions,
             activeColor: Colors.orange,
             inactiveColor: Colors.grey,

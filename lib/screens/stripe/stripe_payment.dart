@@ -5,15 +5,15 @@ import 'package:truthinx/utils/ApiKeys.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class StripePaymentCheckout extends StatefulWidget {
-  final String sessionId;
-  
+  final String? sessionId;
+
   StripePaymentCheckout({this.sessionId});
   @override
   _StripePaymentCheckoutState createState() => _StripePaymentCheckoutState();
 }
 
 class _StripePaymentCheckoutState extends State<StripePaymentCheckout> {
-  WebViewController _webViewController;
+  WebViewController? _webViewController;
 
   String get initialUrl =>
       "data:text/html;base64,${base64Encode(Utf8Encoder().convert(kStripeHTMLPage))}";
@@ -47,13 +47,13 @@ class _StripePaymentCheckoutState extends State<StripePaymentCheckout> {
               _webViewController = webViewController,
           onPageFinished: (String url) {
             if (url == initialUrl) {
-              _redirectToStripe(widget.sessionId);
+              _redirectToStripe(widget.sessionId!);
             }
           },
           navigationDelegate: (NavigationRequest request) {
             if (request.url.startsWith('https://success.com')) {
-               print("success");
-               Navigator.of(context).pop("success");
+              print("success");
+              Navigator.of(context).pop("success");
               // Navigator.of(context).pop("success");
               // Navigator.push(
               //   context,
@@ -72,7 +72,7 @@ class _StripePaymentCheckoutState extends State<StripePaymentCheckout> {
     );
   }
 
-  Future<void> _redirectToStripe(String sessionId) async {
+  _redirectToStripe(String sessionId) async {
     final redirectToCheckoutJs = '''
     var stripe = Stripe(\'$stripeApiKey\');
     
@@ -83,6 +83,6 @@ class _StripePaymentCheckoutState extends State<StripePaymentCheckout> {
     });
     ''';
 
-    return await _webViewController.evaluateJavascript(redirectToCheckoutJs);
+    return await _webViewController!.evaluateJavascript(redirectToCheckoutJs);
   }
 }

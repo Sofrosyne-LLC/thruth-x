@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ImageContainer extends StatefulWidget {
-  final Function changeImage;
+  final Function? changeImage;
   ImageContainer({@required this.changeImage});
 
   @override
@@ -14,7 +14,7 @@ class ImageContainer extends StatefulWidget {
 }
 
 class _ImageContainerState extends State<ImageContainer> {
-  File fileImage;
+  File? fileImage;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -31,10 +31,10 @@ class _ImageContainerState extends State<ImageContainer> {
           borderRadius: BorderRadius.circular(5),
           image: DecorationImage(
               image: fileImage != null
-                  ? FileImage(fileImage)
+                  ? FileImage(fileImage!)
                   : AssetImage(
                       "assets/model.jpeg",
-                    ),
+                    ) as ImageProvider,
               fit: BoxFit.cover),
         ),
         child: Center(
@@ -52,7 +52,7 @@ class _ImageContainerState extends State<ImageContainer> {
 
   getImage() async {
     final _imagePicker = ImagePicker();
-    PickedFile image;
+    PickedFile? image;
     //Check Permissions
 
     var permissionStatus = await Permission.photos.status;
@@ -66,8 +66,8 @@ class _ImageContainerState extends State<ImageContainer> {
 
       if (image != null) {
         setState(() {
-          fileImage = File(image.path);
-          widget.changeImage(fileImage);
+          fileImage = File(image!.path);
+          widget.changeImage!(fileImage);
         });
       } else {
         print('No Image Path Received');

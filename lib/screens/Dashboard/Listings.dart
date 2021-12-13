@@ -22,9 +22,9 @@ class Listings extends StatelessWidget {
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             var data = snapshot.data;
-            if (data['verification'] == 'submitted') {
+            if (data!['verification'] == 'submitted') {
               return WaitForVerificationWidget();
-            } else if (data['verification'] == 'VERIFIED') {
+            } else if (data!['verification'] == 'VERIFIED') {
               return StreamBuilder(
                 stream:
                     FirebaseFirestore.instance.collection("Gigs").snapshots(),
@@ -32,12 +32,12 @@ class Listings extends StatelessWidget {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData && snapshot.data != null) {
-                    int allDocs = snapshot.data.docs.length;
-                    List<DocumentSnapshot> docs = snapshot.data.docs;
+                    int allDocs = snapshot.data!.docs.length;
+                    List<DocumentSnapshot> docs = snapshot.data!.docs;
                     return PageView(
                       children: List.generate(allDocs, (index) {
                         return ModelGigCard(
-                          gig: Gig.fromMap(docs[index].data()),
+                          gig: Gig.fromMap((docs as dynamic)[index].data()),
                           proposalIndex: index + 1,
                           totalProposals: allDocs,
                           docId: docs[index].id,
@@ -81,7 +81,7 @@ class Listings extends StatelessWidget {
   Future<DocumentSnapshot> getUserData() async {
     return FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
   }
 }

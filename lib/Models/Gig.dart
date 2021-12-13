@@ -5,17 +5,17 @@ import 'package:flutter/cupertino.dart';
 
 class Gig {
 
-  String clientName;
-  String clientID;
-  Timestamp dateCreated;
-  int gigOrder;
-  String clientDp;
-  String title;
-  String role;
-  String gender;
-  String desc;
-  String requirements;
-  String hourlyRate;
+  String? clientName;
+  String? clientID;
+  Timestamp? dateCreated;
+  int? gigOrder;
+  String? clientDp;
+  String? title;
+  String? role;
+  String? gender;
+  String? desc;
+  String? requirements;
+  String? hourlyRate;
   Gig({
     @required this.clientName,
     @required this.clientID,
@@ -32,17 +32,17 @@ class Gig {
   
 
   Gig copyWith({
-    String clientName,
-    String clientID,
-    Timestamp dateCreated,
-    int gigOrder,
-    String clientDp,
-    String title,
-    String role,
-    String gender,
-    String desc,
-    String requirements,
-    String hourlyRate,
+    String? clientName,
+    String? clientID,
+    Timestamp? dateCreated,
+    int? gigOrder,
+    String? clientDp,
+    String? title,
+    String? role,
+    String? gender,
+    String? desc,
+    String? requirements,
+    String? hourlyRate,
   }) {
     return Gig(
       clientName: clientName ?? this.clientName,

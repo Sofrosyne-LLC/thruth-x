@@ -10,8 +10,8 @@ import 'package:truthinx/screens/Dashboard/MyGigs/DescriptionWidget.dart';
 import 'package:truthinx/screens/Profile/Instagram/InstagramProfile.dart';
 
 class AllRequests extends StatefulWidget {
-  final Gig gig;
-  final String docId;
+  final Gig? gig;
+  final String? docId;
   AllRequests({this.gig, this.docId});
 
   @override
@@ -33,8 +33,8 @@ class _AllRequestsState extends State<AllRequests> {
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            int docLength = snapshot.data.docs.length;
-            List<DocumentSnapshot> allDocs = snapshot.data.docs;
+            int docLength = snapshot.data!.docs.length;
+            List<DocumentSnapshot> allDocs = snapshot.data!.docs;
             return ListView(
               children: List.generate(docLength, (index) {
                 DocumentSnapshot doc = allDocs[index];
@@ -51,7 +51,8 @@ class _AllRequestsState extends State<AllRequests> {
                             backgroundColor: Colors.grey[300],
                             backgroundImage: doc["modelDp"] == "default"
                                 ? AssetImage("assets/userP.png")
-                                : NetworkImage(doc["modelDp"]),
+                                : NetworkImage(doc["modelDp"])
+                                    as ImageProvider<Object>,
                           ),
                           title: Text(doc["modelName"]),
                           subtitle: Text(doc["modelEmail"]),
@@ -188,7 +189,7 @@ class _AllRequestsState extends State<AllRequests> {
       String docId = DateTime.now().millisecondsSinceEpoch.toString();
       await FirebaseFirestore.instance
           .collection("user")
-          .doc(FirebaseAuth.instance.currentUser.uid)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("Bookings")
           .doc(docId)
           .set({
@@ -202,8 +203,8 @@ class _AllRequestsState extends State<AllRequests> {
         "rate": doc['rate'],
         "modelInsta": doc['modelInsta'],
         "status": "BOOKED",
-        "role": widget.gig.role,
-        "title": widget.gig.title,
+        "role": widget.gig!.role,
+        "title": widget.gig!.title,
       });
       await FirebaseFirestore.instance
           .collection("user")
@@ -214,21 +215,20 @@ class _AllRequestsState extends State<AllRequests> {
         "status": "BOOKED",
         "time": Timestamp.now(),
         "rate": doc['rate'],
-        "role": widget.gig.role,
-        "title": widget.gig.title,
-        "clientDp": widget.gig.clientDp,
-        "clientName": widget.gig.clientName,
-        "clientID": widget.gig.clientID,
+        "role": widget.gig!.role,
+        "title": widget.gig!.title,
+        "clientDp": widget.gig!.clientDp,
+        "clientName": widget.gig!.clientName,
+        "clientID": widget.gig!.clientID,
         "order": doc['order'],
       });
 
-
-                                sendNotifications(
-                                  bodyText:
-                                      "${widget.gig.clientName}, have accepted your proposal as ${widget.gig.role} and ${doc['rate']}/hour.",
-                                  id: doc['modelId'],
-                                  title: "Proposal Accepted",
-                                );
+      sendNotifications(
+        bodyText:
+            "${widget.gig!.clientName}, have accepted your proposal as ${widget.gig!.role} and ${doc['rate']}/hour.",
+        id: doc['modelId'],
+        title: "Proposal Accepted",
+      );
       FirebaseFirestore.instance.collection("Gigs").doc(docId).delete();
 
       FirebaseFirestore.instance
@@ -255,9 +255,7 @@ class _AllRequestsState extends State<AllRequests> {
         .collection("ProposalSent")
         .doc(widget.docId)
         .delete();
-        setState(() {
-          
-        });
+    setState(() {});
     Fluttertoast.showToast(msg: "Offer Declined!");
   }
 }

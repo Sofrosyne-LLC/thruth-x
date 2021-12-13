@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:truthinx/screens/ModelVerificationScreens/screen2.dart';
 
 class Screen1 extends StatefulWidget {
-
   @override
   _Screen1State createState() => _Screen1State();
 }
 
 class _Screen1State extends State<Screen1> {
-   User user = FirebaseAuth.instance.currentUser;
-    bool dialogues = true;
+  User? user = FirebaseAuth.instance.currentUser;
+  bool dialogues = true;
 
   CollectionReference collectionReferenceUser =
       FirebaseFirestore.instance.collection('user');
@@ -29,8 +28,10 @@ class _Screen1State extends State<Screen1> {
   }
 
   checkUser() async {
-    final data =
-        await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
+    final data = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(user!.uid)
+        .get();
 
     setState(() {
       firstname = data['first_name'];
@@ -63,7 +64,6 @@ class _Screen1State extends State<Screen1> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              
               "Hi $firstname,",
               style: TextStyle(
                 fontSize: 24,

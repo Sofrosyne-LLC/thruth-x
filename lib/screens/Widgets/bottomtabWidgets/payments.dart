@@ -5,7 +5,7 @@ import 'package:truthinx/screens/Dashboard/add_card.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class PaymentsModel extends StatefulWidget {
-  PaymentsModel({Key key}) : super(key: key);
+  PaymentsModel({Key? key}) : super(key: key);
 
   @override
   _PaymentsModelState createState() => _PaymentsModelState();

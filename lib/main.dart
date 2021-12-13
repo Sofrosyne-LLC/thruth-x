@@ -2,16 +2,18 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:truthinx/screens/Startup_screens/splash_screen.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:truthinx/screens/new_proposals/proposal_controller.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await DotEnv.load(fileName: ".env");
+  Stripe.publishableKey =
+      "pk_test_51K4rNxSJCTyMre9TlOiRxegdjCTqVcA5LeXCF07pHzjgo18cmD0dPROZGp01ockjgzTL9JOB0sltLub3hnWcN7pE00TgzjveCV";
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 
@@ -57,6 +59,3 @@ class _ThuthinXState extends State<ThuthinX> {
     );
   }
 }
-
-
-  

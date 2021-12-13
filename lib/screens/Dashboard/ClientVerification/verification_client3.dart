@@ -15,20 +15,20 @@ import 'package:intl/date_symbol_data_local.dart';
 
 // ignore: must_be_immutable
 class ClientVerification3 extends StatefulWidget {
-   int business;
-  ClientVerification3({Key key, this.business}) : super(key: key);
+   int? business;
+  ClientVerification3({Key? key, this.business}) : super(key: key);
 
   @override
   _ClientVerification3State createState() => _ClientVerification3State();
 }
 
 class _ClientVerification3State extends State<ClientVerification3> {
-  bool agree = false;
+  bool? agree = false;
 
   bool _imageLoading = false;
   DateTime now = DateTime.now();
-  String formatter;
-  String imageUrl;
+  String? formatter;
+  String? imageUrl;
 
   CollectionReference collectionReferenceUser =
       FirebaseFirestore.instance.collection('user');
@@ -41,7 +41,7 @@ class _ClientVerification3State extends State<ClientVerification3> {
     _timeNow();
     final _firebaseStorage = FirebaseStorage.instance;
     final _imagePicker = ImagePicker();
-    PickedFile image;
+    PickedFile? image;
     //Check Permissions
     await Permission.photos.request();
 
@@ -50,7 +50,7 @@ class _ClientVerification3State extends State<ClientVerification3> {
     if (permissionStatus.isGranted) {
       //Select Image
       image = await _imagePicker.getImage(source: ImageSource.gallery);
-      var file = File(image.path);
+      var file = File(image!.path);
 
       if (image != null) {
         setState(() {
@@ -94,10 +94,10 @@ class _ClientVerification3State extends State<ClientVerification3> {
     });
     String clientRole;
 
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     print(formatter);
 
-    collectionReferenceUser.doc(user.uid).set({
+    collectionReferenceUser.doc(user!.uid).set({
       "dp": imageUrl,
       "notification": 'firebase_messaging token',
       "instagram_username": _instagramController.text ?? '',
@@ -242,7 +242,7 @@ class _ClientVerification3State extends State<ClientVerification3> {
                             height: 160.0,
                             child: (imageUrl != null)
                                 ? Image.network(
-                                    imageUrl,
+                                    "${imageUrl}",
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(
@@ -404,7 +404,7 @@ class _ClientVerification3State extends State<ClientVerification3> {
                       controller: _instagramController,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Business Email No required';
                         }
                         return null;
@@ -488,7 +488,7 @@ class _ClientVerification3State extends State<ClientVerification3> {
                                   controller: _facebookController,
                                   keyboardType: TextInputType.url,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Business website Url required';
                                     }
                                     return null;
@@ -583,7 +583,7 @@ class _ClientVerification3State extends State<ClientVerification3> {
                                   controller: _businessUrlController,
                                   keyboardType: TextInputType.url,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Business website Url required';
                                     }
                                     return null;

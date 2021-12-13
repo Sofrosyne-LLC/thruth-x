@@ -6,14 +6,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HeadShotImageContainer extends StatefulWidget {
-  final Function changeImage;
+  final Function? changeImage;
   HeadShotImageContainer({@required this.changeImage});
   @override
   _HeadShotImageContainerState createState() => _HeadShotImageContainerState();
 }
 
 class _HeadShotImageContainerState extends State<HeadShotImageContainer> {
-  File headShot;
+  File? headShot;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,10 @@ class _HeadShotImageContainerState extends State<HeadShotImageContainer> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           image: DecorationImage(
-              image: headShot != null
-                  ? FileImage(headShot)
-                  : AssetImage("assets/model.jpeg")),
+            image: headShot != null
+                ? FileImage(headShot!)
+                : AssetImage("assets/model.jpeg") as ImageProvider,
+          ),
           //color: Colors.blue,
           border: Border.all(color: Colors.white, width: 1),
         ),
@@ -49,7 +50,7 @@ class _HeadShotImageContainerState extends State<HeadShotImageContainer> {
 
   getImage() async {
     final _imagePicker = ImagePicker();
-    PickedFile image;
+    PickedFile? image;
     //Check Permissions
     await Permission.photos.request();
 
@@ -61,8 +62,8 @@ class _HeadShotImageContainerState extends State<HeadShotImageContainer> {
 
       if (image != null) {
         setState(() {
-          headShot = File(image.path);
-          widget.changeImage(headShot);
+          headShot = File(image!.path);
+          widget.changeImage!(headShot);
         });
       } else {
         print('No Image Path Received');

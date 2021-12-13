@@ -16,8 +16,8 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'checkbox_widget.dart';
 
 class ProposalsDetails extends StatefulWidget {
-  DocumentSnapshot details;
-  ProposalsDetails({Key key, this.details}) : super(key: key);
+  DocumentSnapshot? details;
+  ProposalsDetails({Key? key, this.details}) : super(key: key);
 
   @override
   State<ProposalsDetails> createState() => _ProposalsDetailsState();
@@ -60,9 +60,9 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
 
   String isProvidingWardrobe = '';
 
-  bool hasWardrobe;
-  String startTime;
-  String date;
+  bool? hasWardrobe;
+  String? startTime;
+  String? date;
   List<String> locations = [];
   int _radioValue1 = -1;
   List<DateTime> _selectedDates = [];
@@ -148,8 +148,8 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
 
   @override
   void initState() {
-    if (widget.details.data().containsKey("categories")) {
-      jobTypeList = widget.details["categories"].cast<String>();
+    if ((widget.details!.data() as dynamic).containsKey("categories")) {
+      jobTypeList = widget.details!["categories"].cast<String>();
     } else {
       jobTypeList = <String>[];
     }
@@ -213,7 +213,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                       ])),
                   child: Center(
                     child: Text(
-                      (startTime != null) ? startTime : "CHOOSE START TIME",
+                      (startTime != null) ? startTime! : "CHOOSE START TIME",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
@@ -356,7 +356,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                                 fillColor: Colors.white,
                                 hintStyle: TextStyle(color: Colors.grey[400])),
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Enter City Name';
                               }
 
@@ -385,7 +385,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                                 fillColor: Colors.white,
                                 hintStyle: TextStyle(color: Colors.grey[400])),
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Enter State';
                               }
                               return null;
@@ -421,7 +421,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                             fillColor: Colors.white,
                             hintStyle: TextStyle(color: Colors.grey[400])),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Enter Zip Code';
                           }
                           return null;
@@ -518,7 +518,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                             fillColor: Colors.white,
                             hintStyle: TextStyle(color: Colors.grey[400])),
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Wardrobe Specifications';
                           }
                           return null;
@@ -582,10 +582,10 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                   anythingElse: anythingElseController.text,
                   locations: locations,
                   duration: estimatedDuration,
-                  hourlyRate: widget.details.data()["hourlyRate"],
+                  hourlyRate: (widget.details!.data() as dynamic)["hourlyRate"],
                   jobtype: selectedJobType,
                   potDates: _selectedDates,
-                  uid: widget.details.data()["uid"],
+                  uid: (widget.details!.data() as dynamic)["uid"],
                   wardrob: isProvidingWardrobe,
                   wardspecs: wardrobController.text,
                   isMakeupReady: isMakeupReady);
@@ -682,7 +682,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
   // We don't need to pass a context to the _show() function
   // You can safety use context as below
   Future<void> _show() async {
-    final TimeOfDay result =
+    final TimeOfDay? result =
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (result != null) {
       setState(() {
@@ -716,7 +716,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
             ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                border: Border.all(color: Colors.grey[400])),
+                border: Border.all(color: Colors.grey.shade400)),
             child: DropdownSearch<String>(
               showSearchBox: true,
               dropdownSearchDecoration: InputDecoration(
@@ -775,7 +775,7 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
             ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                border: Border.all(color: Colors.grey[400])),
+                border: Border.all(color: Colors.grey.shade400)),
             child: DropdownSearch<String>(
               showSearchBox: true,
               dropdownSearchDecoration: InputDecoration(

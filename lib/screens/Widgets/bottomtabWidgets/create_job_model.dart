@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class CreateJobModel extends StatefulWidget {
-  CreateJobModel({Key key}) : super(key: key);
+  CreateJobModel({Key? key}) : super(key: key);
 
   @override
   _CreateJobModelState createState() => _CreateJobModelState();

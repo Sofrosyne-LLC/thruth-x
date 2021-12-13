@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class INsta extends StatefulWidget {
-  INsta({Key key}) : super(key: key);
+  INsta({Key? key}) : super(key: key);
 
   @override
   _INstaState createState() => _INstaState();

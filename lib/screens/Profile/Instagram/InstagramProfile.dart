@@ -14,13 +14,13 @@ class InstagramProfile extends StatefulWidget {
 }
 
 class _InstagramProfileState extends State<InstagramProfile> {
-  String username;
-  String followers;
-  String following;
-  String website;
-  String bio;
-  String profileimage;
-  String totalPosts;
+  String? username;
+  String? followers;
+  String? following;
+  String? website;
+  String? bio;
+  String? profileimage;
+  String? totalPosts;
 
   bool profileFound = false;
   bool errorOccured = false;
@@ -67,8 +67,8 @@ class _InstagramProfileState extends State<InstagramProfile> {
               }),
         ),
         body: SingleChildScrollView(
-                  child: Container(
-            height: MediaQuery.of(context).size.height,
+          child: Container(
+              height: MediaQuery.of(context).size.height,
               child: errorOccured
                   ? Center(
                       child: Container(
@@ -84,7 +84,7 @@ class _InstagramProfileState extends State<InstagramProfile> {
                             radius: 30,
                             backgroundImage: profileimage == null
                                 ? null
-                                : NetworkImage(profileimage),
+                                : NetworkImage(profileimage!),
                             backgroundColor: Colors.grey[200],
                           ),
                           title: Text(username ?? "..."),
@@ -106,10 +106,10 @@ class _InstagramProfileState extends State<InstagramProfile> {
                                 children: [
                                   RowItem(
                                     "posts",
-                                    totalPosts,
+                                    totalPosts!,
                                   ),
-                                  RowItem("followers", followers),
-                                  RowItem("following", following),
+                                  RowItem("followers", followers!),
+                                  RowItem("following", following!),
                                 ],
                               ),
                               Divider(),
@@ -121,10 +121,10 @@ class _InstagramProfileState extends State<InstagramProfile> {
                               future: getInstaProfileData(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  List<String> userData = snapshot.data;
+                                  List<String> userData =
+                                      (snapshot.data as dynamic);
 
                                   return GridView.count(
-                                    
                                     crossAxisCount: 3,
                                     children: userData.map((e) {
                                       return InkWell(
@@ -155,8 +155,7 @@ class _InstagramProfileState extends State<InstagramProfile> {
                               }),
                         )
                       ],
-                    )
-            ),
+                    )),
         ),
       ),
     );
@@ -167,12 +166,12 @@ class _InstagramProfileState extends State<InstagramProfile> {
     print("+++++++++++++++++++++++++++");
 
     try {
-    print("+++++++++++++++++++++++++++");
-    
+      print("+++++++++++++++++++++++++++");
+
       final ipa = InstaPublicApi(widget.userIntaUsername);
       print("asdasd");
       final info = await ipa.getBasicInfo();
-       List<String> feedImagesUrls = await ipa.getTimelinePostsImages();
+      List<String?> feedImagesUrls = await ipa.getTimelinePostsImages();
 
       username = info.fullName; //username
 
@@ -185,26 +184,26 @@ class _InstagramProfileState extends State<InstagramProfile> {
       profileimage = info.profilePic;
 
       totalPosts = info.noOfPosts.toString();
-      isPrivate = info.isPrivate;
+      isPrivate = info.isPrivate!;
       // Profile picture URL
-      userData.addAll(feedImagesUrls);
+      userData.addAll((feedImagesUrls as dynamic));
       //print(userData);
       print("Feed images:${feedImagesUrls.length}");
       //print(flutterInsta.url);
       setState(() {
-        profileFound = username.isNotEmpty;
+        profileFound = username!.isNotEmpty;
       });
     } catch (e) {
-    print("+++++++++++++++++++++++++++");
-    
+      print("+++++++++++++++++++++++++++");
+
       print("ERROR OCCURED WHILE GETING INSTA DATA");
-      print(e.message);
+      print((e as dynamic).message);
       setState(() {
         errorOccured = true;
       });
     }
-print("+++++++++++++++++++++++++++");
-    
+    print("+++++++++++++++++++++++++++");
+
     return userData;
   }
 }

@@ -18,8 +18,8 @@ import 'package:truthinx/screens/Widgets/RoundedTabBarIndicator.dart';
 import 'package:truthinx/screens/new_proposals/new_proposals_page.dart';
 
 class ModelDetails extends StatefulWidget {
-  final DocumentSnapshot modelDetail;
-  final bool isClient;
+  final DocumentSnapshot? modelDetail;
+  final bool? isClient;
   ModelDetails({this.modelDetail, this.isClient});
 
   @override
@@ -29,7 +29,7 @@ class ModelDetails extends StatefulWidget {
 class _ModelDetailsState extends State<ModelDetails> {
   TextEditingController _proposalController = TextEditingController();
   ProfileServices profileData = ProfileServices();
-  AppUser user;
+  AppUser? user;
   @override
   void dispose() {
     _proposalController.dispose();
@@ -87,10 +87,11 @@ class _ModelDetailsState extends State<ModelDetails> {
                                 tag: widget.modelDetail.hashCode,
                                 child: CircleAvatar(
                                   radius: 55,
-                                  backgroundImage: widget.modelDetail["dp"] ==
+                                  backgroundImage: widget.modelDetail!["dp"] ==
                                           "default"
                                       ? AssetImage('assets/userP.png')
-                                      : NetworkImage(widget.modelDetail["dp"]),
+                                      : NetworkImage(widget.modelDetail!["dp"])
+                                          as ImageProvider<Object>?,
                                 ),
                               ),
                             ),
@@ -101,7 +102,7 @@ class _ModelDetailsState extends State<ModelDetails> {
                     ),
                   ),
                   Text(
-                    "${widget.modelDetail["first_name"]}  ${widget.modelDetail["last_name"]}"
+                    "${widget.modelDetail!["first_name"]}  ${widget.modelDetail!["last_name"]}"
                         .toUpperCase(),
                     style: TextStyle(
                       fontSize: 20,
@@ -110,7 +111,7 @@ class _ModelDetailsState extends State<ModelDetails> {
                     ),
                   ),
                   SizedBox(height: 5),
-                  widget.modelDetail["verification"] == "VERIFIED"
+                  widget.modelDetail!["verification"] == "VERIFIED"
                       ? Expanded(
                           child: Column(
                             children: [
@@ -122,7 +123,7 @@ class _ModelDetailsState extends State<ModelDetails> {
                                   SizedBox(width: 5),
                                   Text(
                                     //"widget.modelDetail[city]",
-                                    widget.modelDetail["zipCode"],
+                                    widget.modelDetail!["zipCode"],
                                     style: TextStyle(
                                       color: Color(0xFF7C7671),
                                     ),
@@ -155,11 +156,13 @@ class _ModelDetailsState extends State<ModelDetails> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (_) =>
-                                                          ProposalsDetails(details : widget.modelDetail)));
+                                                          ProposalsDetails(
+                                                              details: widget
+                                                                  .modelDetail)));
                                             },
                                             child: Center(
                                               child: Text(
-                                                  "\$${widget.modelDetail["hourlyRate"]}/hr",
+                                                  "\$${widget.modelDetail!["hourlyRate"]}/hr",
                                                   style: TextStyle(
                                                       fontFamily: GoogleFonts
                                                               .varelaRound()
@@ -184,11 +187,14 @@ class _ModelDetailsState extends State<ModelDetails> {
                                         ),
                                         onPressed: () {
                                           Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      InstaProfileWebView(
-                                                          "https://www.instagram.com/${widget.modelDetail["instagram_username"]}/")));
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  InstaProfileWebView(
+                                                "https://www.instagram.com/${widget.modelDetail!["instagram_username"]}/",
+                                              ),
+                                            ),
+                                          );
                                         }),
                                   ),
                                 ],
@@ -225,17 +231,17 @@ class _ModelDetailsState extends State<ModelDetails> {
                                   children: [
                                     Portfolio(
                                       bestPhotos:
-                                          widget.modelDetail["bestPhotos"],
+                                          widget.modelDetail!["bestPhotos"],
                                     ),
                                     ModelCategories(
                                         categories:
-                                            widget.modelDetail["categories"]),
+                                            widget.modelDetail!["categories"]),
                                     ModelAttributes(
                                       attributes:
-                                          widget.modelDetail["attributes"],
+                                          widget.modelDetail!["attributes"],
                                     ),
                                     ModelSkills(
-                                      skills: widget.modelDetail["skills"],
+                                      skills: widget.modelDetail!["skills"],
                                     ),
                                   ],
                                 ),
@@ -353,7 +359,7 @@ class _ModelDetailsState extends State<ModelDetails> {
                           SizedBox(width: 10),
                           Text("Budget:"),
                           SizedBox(width: 10),
-                          Text("\$${widget.modelDetail["hourlyRate"]} / hour")
+                          Text("\$${widget.modelDetail!["hourlyRate"]} / hour")
                         ],
                       ),
                     ),
@@ -393,44 +399,44 @@ class _ModelDetailsState extends State<ModelDetails> {
     String docId = DateTime.now().millisecondsSinceEpoch.toString();
     DocumentSnapshot client = await FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     FirebaseFirestore.instance
         .collection("user")
-        .doc(widget.modelDetail.id)
+        .doc(widget.modelDetail!.id)
         .collection("MyProposals")
         .doc(docId)
         .set({
       "proposal": _proposalController.text,
-      "clientId": FirebaseAuth.instance.currentUser.uid,
-      "clientEmail": user.email,
-      "clientName": "${user.first_name} ${user.last_name}",
+      "clientId": FirebaseAuth.instance.currentUser!.uid,
+      "clientEmail": user!.email,
+      "clientName": "${user!.first_name} ${user!.last_name}",
       "order": DateTime.now().millisecondsSinceEpoch,
       "time": Timestamp.now(),
       "clientDP": client["dp"],
-      "rate": widget.modelDetail["hourlyRate"],
+      "rate": widget.modelDetail!["hourlyRate"],
     });
     FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection("MyProposals")
         .doc(docId)
         .set({
       "proposal": _proposalController.text,
-      "modelId": widget.modelDetail.id,
-      "modelEmail": widget.modelDetail["email"],
+      "modelId": widget.modelDetail!.id,
+      "modelEmail": widget.modelDetail!["email"],
       "modelName":
-          "${widget.modelDetail["first_name"]}  ${widget.modelDetail["last_name"]}",
+          "${widget.modelDetail!["first_name"]}  ${widget.modelDetail!["last_name"]}",
       "order": DateTime.now().millisecondsSinceEpoch,
       "time": Timestamp.now(),
-      "modelDp": widget.modelDetail["dp"],
-      "rate": widget.modelDetail["hourlyRate"],
+      "modelDp": widget.modelDetail!["dp"],
+      "rate": widget.modelDetail!["hourlyRate"],
     });
 
     sendNotifications(
       bodyText:
-          "${user.first_name} ${user.last_name}, have sent you a proposal, please visit My Proposals section to track it.",
-      id: widget.modelDetail.id,
+          "${user!.first_name} ${user!.last_name}, have sent you a proposal, please visit My Proposals section to track it.",
+      id: widget.modelDetail!.id,
       title: "Mew Project!",
     );
     Fluttertoast.showToast(msg: "Proposal sent!");

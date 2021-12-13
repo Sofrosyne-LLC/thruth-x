@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RateCalculation extends StatefulWidget {
-  final Function changeRate;
+  final Function? changeRate;
   RateCalculation({@required this.changeRate});
   @override
   _RateCalculationState createState() => _RateCalculationState();
@@ -54,7 +54,7 @@ class _RateCalculationState extends State<RateCalculation> {
             onChanged: (double newValue) {
               setState(() {
                 _value = newValue.round();
-                widget.changeRate(_value);
+                widget.changeRate!(_value);
               });
             },
           ),

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 class CustomCheckBox extends StatefulWidget {
-  final String title;
-  ValueChanged<String> onChanged;
-  List<String> values;
-  String intialSelection;
-   List<CheckBoxObject> list;
+  final String? title;
+  ValueChanged<String>? onChanged;
+  List<String>? values;
+  String? intialSelection;
+  List<CheckBoxObject>? list;
   CustomCheckBox(
-      {this.title, this.onChanged, this.values, this.intialSelection, this.list});
+      {this.title,
+      this.onChanged,
+      this.values,
+      this.intialSelection,
+      this.list});
 
   @override
   State<CustomCheckBox> createState() => _CustomCheckBoxState();
@@ -15,10 +19,10 @@ class CustomCheckBox extends StatefulWidget {
 
 class _CustomCheckBoxState extends State<CustomCheckBox> {
   List<CheckBoxObject> list = [];
-  bool _currentValue=false;
+  bool _currentValue = false;
 
   void initializeList() {
-    widget.values.forEach((element) {
+    widget.values!.forEach((element) {
       if (widget.intialSelection != null && widget.intialSelection == element) {
         list.add(CheckBoxObject(item: element, isSelected: true));
       } else {
@@ -27,7 +31,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
     });
   }
 
-  void _handleOnTap(String item) {
+  void _handleOnTap(String? item) {
     list.forEach((element) {
       element.isSelected = false;
     });
@@ -52,7 +56,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
     return Container(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
       (widget.title != null)
-          ? Align(alignment: Alignment.topLeft, child: Text(widget.title))
+          ? Align(alignment: Alignment.topLeft, child: Text(widget.title!))
           : SizedBox.shrink(),
       SizedBox(height: 5),
       Column(
@@ -64,11 +68,11 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   singleItemWidget() {
     return list
         .map((e) => Row(children: [
-              Text(e.item),
+              Text(e.item!),
               Checkbox(
                 value: e.isSelected,
                 onChanged: (value) {
-                  _currentValue= e.isSelected;
+                  _currentValue = e.isSelected;
                   _handleOnTap(e.item);
                 },
               ),
@@ -78,7 +82,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
 }
 
 class CheckBoxObject {
-  String item;
+  String? item;
   bool isSelected;
   CheckBoxObject({this.item, this.isSelected = false});
 }

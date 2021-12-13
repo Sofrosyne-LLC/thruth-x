@@ -4,7 +4,7 @@ import 'package:truthinx/utils/uihelpers.dart';
 import 'package:truthinx/utils/utils.dart';
 
 class FilterPage extends StatefulWidget {
-  const FilterPage({Key key}) : super(key: key);
+  const FilterPage({Key? key}) : super(key: key);
 
   @override
   _FilterPageState createState() => _FilterPageState();
@@ -220,17 +220,17 @@ class _FilterPageState extends State<FilterPage> {
     );
   }
 
-  Widget filterTile({String title, Widget widget, double padding = 0}) {
+  Widget filterTile({String? title, Widget? widget, double padding = 0}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            title,
+            "$title",
             style: Theme.of(context)
                 .textTheme
-                .headline6
+                .headline6!
                 .copyWith(fontSize: 20, fontWeight: FontWeight.w600),
           ),
         ),

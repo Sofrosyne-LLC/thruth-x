@@ -8,12 +8,11 @@ import 'package:truthinx/screens/Profile/agent_profile.dart';
 import 'package:truthinx/screens/Widgets/bottomtabWidgets/home_model.dart';
 import 'package:truthinx/screens/Widgets/bottomtabWidgets/payments.dart';
 
-
 class MainScreenModel extends StatefulWidget {
-  final int index;
-  MainScreenModel({Key key, this.title, this.index}) : super(key: key);
+  final int? index;
+  MainScreenModel({Key? key, this.title, this.index}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MainScreenModelState createState() => _MainScreenModelState();
@@ -46,7 +45,6 @@ class _MainScreenModelState extends State<MainScreenModel> {
                 icon: Icon(CupertinoIcons.home),
                 label: 'Home',
               ),
-             
               BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.chart_bar_square),
                   label: "Listings"),
@@ -60,9 +58,9 @@ class _MainScreenModelState extends State<MainScreenModel> {
         tabBuilder: (context, index) {
           switch (index) {
             case 0:
-              return  HomeScreenCustomer();
+              return HomeScreenCustomer();
               break;
-            
+
             case 1:
               return Listings();
               break;

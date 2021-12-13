@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   // final Color backgroundColor = Colors.red;
-  final String title;
+  final String? title;
 
-  final AppBar appBar;
+  final AppBar? appBar;
   //final List<CartProductItem> cartList;
   //final Function(List<CartProductItem>) onChange;
 
   /// you can add more fields that meet your needs
 
   const BaseAppBar({
-    Key key,
+    Key? key,
     // this.title,
     this.appBar,
     this.title,
@@ -26,12 +25,12 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.black.withOpacity(0.2),
       centerTitle: true,
       title: Text(
-       title,
+        title!,
         style: TextStyle(color: Colors.white),
       ),
     );
   }
 
   @override
-  Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);
+  Size get preferredSize => new Size.fromHeight(appBar!.preferredSize.height);
 }

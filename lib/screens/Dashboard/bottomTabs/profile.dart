@@ -7,7 +7,7 @@ import 'package:truthinx/screens/Startup_screens/welcome.dart';
 import '../../Profile/AccountSettings/deactivate_account.dart';
 
 class ProfileCustomer extends StatefulWidget {
-  ProfileCustomer({Key key}) : super(key: key);
+  ProfileCustomer({Key? key}) : super(key: key);
 
   @override
   _ProfileCustomerState createState() => _ProfileCustomerState();

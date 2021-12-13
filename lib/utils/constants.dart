@@ -154,9 +154,9 @@ String getRandomString(int length) {
 }
 
 final postNotificationURL = "https://fcm.googleapis.com/fcm/send";
-final headers = {
+final Map<String, String>? headers = {
   'content-type': 'application/json',
-  'Authorization': env["authServerKeyFirebase"]
+  'Authorization': (dotenv.env as dynamic)["authServerKeyFirebase"]
 };
 List<String> categories = [
   "Advertising/Marketing",

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:truthinx/screens/Dashboard/ModelHire/FullImage.dart';
 
 class Portfolio extends StatelessWidget {
-  final List<dynamic> bestPhotos;
+  final List<dynamic>? bestPhotos;
   Portfolio({@required this.bestPhotos});
 
   @override
@@ -14,9 +14,9 @@ class Portfolio extends StatelessWidget {
           Expanded(
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: List.generate(bestPhotos.length, (index) {
+              children: List.generate(bestPhotos!.length, (index) {
                 return Hero(
-                  tag: bestPhotos[index],
+                  tag: bestPhotos![index],
                   child: Material(
                     child: InkWell(
                       onTap: () {
@@ -24,7 +24,7 @@ class Portfolio extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => FullImage(
-                              bestPhotos[index],
+                              bestPhotos![index],
                             ),
                           ),
                         );
@@ -39,7 +39,7 @@ class Portfolio extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
                               image: NetworkImage(
-                                bestPhotos[index],
+                                bestPhotos![index],
                               ),
                               fit: BoxFit.cover),
                         ),

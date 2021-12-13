@@ -26,21 +26,21 @@ class _CreateGigState extends State<CreateGig> {
 
   TextEditingController requirements = TextEditingController();
   TextEditingController hourlyrate = TextEditingController();
-  AppUser user;
+  AppUser? user;
   ProfileServices profileData = ProfileServices();
   void initState() {
     super.initState();
     profileData.getLocalUser().then((value) {
       setState(() {
         user = value;
-        print(user.verification);
+        print(user!.verification);
       });
     });
   }
 
-  int _radioValue = 0;
+  int? _radioValue = 0;
   String gender = "Male";
-  void _handleRadioValueChange(int value) {
+  void _handleRadioValueChange(int? value) {
     setState(() {
       _radioValue = value;
 
@@ -229,11 +229,11 @@ class _CreateGigState extends State<CreateGig> {
     try {
       String userDp = await getUserDp();
       Gig gig = Gig(
-          clientID: FirebaseAuth.instance.currentUser.uid,
+          clientID: FirebaseAuth.instance.currentUser!.uid,
           dateCreated: Timestamp.now(),
           gigOrder: DateTime.now().millisecondsSinceEpoch,
           clientDp: userDp,
-          clientName: "${user.first_name} ${user.last_name}",
+          clientName: "${user!.first_name} ${user!.last_name}",
           title: title.text,
           role: role.text,
           hourlyRate: hourlyrate.text.trim(),
@@ -253,7 +253,7 @@ class _CreateGigState extends State<CreateGig> {
         Navigator.pop(context);
       });
     } catch (e) {
-      Fluttertoast.showToast(msg: e.message);
+      Fluttertoast.showToast(msg: (e as dynamic).message);
       _btnController.error();
       Timer(Duration(seconds: 2), () {
         _btnController.reset();
@@ -264,7 +264,7 @@ class _CreateGigState extends State<CreateGig> {
   Future<String> getUserDp() async {
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection("user")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     return doc["dp"];
   }

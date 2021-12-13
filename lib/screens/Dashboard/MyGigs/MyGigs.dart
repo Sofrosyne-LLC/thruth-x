@@ -7,7 +7,6 @@ import 'package:truthinx/Models/Gig.dart';
 import 'package:truthinx/screens/Dashboard/MyGigs/GigCard.dart';
 
 class MyGigs extends StatelessWidget {
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,22 +16,21 @@ class MyGigs extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("Gigs")
-            .where("clientID", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+            .where("clientID",
+                isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .snapshots(),
         // initialData: initialData,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
-            int allDocs = snapshot.data.docs.length;
-            List<DocumentSnapshot> docs = snapshot.data.docs;
+            int allDocs = snapshot.data!.docs.length;
+            List<DocumentSnapshot> docs = snapshot.data!.docs;
             return PageView(
-
               children: List.generate(allDocs, (index) {
                 return GigCard(
-                  gig: Gig.fromMap(docs[index].data()),
-                  proposalIndex: index+1,
+                  gig: Gig.fromMap((docs as dynamic)[index].data()),
+                  proposalIndex: index + 1,
                   totalProposals: allDocs,
                   docId: docs[index].id,
-
                 );
               }),
             );

@@ -5,8 +5,8 @@ import 'package:truthinx/screens/Dashboard/filter_page.dart';
 import 'package:truthinx/screens/Widgets/Model_Grid_Item.dart';
 
 class Search extends StatefulWidget {
-  final bool isClient;
-  Search({Key key, this.isClient}) : super(key: key);
+  final bool? isClient;
+  Search({Key? key, this.isClient}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
@@ -167,9 +167,9 @@ class _SearchState extends State<Search> {
                     childAspectRatio: MediaQuery.of(context).size.width /
                         (MediaQuery.of(context).size.height / 1.4),
                   ),
-                  itemCount: snapshot.data.docs.length,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot data = snapshot.data.docs[index];
+                    DocumentSnapshot data = snapshot.data!.docs[index];
                     return GridProduct(
                         // img: data['profile_pic'],
                         details: data,

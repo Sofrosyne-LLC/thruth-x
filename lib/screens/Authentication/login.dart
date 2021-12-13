@@ -32,9 +32,9 @@ class _LoginState extends State<Login> {
       try {
         DocumentSnapshot data = await FirebaseFirestore.instance
             .collection('user')
-            .doc(result.user.uid)
+            .doc(result.user!.uid)
             .get(); //get the data
-        await saveUserToPreferences(data.data());
+        await saveUserToPreferences(data.data() as dynamic);
         setState(() {
           _isLoading = false;
         });
@@ -53,7 +53,7 @@ class _LoginState extends State<Login> {
               (route) => false);
         }
       } catch (e) {
-        print(e.message);
+        print((e as dynamic).message);
       }
 
       // else {
@@ -146,7 +146,7 @@ class _LoginState extends State<Login> {
                                             TextStyle(color: Colors.grey[400])),
                                     // The validator receives the text that the user has entered.
                                     validator: (value) {
-                                      if (value.isEmpty) {
+                                      if (value!.isEmpty) {
                                         return 'Enter Email Address';
                                       } else if (!value.contains('@')) {
                                         return 'Please enter a valid email address';
@@ -190,7 +190,7 @@ class _LoginState extends State<Login> {
                                           hintStyle: TextStyle(
                                               color: Colors.grey[400])),
                                       validator: (value) {
-                                        if (value.isEmpty) {
+                                        if (value!.isEmpty) {
                                           return 'Enter Password';
                                         } else if (value.length < 6) {
                                           return 'Password must be atleast 6 characters!';
@@ -210,7 +210,7 @@ class _LoginState extends State<Login> {
                             ? Center(child: CircularProgressIndicator())
                             : GestureDetector(
                                 onTap: () {
-                                  if (_formKey.currentState.validate()) {
+                                  if (_formKey.currentState!.validate()) {
                                     setState(() {
                                       _isLoading = true;
                                     });

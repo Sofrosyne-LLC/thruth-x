@@ -12,7 +12,6 @@ import 'package:truthinx/screens/Profile/AccountSettings/account_settings.dart';
 import 'package:truthinx/screens/Profile/Instagram/InstagramProfile.dart';
 import 'package:truthinx/screens/Widgets/Profile_Widgets/CategoryChip.dart';
 
-
 class AgentProfile extends StatefulWidget {
   @override
   _AgentProfileState createState() => _AgentProfileState();
@@ -20,14 +19,14 @@ class AgentProfile extends StatefulWidget {
 
 class _AgentProfileState extends State<AgentProfile> {
   ProfileServices profileData = ProfileServices();
-  AppUser user;
+  AppUser? user;
   @override
   void initState() {
     super.initState();
     profileData.getLocalUser().then((value) {
       setState(() {
         user = value;
-        print(user.instagram);
+        print(user!.instagram);
       });
     });
   }
@@ -49,7 +48,7 @@ class _AgentProfileState extends State<AgentProfile> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AccountSettings(user)));
+                        builder: (context) => AccountSettings(user!)));
               },
             )
           ],
@@ -98,10 +97,10 @@ class _AgentProfileState extends State<AgentProfile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${user.first_name} ${user.last_name}",
+                              "${user!.first_name} ${user!.last_name}",
                               style: TextStyle(fontSize: 24),
                             ),
-                            Text(user.role)
+                            Text(user!.role!)
                           ],
                         )
                       ],
@@ -110,7 +109,7 @@ class _AgentProfileState extends State<AgentProfile> {
                     SizedBox(height: 20),
                     TextField(
                       enabled: false,
-                      controller: TextEditingController()..text = user.email,
+                      controller: TextEditingController()..text = user!.email!,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(left: 16),
                         labelText: "Email",
@@ -127,22 +126,24 @@ class _AgentProfileState extends State<AgentProfile> {
                           borderRadius: BorderRadius.circular(300)),
                       child: ListTile(
                         onTap: () {
-                          if(  user.instagram == "default"){
-                            Fluttertoast.showToast(msg: "Please Attach an account from settings!", toastLength: Toast.LENGTH_LONG);
+                          if (user!.instagram == "default") {
+                            Fluttertoast.showToast(
+                                msg: "Please Attach an account from settings!",
+                                toastLength: Toast.LENGTH_LONG);
                             return;
                           }
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => 
-                                  InstagramProfile( "${user.instagram}")
+                                  builder: (context) =>
+                                      InstagramProfile("${user!.instagram}")
                                   //INsta()
                                   ));
                         },
                         subtitle: Text(
-                          user.instagram == "default"
+                          user!.instagram == "default"
                               ? "No Account attached"
-                              : user.instagram,
+                              : user!.instagram!,
                         ),
                         leading: Image.asset(
                           "assets/instagram.png",
@@ -168,45 +169,44 @@ class _AgentProfileState extends State<AgentProfile> {
                       ),
                     ),
                     FutureBuilder(
-                          future: profileData.getUserCategories(),
-                          builder:
-                              (context, AsyncSnapshot<List<String>> snapshot) {
-                            if (snapshot.hasData && snapshot.data != null) {
-                              print(snapshot.data);
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text("Categories :"),
-                                  ),
-                                  Wrap(
-                                        spacing: 10,
-                                        runSpacing: 10,
-                                        children: snapshot.data.map((cat) {
-                    return CategoryChip(cat.split("***")[0 ]);
-                                        }).toList()),
-                                ],
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
+                        future: profileData.getUserCategories(),
+                        builder:
+                            (context, AsyncSnapshot<List<String>> snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            print(snapshot.data);
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Categories :"),
+                                ),
+                                Wrap(
+                                    spacing: 10,
+                                    runSpacing: 10,
+                                    children: snapshot.data!.map((cat) {
+                                      return CategoryChip(cat.split("***")[0]);
+                                    }).toList()),
+                              ],
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }),
                     SizedBox(
                       height: 60,
                     ),
                     FutureBuilder(
                         future: FirebaseFirestore.instance
                             .collection("user")
-                            .doc(FirebaseAuth.instance.currentUser.uid)
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
                             .get(),
                         builder: (context,
                             AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasData && snapshot.data.exists) {
-                            DocumentSnapshot doc = snapshot.data;
-                            if (doc['verification'] ==
-                                "UNKNOWN") {
+                          if (snapshot.hasData && snapshot.data!.exists) {
+                            DocumentSnapshot<Object?>? doc = snapshot.data;
+                            if (doc!['verification'] == "UNKNOWN") {
                               return Align(
                                 alignment: Alignment.bottomCenter,
                                 child: ElevatedButton.icon(
@@ -216,7 +216,7 @@ class _AgentProfileState extends State<AgentProfile> {
                                             borderRadius:
                                                 BorderRadius.circular(300))),
                                     onPressed: () {
-                                      if (user.role == "Client") {
+                                      if (user!.role == "Client") {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -233,8 +233,7 @@ class _AgentProfileState extends State<AgentProfile> {
                                     label: Text("Complete Profile")),
                               );
                             } else {
-                              if (doc['verification'] ==
-                                  "submitted") {
+                              if (doc['verification'] == "submitted") {
                                 return Align(
                                   alignment: Alignment.bottomCenter,
                                   child: ElevatedButton.icon(

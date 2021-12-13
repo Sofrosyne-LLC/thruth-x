@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class SliderWidget extends StatefulWidget {
-  final double value;
-  final Function(double value) onChnaged;
+  final double? value;
+  final Function(double value)? onChnaged;
   final double min;
   final double max;
-  final int division;
+  final int? division;
 
   const SliderWidget(
-      {Key key,
+      {Key? key,
       @required this.value,
       @required this.onChnaged,
       this.min = 0,
@@ -27,7 +27,7 @@ class _SliderWidgetState extends State<SliderWidget> {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         activeTrackColor: Constants.maincolor.withOpacity(0.7),
-        inactiveTrackColor: Colors.grey[400].withOpacity(0.4),
+        inactiveTrackColor: Colors.grey[400]!.withOpacity(0.4),
         trackShape: RoundedRectSliderTrackShape(),
         trackHeight: 2.0,
         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 12.0),
@@ -44,11 +44,11 @@ class _SliderWidgetState extends State<SliderWidget> {
         ),
       ),
       child: Slider(
-          value: widget.value,
+          value: widget.value!,
           min: widget.min,
           max: widget.max,
           divisions: widget.division,
-          label: widget.value.toStringAsFixed(0),
+          label: widget.value!.toStringAsFixed(0),
           onChanged: widget.onChnaged),
     );
   }

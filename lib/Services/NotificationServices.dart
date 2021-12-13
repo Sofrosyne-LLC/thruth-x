@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:truthinx/utils/constants.dart';
 
 
-  void sendNotifications({String bodyText, String title, String id}) async {
+  void sendNotifications({String? bodyText, String? title, String? id}) async {
    String token = "";
       DocumentSnapshot doc;
    try{ doc= await FirebaseFirestore.instance.collection("notifications").doc(id).get();

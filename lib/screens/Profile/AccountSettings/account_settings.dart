@@ -24,7 +24,6 @@ class _AccountSettingsState extends State<AccountSettings> {
   String _support = "http://truthinxmodels.com/Support";
   String _termsAndConditions = "http://truthinxmodels/privacy";
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +121,7 @@ class _AccountSettingsState extends State<AccountSettings> {
               ),
               trailing: Text(widget.userData.instagram == "default"
                   ? "Add account"
-                  : widget.userData.instagram),
+                  : widget.userData.instagram!),
             ),
             SizedBox(height: 20),
             Row(
@@ -204,30 +203,26 @@ class _AccountSettingsState extends State<AccountSettings> {
               ),
               trailing: Text("1.0.1"),
             ),
-
-
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 8),
               enabled: true,
-              onTap: (){
+              onTap: () {
                 _launchURL(_support);
               },
               leading: Text(
                 "Support",
-                style: TextStyle(fontSize: 16,
-                    color: Colors.grey,
-
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
                 ),
               ),
               trailing: Icon(
                 Icons.arrow_forward_ios_rounded,
               ),
             ),
-
-
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 8),
-              onTap: (){
+              onTap: () {
                 _launchURL(_termsAndConditions);
               },
               enabled: true,
@@ -239,11 +234,10 @@ class _AccountSettingsState extends State<AccountSettings> {
                 Icons.arrow_forward_ios_rounded,
               ),
             ),
-
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 8),
               enabled: true,
-              onTap: (){
+              onTap: () {
                 _launchURL(_privacyUrl);
               },
               leading: Text(
@@ -254,7 +248,6 @@ class _AccountSettingsState extends State<AccountSettings> {
                 Icons.arrow_forward_ios_rounded,
               ),
             ),
-
           ],
         ),
       ),
@@ -272,12 +265,12 @@ class _AccountSettingsState extends State<AccountSettings> {
   Future<bool> getNotificationStatus() async {
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection("notifications")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
 
     setState(() {
       var b = doc.data();
-      notificationStatus = b["allowed"];
+      notificationStatus = (b as dynamic)["allowed"];
     });
     return doc["allowed"];
   }
@@ -285,7 +278,7 @@ class _AccountSettingsState extends State<AccountSettings> {
   changeNotificationStatus(bool value) {
     FirebaseFirestore.instance
         .collection("notifications")
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({
       "allowed": value,
     });
@@ -294,6 +287,4 @@ class _AccountSettingsState extends State<AccountSettings> {
   void _launchURL(String url) async {
     if (!await launch(url)) throw 'Could not launch $url';
   }
-
-
 }

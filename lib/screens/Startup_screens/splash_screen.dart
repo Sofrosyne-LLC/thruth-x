@@ -18,7 +18,7 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   checkUser() {
     Future.delayed(Duration(seconds: 3), () async {
-      User user = FirebaseAuth.instance.currentUser;
+      User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         try {
           DocumentSnapshot data = await FirebaseFirestore.instance
@@ -40,7 +40,7 @@ class SplashScreenState extends State<SplashScreen> {
                 (route) => false);
           }
         } catch (e) {
-          print(e.message);
+          print((e as dynamic).message);
         }
       } else {
         Navigator.pushReplacement(

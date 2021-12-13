@@ -9,10 +9,10 @@ import 'package:truthinx/screens/Dashboard/bottomTabs/payments.dart';
 import 'package:truthinx/screens/Profile/agent_profile.dart';
 
 class MainScreenCustomer extends StatefulWidget {
-  final int index;
-  MainScreenCustomer({Key key, this.title, this.index}) : super(key: key);
+  final int? index;
+  MainScreenCustomer({Key? key, this.title, this.index}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MainScreenCustomerState createState() => _MainScreenCustomerState();
@@ -45,7 +45,6 @@ class _MainScreenCustomerState extends State<MainScreenCustomer> {
                 icon: Icon(CupertinoIcons.home),
                 label: 'Home',
               ),
-              
               BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.person_2_square_stack),
                   label: "Create Job"),
@@ -62,16 +61,15 @@ class _MainScreenCustomerState extends State<MainScreenCustomer> {
               return HomeScreenCustomer();
               break;
             case 1:
-             return CreateJobCustomer();
+              return CreateJobCustomer();
               break;
             case 2:
-               return PaymentsCustomer();
+              return PaymentsCustomer();
               break;
             case 3:
               return AgentProfile();
               break;
-            
-              
+
             default:
               return HomeScreenCustomer();
               break;

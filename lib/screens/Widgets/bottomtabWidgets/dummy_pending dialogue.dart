@@ -4,7 +4,7 @@ import 'package:truthinx/Models/verification/verification_model1.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class PendindDilaogue extends StatefulWidget {
-  PendindDilaogue({Key key}) : super(key: key);
+  PendindDilaogue({Key? key}) : super(key: key);
 
   @override
   _PendindDilaogueState createState() => _PendindDilaogueState();

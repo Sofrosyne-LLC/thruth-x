@@ -4,7 +4,7 @@ import 'package:truthinx/screens/Dashboard/search.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class HomeScreenModel extends StatefulWidget {
-  HomeScreenModel({Key key}) : super(key: key);
+  HomeScreenModel({Key? key}) : super(key: key);
 
   @override
   _HomeScreenModelState createState() => _HomeScreenModelState();
@@ -18,9 +18,9 @@ const Color selectedColor = Colors.white;
 const Color normalColor = Colors.grey;
 
 class _HomeScreenModelState extends State<HomeScreenModel> {
-  double xAlign;
-  Color loginColor;
-  Color signInColor;
+  double? xAlign;
+  Color? loginColor;
+  Color? signInColor;
 
   @override
   void initState() {
@@ -109,7 +109,7 @@ class _HomeScreenModelState extends State<HomeScreenModel> {
                       child: Stack(
                         children: [
                           AnimatedAlign(
-                            alignment: Alignment(xAlign, 0),
+                            alignment: Alignment(xAlign!, 0),
                             duration: Duration(milliseconds: 300),
                             child: Container(
                               width: width * 0.5,

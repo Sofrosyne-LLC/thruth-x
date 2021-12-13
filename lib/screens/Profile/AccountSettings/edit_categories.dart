@@ -20,6 +20,7 @@ class _EditCategoriesState extends State<EditCategories> {
   void initState() {
     super.initState();
   }
+
   bool flag = true;
   saveCategories() async {
     bool selected = false;
@@ -37,24 +38,26 @@ class _EditCategoriesState extends State<EditCategories> {
           selectedCategories.add(categories[i]);
         }
       }
-      User user = FirebaseAuth.instance.currentUser;
+      User? user = FirebaseAuth.instance.currentUser;
       FirebaseFirestore.instance
           .collection("user")
-          .doc(user.uid)
+          .doc(user!.uid)
           .update({"categories": selectedCategories});
       Fluttertoast.showToast(msg: "Categories Successfully updated");
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       prefs.setStringList("cetegories", selectedCategories);
-      if(widget.userData.role == "Client"){
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> MainScreenCustomer()), (route) => false);
-
-      }
-      else{
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> MainScreenModel()), (route) => false);
-
-        
+      if (widget.userData.role == "Client") {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreenCustomer()),
+            (route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreenModel()),
+            (route) => false);
       }
     } else {
       //Show toast to select atleast one of the categories
@@ -63,22 +66,22 @@ class _EditCategoriesState extends State<EditCategories> {
   }
 
   Future<List<int>> getCategories() async {
-   if(flag){
+    if (flag) {
       try {
-      if (widget.userData.cetegories != null &&
-          widget.userData.cetegories.isNotEmpty) {
-        for (String cat in widget.userData.cetegories) {
-          int index = categories.indexOf(cat);
-          categoryIndex[index] = 1;
+        if (widget.userData.cetegories != null &&
+            widget.userData.cetegories!.isNotEmpty) {
+          for (String cat in widget.userData.cetegories!) {
+            int index = categories.indexOf(cat);
+            categoryIndex[index] = 1;
+          }
+          print("IN");
         }
-        print("IN");
+        print("OUt");
+      } catch (e) {
+        print((e as dynamic).message);
       }
-      print("OUt");
-    } catch (e) {
-      print(e.message);
+      flag = false;
     }
-    flag = false;
-   }
 
     return Future.value(categoryIndex);
   }
@@ -89,9 +92,13 @@ class _EditCategoriesState extends State<EditCategories> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Business Categories"),
-        actions: [TextButton(onPressed: () {
-          saveCategories();
-        }, child: Text("Save"))],
+        actions: [
+          TextButton(
+              onPressed: () {
+                saveCategories();
+              },
+              child: Text("Save"))
+        ],
       ),
       body: FutureBuilder<List<int>>(
           future: getCategories(),

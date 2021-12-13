@@ -11,11 +11,11 @@ import 'package:truthinx/screens/Dashboard/Maps/MapView.dart';
 import 'BookingModalForModel.dart';
 
 class ModelBookingCard extends StatefulWidget {
-  final BookingModalForModel bm;
+  final BookingModalForModel? bm;
 
-  final String docId;
-  final int totalBookings;
-  final int bookingIndex;
+  final String? docId;
+  final int? totalBookings;
+  final int? bookingIndex;
   ModelBookingCard(
       {this.bm, this.totalBookings, this.bookingIndex, this.docId});
 
@@ -86,13 +86,13 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                   children: [
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: widget.bm.clientDp == "default"
+                        backgroundImage: widget.bm!.clientDp == "default"
                             ? AssetImage("assets/userP.png")
-                            : NetworkImage(widget.bm.clientDp),
+                            : NetworkImage("${widget.bm!.clientDp}") as ImageProvider,
                         backgroundColor: Colors.grey[200],
                         radius: 25,
                       ),
-                      title: Text(widget.bm.clientName),
+                      title: Text("${widget.bm!.clientName}"),
                       subtitle: Text("Client"),
                     ),
                     SizedBox(height: 10),
@@ -113,7 +113,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                               SizedBox(width: 10),
                               Text("Title:"),
                               SizedBox(width: 10),
-                              Text(widget.bm.title),
+                              Text("${widget.bm!.title}"),
                             ],
                           ),
                           SizedBox(height: 10),
@@ -129,7 +129,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                               SizedBox(width: 10),
                               Text("Role:"),
                               SizedBox(width: 10),
-                              Text(widget.bm.role)
+                              Text("${widget.bm!.role}")
                             ],
                           ),
                           SizedBox(height: 10),
@@ -145,7 +145,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                               SizedBox(width: 10),
                               Text("Budget:"),
                               SizedBox(width: 10),
-                              Text("\$${widget.bm.rate} / hour")
+                              Text("\$${widget.bm!.rate} / hour")
                             ],
                           ),
                         ],
@@ -160,7 +160,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                       leading: Icon(Icons.date_range_rounded),
                       title: Text("Booked on"),
                       subtitle: Text(DateFormat(DateFormat.YEAR_MONTH_DAY)
-                          .format(widget.bm.time.toDate())),
+                          .format(widget.bm!.time!.toDate())),
                     ),
                     Divider(
                       indent: 40,
@@ -177,9 +177,9 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                             children: [
                               CircleAvatar(
                                   backgroundColor: Colors.grey[300],
-                                  child: widget.bm.status == 'BOOKED' ||
-                                          widget.bm.status == "SENT" ||
-                                          widget.bm.status == "VERIFIED"
+                                  child: widget.bm!.status == 'BOOKED' ||
+                                          widget.bm!.status == "SENT" ||
+                                          widget.bm!.status == "VERIFIED"
                                       ? Icon(Icons.check)
                                       : Container()),
                               SizedBox(width: 10),
@@ -200,8 +200,8 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                             children: [
                               CircleAvatar(
                                   backgroundColor: Colors.grey[300],
-                                  child: widget.bm.status == "SENT" ||
-                                          widget.bm.status == "VERIFIED"
+                                  child: widget.bm!.status == "SENT" ||
+                                          widget.bm!.status == "VERIFIED"
                                       ? Icon(Icons.check)
                                       : Container()),
                               SizedBox(width: 10),
@@ -210,7 +210,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                                 child: Container(),
                               ),
                               Visibility(
-                                  visible: widget.bm.status == "BOOKED",
+                                  visible: widget.bm!.status == "BOOKED",
                                   child: Icon(Icons.arrow_forward_ios_rounded))
                             ],
                           ),
@@ -228,11 +228,11 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                             onTap:
                                 //sendArrivalNotification,
                                 () async {
-                              if (widget.bm.status == "SENT") {
+                              if (widget.bm!.status == "SENT") {
                                 DocumentSnapshot snap = await FirebaseFirestore
                                     .instance
                                     .collection("user")
-                                    .doc(FirebaseAuth.instance.currentUser.uid)
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
                                     .collection("Bookings")
                                     .doc(widget.docId)
                                     .get();
@@ -242,7 +242,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                                     builder: (context) => MapView(
                                       destination: snap["location"],
                                       docId: widget.docId,
-                                      clientID: widget.bm.clientID,
+                                      clientID: widget.bm!.clientID,
                                     ),
                                   ),
                                 );
@@ -252,7 +252,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                               children: [
                                 CircleAvatar(
                                     backgroundColor: Colors.grey[300],
-                                    child: widget.bm.status == "VERIFIED"
+                                    child: widget.bm!.status == "VERIFIED"
                                         ? Icon(Icons.check)
                                         : Container()),
                                 SizedBox(width: 10),
@@ -261,7 +261,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                                   child: Container(),
                                 ),
                                 Visibility(
-                                    visible: widget.bm.status != "VERIFIED",
+                                    visible: widget.bm!.status != "VERIFIED",
                                     child:
                                         Icon(Icons.arrow_forward_ios_rounded))
                               ],
@@ -279,7 +279,7 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                           height: 60,
                           child: InkWell(
                               onTap: () async {
-                                if (widget.bm.status != "VERIFIED") {
+                                if (widget.bm!.status != "VERIFIED") {
                                   Fluttertoast.showToast(
                                       msg:
                                           "Project can not be marked as complete, Because pre-requisites are not completed.",
@@ -289,13 +289,13 @@ class _ModelBookingCardState extends State<ModelBookingCard> {
                                 DocumentSnapshot model = await FirebaseFirestore
                                     .instance
                                     .collection("user")
-                                    .doc(FirebaseAuth.instance.currentUser.uid)
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
                                     .get();
 
                                 sendNotifications(
                                   bodyText:
                                       "${model["first_name"]}  ${model["last_name"]}, have requested for payment. Please mark the respected project as complete.",
-                                  id: widget.bm.clientID,
+                                  id: widget.bm!.clientID,
                                   title: "Payment Request!",
                                 );
                               },

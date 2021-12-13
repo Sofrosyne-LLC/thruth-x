@@ -4,17 +4,17 @@ import 'package:truthinx/screens/Dashboard/ModelHire/ModelDetails.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class GridProduct extends StatelessWidget {
-  final String name;
-  final String img;
-  final bool isVerified;
-  final double rating;
-  final int raters;
-  final String gender;
-  final DocumentSnapshot details;
-  final bool isClient;
+  final String? name;
+  final String? img;
+  final bool? isVerified;
+  final double? rating;
+  final int? raters;
+  final String? gender;
+  final DocumentSnapshot? details;
+  final bool? isClient;
 
   GridProduct(
-      {Key key,
+      {Key? key,
       @required this.name,
       this.img,
       @required this.isVerified,
@@ -22,7 +22,6 @@ class GridProduct extends StatelessWidget {
       @required this.raters,
       @required this.details,
       @required this.isClient,
-      
       @required this.gender})
       : super(key: key);
 
@@ -40,13 +39,15 @@ class GridProduct extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 2,
                 color: Color(0xFFF9EDE0),
                 child: Hero(
-
                   tag: details.hashCode,
-                                  child: ClipRRect(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(0.0),
                     child: img == "default"
                         ? Image.asset('assets/userP.png', fit: BoxFit.contain)
-                        : Image.network(img, fit: BoxFit.cover,),
+                        : Image.network(
+                            "$img",
+                            fit: BoxFit.cover,
+                          ),
                     //     FadeInImage.assetNetwork(
                     //   placeholder: 'assets/placeholder.png',
                     //   image: "$img",
@@ -115,7 +116,7 @@ class GridProduct extends StatelessWidget {
                                 ),
                                 SizedBox(height: 2),
                                 Text(
-                                  gender,
+                                  "$gender",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 12),
                                 ),
@@ -130,11 +131,11 @@ class GridProduct extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.all(5),
                               child: Icon(
-                                !isVerified
+                                !isVerified!
                                     ? Icons.check_circle_outline_rounded
                                     : Icons.check_circle,
                                 color:
-                                    isVerified ? Constants.green : Colors.grey,
+                                    isVerified! ? Constants.green : Colors.grey,
                                 size: 35,
                               ),
                             ),
@@ -152,7 +153,7 @@ class GridProduct extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (BuildContext context){
+            builder: (BuildContext context) {
               return ModelDetails(modelDetail: details, isClient: isClient);
             },
           ),

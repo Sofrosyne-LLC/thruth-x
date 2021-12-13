@@ -13,7 +13,7 @@ import 'package:truthinx/screens/Dashboard/ClientVerification/verification_clien
 import 'package:truthinx/utils/constants.dart';
 
 class ClientVerification1 extends StatefulWidget {
-  ClientVerification1({Key key}) : super(key: key);
+  ClientVerification1({Key? key}) : super(key: key);
 
   @override
   _ClientVerification1State createState() => _ClientVerification1State();
@@ -25,7 +25,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
 
   int clientSelection = 0;
 
-  String imageUrl;
+  late String imageUrl;
   final _formKeyDOB = GlobalKey<FormState>();
   final _formKeyPhoneNo = GlobalKey<FormState>();
   final _formKeyBuisnessContacts = GlobalKey<FormState>();
@@ -58,7 +58,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
   uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
     final _imagePicker = ImagePicker();
-    PickedFile image;
+    PickedFile? image;
     //Check Permissions
     await Permission.photos.request();
 
@@ -67,7 +67,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
     if (permissionStatus.isGranted) {
       //Select Image
       image = await _imagePicker.getImage(source: ImageSource.gallery);
-      var file = File(image.path);
+      var file = File(image!.path);
 
       if (image != null) {
         setState(() {
@@ -117,9 +117,9 @@ class _ClientVerification1State extends State<ClientVerification1> {
     } else {
       clientRole = 'business';
     }
-    User user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
-    collectionReferenceUser.doc(user.uid).set({
+    collectionReferenceUser.doc(user!.uid).set({
       "client_role": clientRole,
       "dob": _dob.text ?? '',
       "phone_no": _phoneNumber.text ?? '',
@@ -283,7 +283,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                             hintStyle: TextStyle(color: Colors.grey[400])),
                         controller: _dob,
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'Date of birth required';
                           }
                           return null;
@@ -329,7 +329,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                   controller: _phoneNumber,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Phone Number required';
                                     }
                                     return null;
@@ -375,7 +375,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                   controller: _cellNumber,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Cell Number required';
                                     }
                                     return null;
@@ -416,7 +416,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                   controller: _directBusinessNumber,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Direct Business required';
                                     }
                                     return null;
@@ -457,7 +457,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                   controller: _extraCellNo,
                                   keyboardType: TextInputType.number,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Extra Cell No required';
                                     }
                                     return null;
@@ -498,7 +498,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                   controller: _businessEmail,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Business Email No required';
                                     }
                                     return null;
@@ -564,7 +564,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
 
                             controller: _houseNo,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'Feild required';
                               }
                               return null;
@@ -592,7 +592,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                 fillColor: Colors.white,
                                 hintStyle: TextStyle(color: Colors.grey[400])),
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'APT unit number required';
                               }
                               return null;
@@ -621,7 +621,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                 hintStyle: TextStyle(color: Colors.grey[400])),
                             controller: _city,
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'City required';
                               }
                               return null;
@@ -655,7 +655,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                           TextStyle(color: Colors.grey[400])),
                                   controller: _zipcode,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'Zipcode required';
                                     }
                                     return null;
@@ -687,7 +687,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                           TextStyle(color: Colors.grey[400])),
                                   controller: _state,
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'State required';
                                     }
                                     return null;
@@ -780,7 +780,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                                       color: Colors.grey[400])),
                                               controller: _houseNoB,
                                               validator: (value) {
-                                                if (value.isEmpty) {
+                                                if (value!.isEmpty) {
                                                   return 'Feild required';
                                                 }
                                                 return null;
@@ -816,7 +816,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                                       color: Colors.grey[400])),
                                               controller: _aptNoB,
                                               validator: (value) {
-                                                if (value.isEmpty) {
+                                                if (value!.isEmpty) {
                                                   return 'Suite required';
                                                 }
                                                 return null;
@@ -852,7 +852,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                                       color: Colors.grey[400])),
                                               controller: _cityB,
                                               validator: (value) {
-                                                if (value.isEmpty) {
+                                                if (value!.isEmpty) {
                                                   return 'City required';
                                                 }
                                                 return null;
@@ -895,7 +895,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                                                 .grey[400])),
                                                     controller: _zipcodeB,
                                                     validator: (value) {
-                                                      if (value.isEmpty) {
+                                                      if (value!.isEmpty) {
                                                         return 'Zipcode required';
                                                       }
                                                       return null;
@@ -933,7 +933,7 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                                                 .grey[400])),
                                                     controller: _stateB,
                                                     validator: (value) {
-                                                      if (value.isEmpty) {
+                                                      if (value!.isEmpty) {
                                                         return 'State required';
                                                       }
                                                       return null;
@@ -986,15 +986,21 @@ class _ClientVerification1State extends State<ClientVerification1> {
                     children: <Widget>[
                       Container(
                         decoration: BoxDecoration(
-                            image: DecorationImage(image: imageUrl!=null ? NetworkImage(imageUrl,
-                               ) : AssetImage('assets/verifyPholder.PNG',)
-                               ,
-                               fit: imageUrl!=null ? BoxFit.cover : BoxFit.fill ),
-                            shape: BoxShape.circle, color: Color(0xFFe0f2f1)),
-                        
+                            image: DecorationImage(
+                                image: imageUrl != null
+                                    ? NetworkImage(
+                                        imageUrl,
+                                      )
+                                    : AssetImage(
+                                        'assets/verifyPholder.PNG',
+                                      ) as ImageProvider<Object>,
+                                fit: imageUrl != null
+                                    ? BoxFit.cover
+                                    : BoxFit.fill),
+                            shape: BoxShape.circle,
+                            color: Color(0xFFe0f2f1)),
                         width: MediaQuery.of(context).size.width * 0.4,
                         height: MediaQuery.of(context).size.height * 0.2,
-                        
                       ),
                       Positioned(
                         right: 10.0,
@@ -1049,11 +1055,12 @@ class _ClientVerification1State extends State<ClientVerification1> {
                             ),
                             color: Constants.maincolor,
                             onPressed: () {
-                              if (_formKeyDOB.currentState.validate()) {
+                              if (_formKeyDOB.currentState!.validate()) {
                                 if (clientSelection == 0) {
                                   //client
-                                  if (_formKeyPhoneNo.currentState.validate()) {
-                                    if (_formKeyHomeAddress.currentState
+                                  if (_formKeyPhoneNo.currentState!
+                                      .validate()) {
+                                    if (_formKeyHomeAddress.currentState!
                                         .validate()) {
                                       if (imageUrl != null) {
                                         hitStep1();
@@ -1073,13 +1080,14 @@ class _ClientVerification1State extends State<ClientVerification1> {
                                   }
                                 } else {
                                   //buisness
-                                  if (_formKeyBuisnessContacts.currentState
+                                  if (_formKeyBuisnessContacts.currentState!
                                       .validate()) {
-                                    if (_formKeyHomeAddress.currentState
+                                    if (_formKeyHomeAddress.currentState!
                                         .validate()) {
                                       if (_lights == false) {
                                         print(1234);
-                                        if (_formKeyBuisnessAddress.currentState
+                                        if (_formKeyBuisnessAddress
+                                            .currentState!
                                             .validate()) {
                                           print(123);
                                           if (imageUrl != null) {

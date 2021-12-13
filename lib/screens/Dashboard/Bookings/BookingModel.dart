@@ -7,19 +7,19 @@ class BookingModal {
 
 
   String modelDp;
-  String modelEmail;
-  String modelId;
-  String modelInsta;
-  String modelName;
-  int order;
-  String proposal;
-  String rate;
-  String role;
-  String status;
-  Timestamp time;
-  String title;
+  String? modelEmail;
+  String? modelId;
+  String? modelInsta;
+  String? modelName;
+  int? order;
+  String? proposal;
+  String? rate;
+  String? role;
+  String? status;
+  Timestamp? time;
+  String? title;
   BookingModal({
-    @required this.modelDp,
+    required this.modelDp,
     @required this.modelEmail,
     @required this.modelId,
     @required this.modelInsta,
@@ -37,18 +37,18 @@ class BookingModal {
 
 
   BookingModal copyWith({
-    String modelDp,
-    String modelEmail,
-    String modelId,
-    String modelInsta,
-    String modelName,
-    int order,
-    String proposal,
-    String rate,
-    String role,
-    String status,
-    Timestamp time,
-    String title,
+    required String modelDp,
+    String? modelEmail,
+    String? modelId,
+    String? modelInsta,
+    String? modelName,
+    int? order,
+    String? proposal,
+    String? rate,
+    String? role,
+    String? status,
+    Timestamp? time,
+    String? title,
   }) {
     return BookingModal(
       modelDp: modelDp ?? this.modelDp,

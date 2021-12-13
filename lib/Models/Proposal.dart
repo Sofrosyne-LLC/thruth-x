@@ -4,14 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class ModelProposal {
-  String proposal;
-  String clientId;
-  String clientEmail;
-  String clientName;
-  int order;
-  Timestamp time;
-  String clientDP;
-  int rate;
+  String? proposal;
+  String? clientId;
+  String? clientEmail;
+  String? clientName;
+  int? order;
+  Timestamp? time;
+  String? clientDP;
+  int? rate;
   ModelProposal({
     @required this.proposal,
     @required this.clientId,
@@ -22,17 +22,16 @@ class ModelProposal {
     @required this.clientDP,
     @required this.rate,
   });
-  
 
   ModelProposal copyWith({
-    String proposal,
-    String clientId,
-    String clientEmail,
-    String clientName,
-    int order,
-    Timestamp time,
-    String clientDP,
-    int rate,
+    String? proposal,
+    String? clientId,
+    String? clientEmail,
+    String? clientName,
+    int? order,
+    Timestamp? time,
+    String? clientDP,
+    int? rate,
   }) {
     return ModelProposal(
       proposal: proposal ?? this.proposal,
@@ -74,7 +73,8 @@ class ModelProposal {
 
   String toJson() => json.encode(toMap());
 
-  factory ModelProposal.fromJson(String source) => ModelProposal.fromMap(json.decode(source));
+  factory ModelProposal.fromJson(String source) =>
+      ModelProposal.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -84,40 +84,40 @@ class ModelProposal {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is ModelProposal &&
-      other.proposal == proposal &&
-      other.clientId == clientId &&
-      other.clientEmail == clientEmail &&
-      other.clientName == clientName &&
-      other.order == order &&
-      other.time == time &&
-      other.clientDP == clientDP &&
-      other.rate == rate;
+        other.proposal == proposal &&
+        other.clientId == clientId &&
+        other.clientEmail == clientEmail &&
+        other.clientName == clientName &&
+        other.order == order &&
+        other.time == time &&
+        other.clientDP == clientDP &&
+        other.rate == rate;
   }
 
   @override
   int get hashCode {
     return proposal.hashCode ^
-      clientId.hashCode ^
-      clientEmail.hashCode ^
-      clientName.hashCode ^
-      order.hashCode ^
-      time.hashCode ^
-      clientDP.hashCode ^
-      rate.hashCode;
+        clientId.hashCode ^
+        clientEmail.hashCode ^
+        clientName.hashCode ^
+        order.hashCode ^
+        time.hashCode ^
+        clientDP.hashCode ^
+        rate.hashCode;
   }
 }
 
 class ClientProposal {
-  String proposal;
-  String modelId;
-  String modelEmail;
-  String modelName;
-  int order;
-  Timestamp time;
-  String modelDp;
-  int rate;
+  String? proposal;
+  String? modelId;
+  String? modelEmail;
+  String? modelName;
+  int? order;
+  Timestamp? time;
+  String? modelDp;
+  int? rate;
   ClientProposal({
     @required this.proposal,
     @required this.modelId,
@@ -128,18 +128,16 @@ class ClientProposal {
     @required this.modelDp,
     @required this.rate,
   });
-  
-  
 
   ClientProposal copyWith({
-    String proposal,
-    String modelId,
-    String modelEmail,
-    String modelName,
-    int order,
-    Timestamp time,
-    String modelDp,
-    int rate,
+    String? proposal,
+    String? modelId,
+    String? modelEmail,
+    String? modelName,
+    int? order,
+    Timestamp? time,
+    String? modelDp,
+    int? rate,
   }) {
     return ClientProposal(
       proposal: proposal ?? this.proposal,
@@ -181,7 +179,8 @@ class ClientProposal {
 
   String toJson() => json.encode(toMap());
 
-  factory ClientProposal.fromJson(String source) => ClientProposal.fromMap(json.decode(source));
+  factory ClientProposal.fromJson(String source) =>
+      ClientProposal.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -191,27 +190,27 @@ class ClientProposal {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is ClientProposal &&
-      other.proposal == proposal &&
-      other.modelId == modelId &&
-      other.modelEmail == modelEmail &&
-      other.modelName == modelName &&
-      other.order == order &&
-      other.time == time &&
-      other.modelDp == modelDp &&
-      other.rate == rate;
+        other.proposal == proposal &&
+        other.modelId == modelId &&
+        other.modelEmail == modelEmail &&
+        other.modelName == modelName &&
+        other.order == order &&
+        other.time == time &&
+        other.modelDp == modelDp &&
+        other.rate == rate;
   }
 
   @override
   int get hashCode {
     return proposal.hashCode ^
-      modelId.hashCode ^
-      modelEmail.hashCode ^
-      modelName.hashCode ^
-      order.hashCode ^
-      time.hashCode ^
-      modelDp.hashCode ^
-      rate.hashCode;
+        modelId.hashCode ^
+        modelEmail.hashCode ^
+        modelName.hashCode ^
+        order.hashCode ^
+        time.hashCode ^
+        modelDp.hashCode ^
+        rate.hashCode;
   }
 }

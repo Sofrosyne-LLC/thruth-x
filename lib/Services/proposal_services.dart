@@ -6,25 +6,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class ProposalService {
   static submitProposal(
-      {String uid,
+      {String? uid,
       var hourlyRate,
-      String jobtype,
-      String duration,
-      List<DateTime> potDates,
-      List<String> locations,
-      String wardrob,
-      String wardspecs,
-      String anythingElse,
-      String isMakeupReady}) async {
+      String? jobtype,
+      String? duration,
+      List<DateTime>? potDates,
+      List<String>? locations,
+      String? wardrob,
+      String? wardspecs,
+      String? anythingElse,
+      String? isMakeupReady}) async {
     print("$uid");
     await FirebaseFirestore.instance
         .collection("user")
-        .doc(uid.trim())
+        .doc(uid!.trim())
         .collection("gigs")
         .add({
-          "clientDp": FirebaseAuth.instance.currentUser.photoURL,
-          "clientID": FirebaseAuth.instance.currentUser.uid,
-          "clientName": FirebaseAuth.instance.currentUser.displayName,
+          "clientDp": FirebaseAuth.instance.currentUser!.photoURL,
+          "clientID": FirebaseAuth.instance.currentUser!.uid,
+          "clientName": FirebaseAuth.instance.currentUser!.displayName,
           "dateCreated": DateTime.now(),
           "desc": "Jxjjkdkkdkkdkdd",
           "gigOrder": Random().nextInt(900000) + 100000,

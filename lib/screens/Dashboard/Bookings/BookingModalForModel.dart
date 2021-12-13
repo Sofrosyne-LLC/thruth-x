@@ -6,18 +6,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class BookingModalForModel {
 
 
-  String clientDp;
+  String? clientDp;
 
-  String clientID;
+  String? clientID;
 
-  String clientName;
-  int order;
+  String? clientName;
+  int? order;
 
-  String rate;
-  String role;
-  String status;
-  Timestamp time;
-  String title;
+  String? rate;
+  String? role;
+  String? status;
+  Timestamp? time;
+  String? title;
   BookingModalForModel({
      this.clientDp,
      this.clientID,
@@ -32,15 +32,15 @@ class BookingModalForModel {
  
 
   BookingModalForModel copyWith({
-    String clientDp,
-    String clientID,
-    String clientName,
-    int order,
-    String rate,
-    String role,
-    String status,
-    Timestamp time,
-    String title,
+    String? clientDp,
+    String? clientID,
+    String? clientName,
+    int? order,
+    String? rate,
+    String? role,
+    String? status,
+    Timestamp? time,
+    String? title,
   }) {
     return BookingModalForModel(
       clientDp: clientDp ?? this.clientDp,

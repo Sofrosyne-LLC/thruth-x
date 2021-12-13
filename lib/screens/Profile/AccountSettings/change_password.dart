@@ -95,12 +95,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                     },
                     icon: loading
                         ? Transform.scale(
-                          scale: 0.5,
-                                                  child: CircularProgressIndicator(
-                              valueColor:
-                                  new AlwaysStoppedAnimation<Color>(Colors.black),
+                            scale: 0.5,
+                            child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.black),
                             ),
-                        )
+                          )
                         : Icon(Icons.vpn_key_rounded),
                     label: Text("Update")),
               ],
@@ -121,20 +121,22 @@ class _ChangePasswordState extends State<ChangePassword> {
       return;
     }
     FirebaseAuth auth = FirebaseAuth.instance;
-    User user = auth.currentUser;
+    User? user = auth.currentUser;
 
     // Create a credential
-    EmailAuthCredential credential = EmailAuthProvider.credential(
+    AuthCredential credential = EmailAuthProvider.credential(
         email: "hassamtalha123@gmail.com", password: "123456");
     try {
 // Reauthenticate
-      UserCredential cred = await FirebaseAuth.instance.currentUser
+      UserCredential cred = await FirebaseAuth.instance.currentUser!
           .reauthenticateWithCredential(credential);
 
-      print(cred.user.email);
+      print(cred.user!.email);
 
-      user.updatePassword(newPassword.text.trim()).onError((error, stackTrace) {
-        print(error.message);
+      user!
+          .updatePassword(newPassword.text.trim())
+          .onError((error, stackTrace) {
+        print((error as dynamic).message);
         setState(() {
           loading = false;
         });
@@ -146,7 +148,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       setState(() {
         loading = false;
       });
-      Fluttertoast.showToast(msg: e.message);
+      Fluttertoast.showToast(msg: (e as dynamic).message);
     }
   }
 }

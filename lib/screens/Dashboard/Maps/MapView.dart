@@ -13,9 +13,9 @@ import 'package:truthinx/Services/NotificationServices.dart';
 import 'package:truthinx/utils/ApiKeys.dart';
 
 class MapView extends StatefulWidget {
-  final String clientID;
-  final String docId;
-  final GeoPoint destination;
+  final String? clientID;
+  final String? docId;
+  final GeoPoint? destination;
 
   MapView({this.destination, this.docId,@required this.clientID});
   @override
@@ -24,9 +24,9 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   CameraPosition _initialLocation = CameraPosition(target: LatLng(0.0, 0.0));
-  GoogleMapController mapController;
+  GoogleMapController? mapController;
 
-  Position _currentPosition;
+  Position? _currentPosition;
   String _currentAddress = '';
 
   final startAddressController = TextEditingController();
@@ -37,33 +37,33 @@ class _MapViewState extends State<MapView> {
 
   String _startAddress = '';
   String _destinationAddress = '';
-  String _placeDistance;
+  String? _placeDistance;
 
   Set<Marker> markers = {};
   double totalDistance = 0.0;
-  PolylinePoints polylinePoints;
+  PolylinePoints? polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Widget _textField(
-      {TextEditingController controller,
-      FocusNode focusNode,
-      String label,
-      String hint,
-      double width,
-      Icon prefixIcon,
-      Widget suffixIcon,
-      Function(String) locationCallback}) {
+      {TextEditingController? controller,
+      FocusNode? focusNode,
+      String? label,
+      String? hint,
+      double? width,
+      Icon? prefixIcon,
+      Widget? suffixIcon,
+      Function(String)? locationCallback}) {
     return Theme(
       data: ThemeData.light(),
       child: Container(
-        width: width * 0.8,
+        width: width! * 0.8,
         child: TextField(
           enabled: false,
           onChanged: (value) {
-            locationCallback(value);
+            locationCallback!(value);
           },
           controller: controller,
           focusNode: focusNode,
@@ -106,7 +106,7 @@ class _MapViewState extends State<MapView> {
       setState(() {
         _currentPosition = position;
         print('CURRENT POS: $_currentPosition');
-        mapController.animateCamera(
+        mapController!.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
               target: LatLng(position.latitude, position.longitude),
@@ -119,7 +119,7 @@ class _MapViewState extends State<MapView> {
         await _getAddress();
         await _getDestinationAddress();
       } catch (e) {
-        debugPrint(e);
+        debugPrint(e.toString());
       }
     }).catchError((e) {
       print(e);
@@ -130,7 +130,7 @@ class _MapViewState extends State<MapView> {
   _getAddress() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
-          _currentPosition.latitude, _currentPosition.longitude);
+          _currentPosition!.latitude, _currentPosition!.longitude);
 
       Placemark place = p[0];
 
@@ -148,7 +148,7 @@ class _MapViewState extends State<MapView> {
   _getDestinationAddress() async {
     try {
       List<Placemark> p = await placemarkFromCoordinates(
-          widget.destination.latitude, widget.destination.longitude);
+          widget.destination!.latitude, widget.destination!.longitude);
 
       Placemark place = p[0];
 
@@ -174,15 +174,15 @@ class _MapViewState extends State<MapView> {
       // instead of the address if the start position is user's
       // current position, as it results in better accuracy.
       double startLatitude = _startAddress == _currentAddress
-          ? _currentPosition.latitude
+          ? _currentPosition!.latitude
           : startPlacemark[0].latitude;
 
       double startLongitude = _startAddress == _currentAddress
-          ? _currentPosition.longitude
+          ? _currentPosition!.longitude
           : startPlacemark[0].longitude;
 
-      double destinationLatitude = widget.destination.latitude;
-      double destinationLongitude = widget.destination.longitude;
+      double destinationLatitude = widget.destination!.latitude;
+      double destinationLongitude = widget.destination!.longitude;
 
       String startCoordinatesString = '($startLatitude, $startLongitude)';
       String destinationCoordinatesString =
@@ -244,7 +244,7 @@ class _MapViewState extends State<MapView> {
 
       // Accommodate the two locations within the
       // camera view of the map
-      mapController.animateCamera(
+      mapController!.animateCamera(
         CameraUpdate.newLatLngBounds(
           LatLngBounds(
             northeast: LatLng(northEastLatitude, northEastLongitude),
@@ -314,7 +314,7 @@ class _MapViewState extends State<MapView> {
     // double _originLatitude = 26.48424, _originLongitude = 50.04551;
     // double _destLatitude = 26.46423, _destLongitude = 50.06358;
     polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+    PolylineResult result = await polylinePoints!.getRouteBetweenCoordinates(
       googleAPI, // Google Maps API Key
       // PointLatLng(_originLatitude, _originLongitude),
       // PointLatLng(_destLatitude, _destLongitude),
@@ -399,7 +399,7 @@ class _MapViewState extends State<MapView> {
                             child: Icon(Icons.add),
                           ),
                           onTap: () {
-                            mapController.animateCamera(
+                            mapController!.animateCamera(
                               CameraUpdate.zoomIn(),
                             );
                           },
@@ -418,7 +418,7 @@ class _MapViewState extends State<MapView> {
                             child: Icon(Icons.remove),
                           ),
                           onTap: () {
-                            mapController.animateCamera(
+                            mapController!.animateCamera(
                               CameraUpdate.zoomOut(),
                             );
                           },
@@ -574,12 +574,12 @@ class _MapViewState extends State<MapView> {
                           child: Icon(Icons.my_location),
                         ),
                         onTap: () {
-                          mapController.animateCamera(
+                          mapController!.animateCamera(
                             CameraUpdate.newCameraPosition(
                               CameraPosition(
                                 target: LatLng(
-                                  _currentPosition.latitude,
-                                  _currentPosition.longitude,
+                                  _currentPosition!.latitude,
+                                  _currentPosition!.longitude,
                                 ),
                                 zoom: 18.0,
                               ),
@@ -595,7 +595,7 @@ class _MapViewState extends State<MapView> {
 
             Visibility(
               visible:
-                  _placeDistance != null && double.parse(_placeDistance) < 0.15,
+                  _placeDistance != null && double.parse("$_placeDistance") < 0.15,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SafeArea(
@@ -617,11 +617,11 @@ class _MapViewState extends State<MapView> {
 
   void sendArrivalRequest() async {
     FirebaseFirestore.instance.collection("user").doc(widget.clientID).collection("Bookings").doc(widget.docId).update({"modelLocation": GeoPoint(
-     _currentPosition.latitude, _currentPosition.longitude
+     _currentPosition!.latitude, _currentPosition!.longitude
     )});
           Fluttertoast.showToast(msg: "Processing ...");
 
-    DocumentSnapshot model = await FirebaseFirestore.instance.collection("user").doc(FirebaseAuth.instance.currentUser.uid).get();
+    DocumentSnapshot model = await FirebaseFirestore.instance.collection("user").doc(FirebaseAuth.instance.currentUser!.uid).get();
     sendNotifications(
                     bodyText: "${model["first_name"]}  ${model["last_name"]}, have been arrived. Please verify their location.",
                     id: widget.clientID,

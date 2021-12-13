@@ -6,9 +6,8 @@ import 'package:truthinx/Models/verification/verification_model1.dart';
 
 import 'package:truthinx/utils/constants.dart';
 
-
 class ModelInfo extends StatefulWidget {
-  ModelInfo({Key key}) : super(key: key);
+  ModelInfo({Key? key}) : super(key: key);
 
   @override
   _ModelInfoState createState() => _ModelInfoState();
@@ -17,7 +16,7 @@ class ModelInfo extends StatefulWidget {
 class _ModelInfoState extends State<ModelInfo> {
   bool dialogues = true;
 
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   CollectionReference collectionReferenceUser =
       FirebaseFirestore.instance.collection('user');
@@ -33,8 +32,10 @@ class _ModelInfoState extends State<ModelInfo> {
   }
 
   checkUser() async {
-    final data =
-        await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
+    final data = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(user!.uid)
+        .get();
 
     setState(() {
       submissionDate = data['prof_submitting_time'];

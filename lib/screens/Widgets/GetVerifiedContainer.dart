@@ -5,8 +5,8 @@ import 'package:truthinx/screens/ModelVerificationScreens/screen1.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class GetVerifiedWidget extends StatelessWidget {
-  final String firstname;
-  final String role;
+  final String? firstname;
+  final String? role;
 
   GetVerifiedWidget({this.firstname, this.role});
   @override

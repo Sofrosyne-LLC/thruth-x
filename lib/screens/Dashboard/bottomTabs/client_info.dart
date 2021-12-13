@@ -7,7 +7,7 @@ import 'package:truthinx/screens/Widgets/WaitForVerificationWidget.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class ClientInfo extends StatefulWidget {
-  ClientInfo({Key key}) : super(key: key);
+  ClientInfo({Key? key}) : super(key: key);
 
   @override
   _ClientInfoState createState() => _ClientInfoState();
@@ -16,7 +16,7 @@ class ClientInfo extends StatefulWidget {
 class _ClientInfoState extends State<ClientInfo> {
   bool dialogues = true;
 
-  User user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
 
   CollectionReference collectionReferenceUser =
       FirebaseFirestore.instance.collection('user');
@@ -31,8 +31,10 @@ class _ClientInfoState extends State<ClientInfo> {
   }
 
   checkUser() async {
-    final data =
-        await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
+    final data = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(user!.uid)
+        .get();
 
     setState(() {
       firstname = data['first_name'];
@@ -65,9 +67,9 @@ class _ClientInfoState extends State<ClientInfo> {
         children: [
           dialogues
               ? GetVerifiedWidget(
-                firstname: firstname,
-                role: "Client",
-              )
+                  firstname: firstname,
+                  role: "Client",
+                )
               : status == "Verified"
                   ? VerifiedContainer(firstname)
                   : WaitForVerificationWidget()
@@ -133,8 +135,11 @@ class VerifiedContainer extends StatelessWidget {
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.02),
-                                  Icon(Icons.verified_user, color: Constants.maincolor,),
-                                  SizedBox(
+                          Icon(
+                            Icons.verified_user,
+                            color: Constants.maincolor,
+                          ),
+                          SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.02),
                           Padding(

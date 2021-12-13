@@ -17,7 +17,7 @@ import 'package:truthinx/screens/Widgets/Model_Grid_Item.dart';
 import 'package:truthinx/utils/constants.dart';
 
 class HomeScreenCustomer extends StatefulWidget {
-  HomeScreenCustomer({Key key}) : super(key: key);
+  HomeScreenCustomer({Key? key}) : super(key: key);
 
   @override
   _HomeScreenCustomerState createState() => _HomeScreenCustomerState();
@@ -55,11 +55,11 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
   String selectNudity = '';
   List<String> selectedModeling = [];
   List<String> selectedPhysicalAttribs = [];
-  final FirebaseMessaging _fcm = FirebaseMessaging();
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   Future<bool> _saveTokenToDatabase() async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    String fcmToken = await _fcm.getToken();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    String? fcmToken = await _fcm.getToken();
 
     if (fcmToken != null) {
       var tokenRef =
@@ -99,9 +99,9 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       setState(() {
         sortableSnapshots = sortableSnapshots
             .where((element) {
-              log("${element.data()["height"]}");
-              return element.data().containsKey("height") &&
-                  element.data()["height"] >= rateSlider;
+              log("${(element.data() as dynamic)["height"]}");
+              return (element.data() as dynamic).containsKey("height") &&
+                  (element.data() as dynamic)["height"] >= rateSlider;
             })
             .toList()
             .cast<QueryDocumentSnapshot>();
@@ -111,8 +111,8 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       setState(() {
         sortableSnapshots = sortableSnapshots
             .where((element) {
-              return element.data().containsKey("height") &&
-                  element.data()["height"] >= heightFilter;
+              return (element.data() as dynamic).containsKey("height") &&
+                  (element.data() as dynamic)["height"] >= heightFilter;
             })
             .toList()
             .cast<QueryDocumentSnapshot>();
@@ -122,8 +122,8 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       setState(() {
         sortableSnapshots = sortableSnapshots
             .where((element) {
-              return element.data().containsKey("weight") &&
-                  element.data()["weight"] >= weight;
+              return (element.data() as dynamic).containsKey("weight") &&
+                  (element.data() as dynamic)["weight"] >= weight;
             })
             .toList()
             .cast<QueryDocumentSnapshot>();
@@ -133,23 +133,23 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
     setState(() {
       sortableSnapshots = sortableSnapshots
           .where((e) =>
-              e.data().containsKey("measurement") &&
-              (e.data()["measurement"].containsKey("dress") &&
-                  e.data()["measurement"]["dress"] >= dress) &&
-              (e.data()["measurement"].containsKey("bust") &&
-                  e.data()["measurement"]["bust"] >= bust) &&
-              (e.data()["measurement"].containsKey("waist") &&
-                  e.data()["measurement"]["waist"] >= waist) &&
-              (e.data()["measurement"].containsKey("hips") &&
-                  e.data()["measurement"]["hips"] >= hips) &&
-              (e.data()["measurement"].containsKey("neck") &&
-                  e.data()["measurement"]["neck"] >= neck) &&
-              (e.data()["measurement"].containsKey("jacket") &&
-                  e.data()["measurement"]["jacket"] >= jacket) &&
-              (e.data()["measurement"].containsKey("inseam") &&
-                  e.data()["measurement"]["inseam"] >= inseam) &&
-              (e.data()["measurement"].containsKey("shoe") &&
-                  e.data()["measurement"]["shoe"] >= shoe))
+              (e.data() as dynamic).containsKey("measurement") &&
+              ((e.data() as dynamic)["measurement"].containsKey("dress") &&
+                  (e.data() as dynamic)["measurement"]["dress"] >= dress) &&
+              ((e.data() as dynamic)["measurement"].containsKey("bust") &&
+                  (e.data() as dynamic)["measurement"]["bust"] >= bust) &&
+              ((e.data() as dynamic)["measurement"].containsKey("waist") &&
+                  (e.data() as dynamic)["measurement"]["waist"] >= waist) &&
+              ((e.data() as dynamic)["measurement"].containsKey("hips") &&
+                  (e.data() as dynamic)["measurement"]["hips"] >= hips) &&
+              ((e.data() as dynamic)["measurement"].containsKey("neck") &&
+                  (e.data() as dynamic)["measurement"]["neck"] >= neck) &&
+              ((e.data() as dynamic)["measurement"].containsKey("jacket") &&
+                  (e.data() as dynamic)["measurement"]["jacket"] >= jacket) &&
+              ((e.data() as dynamic)["measurement"].containsKey("inseam") &&
+                  (e.data() as dynamic)["measurement"]["inseam"] >= inseam) &&
+              ((e.data() as dynamic)["measurement"].containsKey("shoe") &&
+                  (e.data() as dynamic)["measurement"]["shoe"] >= shoe))
           .toList()
           .cast<QueryDocumentSnapshot>();
     });
@@ -158,9 +158,10 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       setState(() {
         sortableSnapshots = sortableSnapshots
             .where((element) {
-              return element.data().containsKey("measurement") &&
-                  element.data()["measurement"].containsKey("cup") &&
-                  element.data()["measurement"]["cup"] == cup;
+              return (element.data() as dynamic).containsKey("measurement") &&
+                  (element.data() as dynamic)["measurement"]
+                      .containsKey("cup") &&
+                  (element.data() as dynamic)["measurement"]["cup"] == cup;
             })
             .toList()
             .cast<QueryDocumentSnapshot>();
@@ -171,8 +172,8 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       setState(() {
         sortableSnapshots = sortableSnapshots
             .where((element) {
-              return element.data().containsKey("nudityStatus") &&
-                  element.data()["nudityStatus"] == selectNudity;
+              return (element.data() as dynamic).containsKey("nudityStatus") &&
+                  (element.data() as dynamic)["nudityStatus"] == selectNudity;
             })
             .toList()
             .cast<QueryDocumentSnapshot>();
@@ -183,8 +184,8 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       setState(() {
         List<QueryDocumentSnapshot> temp = sortableSnapshots
             .where((element) {
-              return element.data().containsKey("categories") &&
-                  element.data()["categories"].contains(el);
+              return (element.data() as dynamic).containsKey("categories") &&
+                  (element.data() as dynamic)["categories"].contains(el);
             })
             .toList()
             .cast<QueryDocumentSnapshot>();
@@ -195,8 +196,8 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       setState(() {
         sortableSnapshots = sortableSnapshots
             .where((element) {
-              return element.data().containsKey("attributes") &&
-                  element.data()["attributes"].contains(el);
+              return (element.data() as dynamic).containsKey("attributes") &&
+                  (element.data() as dynamic)["attributes"].contains(el);
             })
             .toList()
             .cast<QueryDocumentSnapshot>();
@@ -232,7 +233,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
   }
 
   ProfileServices profileData = ProfileServices();
-  AppUser user;
+  AppUser? user;
 
   @override
   void initState() {
@@ -245,37 +246,35 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
     //   });
     // });
     _saveTokenToDatabase();
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            content: ListTile(
-              title: Text(message['notification']['title']),
-              subtitle: Text(message['notification']['body']),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("onMessage: $message");
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-        );
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        // TODO optional
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        // TODO optional
-      },
-    );
+          content: ListTile(
+            title: Text("${message.notification!.title}"),
+            subtitle: Text("${message.notification!.body}"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("onMessageOpenedApp: $message");
+    });
+
+    // FirebaseMessaging.onBackgroundMessage((RemoteMessage message) {
+    //   print("onBackgroundMessage: $message");
+    // });
   }
 
   bool isClient = false;
@@ -361,7 +360,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)),
                                         border: Border.all(
-                                            color: Colors.grey[400])),
+                                            color: Colors.grey.shade400)),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
@@ -374,7 +373,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                             hintStyle: TextStyle(
                                                 color: Colors.grey[400])),
                                         validator: (value) {
-                                          if (value.isEmpty) {
+                                          if (value!.isEmpty) {
                                             return 'City';
                                           }
                                           return null;
@@ -559,8 +558,8 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                                         BorderRadius.all(
                                                             Radius.circular(5)),
                                                     border: Border.all(
-                                                        color:
-                                                            Colors.grey[400])),
+                                                        color: Colors
+                                                            .grey.shade400)),
                                                 child: DropdownSearch<String>(
                                                   showSearchBox: true,
                                                   dropdownSearchDecoration:
@@ -757,7 +756,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)),
                                         border: Border.all(
-                                            color: Colors.grey[400])),
+                                            color: Colors.grey.shade400)),
                                     child: DropdownSearch<String>(
                                       showSearchBox: true,
                                       dropdownSearchDecoration: InputDecoration(
@@ -844,7 +843,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)),
                                         border: Border.all(
-                                            color: Colors.grey[400])),
+                                            color: Colors.grey.shade400)),
                                     child: DropdownSearch<String>(
                                       showSearchBox: true,
                                       dropdownSearchDecoration: InputDecoration(
@@ -934,7 +933,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(5)),
                                         border: Border.all(
-                                            color: Colors.grey[400])),
+                                            color: Colors.grey.shade400)),
                                     child: DropdownSearch<String>(
                                       showSearchBox: true,
                                       dropdownSearchDecoration: InputDecoration(
@@ -1027,8 +1026,8 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
             future: profileData.getLocalUser(),
             builder: (context, AsyncSnapshot<AppUser> snap) {
               if (snap.hasData) {
-                isClient = snap.data.role == "Client";
-                if (snap.data.role == "Client") {
+                isClient = snap.data!.role == "Client";
+                if (snap.data!.role == "Client") {
                   return TruthinXDrawer();
                 } else {
                   return ModelDrawer();

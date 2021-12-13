@@ -139,7 +139,7 @@ class Screen5 extends StatelessWidget {
 }
 
 class CategoryItem extends StatefulWidget {
-  final String categoryName;
+  final String? categoryName;
   final addPersonality;
   const CategoryItem(
       {@required this.categoryName, @required this.addPersonality});
@@ -174,7 +174,7 @@ class _CategoryItemState extends State<CategoryItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.categoryName,
+                    widget.categoryName!,
                     textScaleFactor: 1.5,
                     style: TextStyle(
                         fontWeight: isMark ? FontWeight.w600 : FontWeight.w300),

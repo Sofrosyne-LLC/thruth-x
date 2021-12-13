@@ -2,19 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ModelAttributes extends StatelessWidget {
-  final List<dynamic> attributes;
+  final List<dynamic>? attributes;
   ModelAttributes({this.attributes});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        children: List.generate(attributes.length, (index) {
+        children: List.generate(attributes!.length, (index) {
           return ListTile(
-              title: Text(
-                attributes[index].toString(),
-              ),
-            );
+            title: Text(
+              attributes![index].toString(),
+            ),
+          );
         }),
       ),
     );
