@@ -50,11 +50,11 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
   double weight = 100;
   TextEditingController cityController = TextEditingController();
   List<String> cupList = ["A", "B", "C", "D", "DD+"];
-  String cup = '';
+  String? cup = '';
   bool filterOn = false;
-  String selectNudity = '';
-  List<String> selectedModeling = [];
-  List<String> selectedPhysicalAttribs = [];
+  String? selectNudity = '';
+  List<String?> selectedModeling = [];
+  List<String?> selectedPhysicalAttribs = [];
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   Future<bool> _saveTokenToDatabase() async {
@@ -575,15 +575,12 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                                         FloatingLabelBehavior
                                                             .never,
                                                   ),
-                                                  searchBoxDecoration:
-                                                      InputDecoration(
-                                                    hintText: "Search Course",
-                                                  ),
                                                   mode: Mode.DIALOG,
                                                   // showSelectedItem: true,
                                                   items: cupList,
                                                   // label: "Indusry",
-                                                  itemAsString: (item) => item,
+                                                  itemAsString: (item) =>
+                                                      "$item",
                                                   hint: "Choose Cup Type",
                                                   // popupItemDisabled: (String s) => s.startsWith('I'),
                                                   onChanged: (value) {
@@ -769,14 +766,11 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                       ),
-                                      searchBoxDecoration: InputDecoration(
-                                        hintText: "Search Course",
-                                      ),
                                       mode: Mode.DIALOG,
                                       // showSelectedItem: true,
                                       items: Constants.modeling,
                                       // label: "Indusry",
-                                      itemAsString: (item) => item,
+                                      itemAsString: (item) => "$item",
                                       hint: "Choose Modeling Type",
                                       // popupItemDisabled: (String s) => s.startsWith('I'),
                                       onChanged: (value) {
@@ -856,14 +850,12 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                       ),
-                                      searchBoxDecoration: InputDecoration(
-                                        hintText: "Search Course",
-                                      ),
+
                                       mode: Mode.DIALOG,
                                       // showSelectedItem: true,
                                       items: Constants.physicalAttribs,
                                       // label: "Indusry",
-                                      itemAsString: (item) => item,
+                                      itemAsString: (item) => "$item",
                                       hint: "Choose Physical Attributes",
                                       // popupItemDisabled: (String s) => s.startsWith('I'),
                                       onChanged: (value) {
@@ -946,14 +938,11 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                       ),
-                                      searchBoxDecoration: InputDecoration(
-                                        hintText: "Search Course",
-                                      ),
                                       mode: Mode.DIALOG,
                                       // showSelectedItem: true,
                                       items: ["None", "Partial", "Full"],
                                       // label: "Indusry",
-                                      itemAsString: (item) => item,
+                                      itemAsString: (item) => "$item",
                                       hint: "Choose Nudity",
                                       // popupItemDisabled: (String s) => s.startsWith('I'),
                                       onChanged: (value) {

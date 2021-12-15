@@ -36,8 +36,8 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
     "12 Hours",
     "1 Day"
   ];
-  String selectedJobType = '';
-  String estimatedDuration = '';
+  String? selectedJobType = '';
+  String? estimatedDuration = '';
   GroupController checkBoxController = GroupController();
 
   String isMakeupReady = '';
@@ -728,14 +728,11 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                 border: InputBorder.none,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
-              searchBoxDecoration: InputDecoration(
-                hintText: "Search Course",
-              ),
               mode: Mode.DIALOG,
               // showSelectedItem: true,
               items: jobTypeList,
               // label: "Indusry",
-              itemAsString: (item) => item,
+              itemAsString: (item) => "$item",
               hint: "Choose Job Type",
               // popupItemDisabled: (String s) => s.startsWith('I'),
               onChanged: (value) {
@@ -787,12 +784,9 @@ class _ProposalsDetailsState extends State<ProposalsDetails> {
                 border: InputBorder.none,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
-              searchBoxDecoration: InputDecoration(
-                hintText: "Estimated Duration",
-              ),
               mode: Mode.DIALOG,
               items: estimatedDurationList,
-              itemAsString: (item) => item,
+              itemAsString: (item) => "$item",
               hint: "Select Estimated Time Duration",
               onChanged: (value) {
                 estimatedDuration = value;

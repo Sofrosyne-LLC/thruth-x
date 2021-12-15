@@ -52,7 +52,7 @@ class UIHelpers {
   }
 
   static Widget dropDown(
-      List<String> items, Function(String val) onChanged, String value,
+      List<String> items, void Function(String? val) onChanged, String value,
       {String? hint}) {
     return Container(
       margin: EdgeInsets.only(
@@ -74,12 +74,9 @@ class UIHelpers {
           border: InputBorder.none,
           floatingLabelBehavior: FloatingLabelBehavior.never,
         ),
-        searchBoxDecoration: InputDecoration(
-          hintText: hint,
-        ),
         mode: Mode.DIALOG,
         items: items,
-        itemAsString: (item) => item,
+        itemAsString: (item) => "${item}",
         hint: hint,
         onChanged: onChanged,
       ),
